@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# Retart web server
+
+[[ "$1" != "-h" && "$1" != "--help" ]] || { echo "Usage: `basename $0` <cci_build_no>"; exit 1; }
+set -e; s_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")"); . "$s_dir/../../lib/functions.sh" "$s_dir"
+
+export QA_INSTANCE_VIRT=${QA_INSTANCE_VIRT:-0}
+read_configs virt
+check_variables QA_PRODUCT_HOST QA_WEB_HTTPS_PORT QA_AUTH_HTTPS_PORT QA_PGDATABASE_HIVE QA_ETSY_KEY QA_ETSY_SECRET QA_ETSY_HOST QA_ETSY_PORT QA_WEB_HTTP_PORT QA_MANAGER_PORT QA_RABBIT_URI
+
+product_dir="$INSTANCES_DIR/$QA_INSTANCE/virt/$QA_INSTANCE_VIRT/builds/current/product"
+param="$product_dir/dist/web/server.js"
+
+if [ "$1" = "--kill" ]; then
+	kill_process "$QA_NODE_BINARY" "$param"
+else
+	[ -n "$QA_LOG_DIR" ] && log_file="$QA_LOG_DIR/web-$QA_INSTANCE_VIRT.log" || log_file=''
+
+	export HIVE_LOGIN_PAGE="https://$QA_PRODUCT_HOST:$QA_AUTH_HTTPS_PORT"
+	export HIVE_LOGOUT_PAGE="https://$QA_PRODUCT_HOST:$QA_AUTH_HTTPS_PORT/logout"
+
+	export DB_USER=$QA_PGUSER
+	export DB_PASSWORD=$QA_PGPASSWORD
+	export DB_NAME=$QA_PGDATABASE_HIVE
+
+	export ETSY_KEY=$QA_ETSY_KEY
+	export ETSY_SECRET=$QA_ETSY_SECRET
+
+	export ETSY_REQUEST_TOKEN_URL="http://$QA_ETSY_HOST:$QA_ETSY_PORT/v2/oauth/request_token"
+	export ETSY_ACCESS_TOKEN_URL="http://$QA_ETSY_HOST:$QA_ETSY_PORT/v2/oauth/access_token"
+	export ETSY_USER_AUTHORIZATION_URL="http://$QA_ETSY_HOST:$QA_ETSY_PORT/authorize/just_return_redirect"
+	export ETSY_API_URL="http://$QA_ETSY_HOST:$QA_ETSY_PORT/v2"
+
+	export HIVE_HTTP_PORT=$QA_WEB_HTTP_PORT
+	export PORT=$QA_WEB_HTTPS_PORT
+	export HIVE_SYNC_MANAGER_URL="http://localhost:$QA_MANAGER_PORT"
+	export RABBIT_URI=$QA_RABBIT_URI
+
+	export AWS_IMAGES_REGION="$QA_AWS_IMAGES_REGION"
+	export AWS_IMAGES_BUCKET_NAME="$QA_AWS_IMAGES_BUCKET_NAME/$QA_S3_USER/$QA_INSTANCE/$QA_INSTANCE_VIRT"
+	export AWS_IMAGES_ACCESS_KEY_ID="$QA_AWS_IMAGES_ACCESS_KEY_ID"
+	export AWS_IMAGES_SECRET_KEY="$QA_AWS_IMAGES_SECRET_KEY"
+
+	export SESSION_STORE_DB_CONNECTION_STRING="$QA_SESSION_STORE_DB_CONNECTION_STRING"
+
+	restart_process "$QA_NODE_BINARY" "$product_dir" "$log_file" "$param"
+fi
+
+RESULT_MESSAGE="$PROG: finished successfully"

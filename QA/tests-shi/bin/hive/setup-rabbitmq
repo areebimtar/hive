@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# (re)create rabbitmq vhost
+
+[[ "$1" != "-h" && "$1" != "--help" ]] || { echo "`basename $0`  - (re)create rabbitmq vhost ."; exit 1; }
+set -e; s_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")"); . "$s_dir/../../lib/functions.sh" "$s_dir"
+
+
+	# read config, check vars
+export QA_INSTANCE_VIRT=${QA_INSTANCE_VIRT:-0}
+read_configs virt
+check_variables QA_RABBIT_HOST QA_RABBIT_USER QA_RABBIT_PASSWORD QA_RABBIT_VHOST QA_NODE_BINARY
+
+sudo rabbitmqctl delete_vhost "$QA_RABBIT_VHOST" &>/dev/null || true
+sudo rabbitmqctl add_vhost "$QA_RABBIT_VHOST"
+sudo rabbitmqctl set_permissions -p $QA_RABBIT_VHOST $QA_RABBIT_USER ".*" ".*" ".*"
+
+# init rabbit queues
+build_dir="$INSTANCES_DIR/$QA_INSTANCE/builds/current"
+rabbit_migrate="$QA_NODE_BINARY $build_dir/product/node_modules/bunny-migrate/bin/bunny-migrate"
+rabbit_uri="--uri amqp://$QA_RABBIT_USER:$QA_RABBIT_PASSWORD@$QA_RABBIT_HOST:5672/$QA_RABBIT_VHOST"
+rabbit_bunny_x="--bunny-x bunny-migrate"
+rabbit_init_schema="--schema $build_dir/product/deploy/rabbit/initial-schema.json"
+
+rabbit_per_db_schema="--schema $build_dir/product/deploy/rabbit/per-db-schema.json"
+
+log "Running bunny-migrate init"
+$rabbit_migrate init $rabbit_uri $rabbit_bunny_x
+
+log "Creating rabbit initial schema"
+$rabbit_migrate add $rabbit_uri $rabbit_bunny_x $rabbit_init_schema --prefix ""
+
+log "Creating rabbit per db setup"
+$rabbit_migrate add $rabbit_uri $rabbit_bunny_x $rabbit_per_db_schema --prefix db1
+log "Adding routing rules for rabbit etsy setup"
+rabbitmqadmin="$build_dir/QA/tests-shi/bin/rabbitmqadmin -V $QA_RABBIT_VHOST -u $QA_RABBIT_USER -p $QA_RABBIT_PASSWORD"
+$rabbitmqadmin declare binding source=manager-tasks destination=db1.manager-tasks routing_key=db1
+$rabbitmqadmin declare binding source=apply-operations destination=db1.apply-operations routing_key=db1
+
+RESULT_MESSAGE="$PROG: finished successfully"

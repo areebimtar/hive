@@ -1,0 +1,107 @@
+{"_doc": "In this scenario two listings were 'updated' on Etsy - their state changed from active to draft and last_modified_tsz was updated",
+	"include_jsons": [
+		"template_gv2_shop.json",
+		"template_gv2_no_inactive.json"
+	],
+
+	"GET": {
+		"/v2/shops/14458117/listings/active": {
+			"function": "fixed_json",
+			"data": {
+				"body": {
+					"count": 2,
+					"pagination": {
+						"effective_limit": 100000,
+						"effective_offset": 0,
+						"effective_page": 1,
+						"next_offset": null,
+						"next_page": null
+					},
+					"params": {
+						"limit": "100",
+						"offset": 0,
+						"page": null,
+						"shop_id": "14458117"
+					},
+					"results": [
+						{
+							"listing_id" : 100001,
+							"last_modified_tsz" : 1450269283,
+							"original_creation_tsz" : 1426453409,
+							"state" : "active",
+							"can_write_inventory" : true
+						},
+						{
+							"listing_id" : 100002,
+							"last_modified_tsz" : 1450269283,
+							"original_creation_tsz" : 1426453409,
+							"state" : "active",
+							"can_write_inventory" : true
+						}
+					],
+					"type": "Listing"
+				}
+			}
+		},
+
+		"/v2/shops/14458117/listings/draft": {
+			"function": "fixed_json",
+			"data": {
+				"body": {
+					"count": 2,
+					"pagination": {
+						"effective_limit": 100000,
+						"effective_offset": 0,
+						"effective_page": 1,
+						"next_offset": null,
+						"next_page": null
+					},
+					"params": {
+						"limit": "100",
+						"offset": 0,
+						"page": null,
+						"shop_id": "14458117"
+					},
+					"results": [
+						{
+							"listing_id" : 100003,
+							"last_modified_tsz" : 1504086100,
+							"original_creation_tsz" : 1426453409,
+							"state" : "draft",
+							"can_write_inventory" : true
+						},
+						{
+							"listing_id" : 100004,
+							"last_modified_tsz" : 1504086100,
+							"original_creation_tsz" : 1426453409,
+							"state" : "draft",
+							"can_write_inventory" : true
+						}
+					],
+					"type": "Listing"
+				}
+			}
+		},
+
+		"/v2/listings/([0-9]+)": {
+			"function": "external_json_list",
+			"data": {
+				"file": "listings_state_change_listings.json"
+			}
+		}
+	},
+
+	"PUT": {
+		"/v2/listings/([0-9]+)": {
+			"function": "fixed_json",
+			"data": {
+				"body": {
+					"count": 1,
+					"results": [ { } ],
+					"type": "Listing"
+				}
+			}
+		}
+	},
+
+" vim: set foldmethod=indent foldlevel=2 foldnestmax=3 : ": 1 }

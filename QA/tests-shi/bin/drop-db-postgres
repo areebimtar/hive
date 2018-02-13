@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Drops the database of given $QA_INSTANCE/$QA_INSTANCE_VIRT
+# - drop db if exists
+
+[[ "$1" != "-h" && "$1" != "--help" ]] || { echo "`basename $0` Drops the database of given \$QA_INSTANCE/\$QA_INSTANCE_VIRT"; exit 1; }
+set -e; script_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")"); . "$script_dir/../lib/functions.sh"
+
+read_configs virt
+check_variables QA_PGHOST QA_PGPORT QA_PGUSER_ROOT QA_PGPASSWORD_ROOT QA_DB_NAMES
+
+for db in $QA_DB_NAMES; do
+	db_name="${QA_INSTANCE}_${QA_INSTANCE_VIRT}_$db"
+	drop_db_postgres "$QA_PGHOST" "$QA_PGPORT" "$QA_PGUSER_ROOT" "$QA_PGPASSWORD_ROOT" "$db_name"
+done
+
+
+RESULT_MESSAGE="$PROG: finished successfully"

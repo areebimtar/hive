@@ -1,0 +1,59 @@
+general:
+  branches:
+    ignore:
+      - /qa.*/
+      - /perf.*/
+      - /tj.*/
+      - /review.*/
+
+## Customize the test machine
+machine:
+  services:
+    - rabbitmq-server
+    - docker
+
+  environment:
+    INCLUDE_DBSPEC: true
+
+  timezone:
+    Europe/Prague # Set the timezone
+
+  # Version of node to use
+  node:
+    version: 8.9.0
+
+## Customize dependencies
+dependencies:
+  pre:
+    # configure default rabbitmq user
+    - sudo rabbitmq-plugins enable rabbitmq_management
+    - sudo rabbitmqctl add_user user1 pass1
+    - sudo rabbitmqctl set_user_tags user1 administrator
+    - sudo service rabbitmq-server restart
+
+    # set up correct permissions for postgresql
+    - sudo su - -c "echo \"local all all trust\" > /etc/postgresql/9.5/main/pg_hba.conf" postgres
+    - sudo su - -c "echo \"host all all localhost password\" >> /etc/postgresql/9.5/main/pg_hba.conf" postgres
+    - sudo service postgresql restart
+
+    # Install Yarn
+    # - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
+    # - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+    # - sudo apt-get update -qq
+    # - sudo apt-get install -y -qq yarn
+  cache_directories:
+    # - ~/.cache/yarn
+  override:
+    - yarn install && yarn add node-sass --force && yarn run build_all && yarn run build_artifacts && mv *.tgz $CIRCLE_ARTIFACTS
+
+## Customize test commands
+test:
+  post:
+    - yarn run tests
+    - bin/collect_test_results.sh
+
+deployment:
+  dockerize:
+    branch: /.*/
+    commands:
+      - ./deploy/docker/hive-docker/docker-build-push.sh

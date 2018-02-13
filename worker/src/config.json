@@ -1,0 +1,56 @@
+{
+  "db": {
+    "name": "db1",
+    "host": "localhost",
+    "port": 5432,
+    "database": "hive",
+    "user": "hive",
+    "logQueries": true,
+    "slowQueriesMinDuration": 2500
+  },
+  "etsy": {
+    "apiUrl": "https://openapi.etsy.com/v2",
+    "auth": {
+      "requestTokenURL": "https://openapi.etsy.com/v2/oauth/request_token",
+      "accessTokenURL": "https://openapi.etsy.com/v2/oauth/access_token",
+      "userAuthorizationURL": "https://www.etsy.com/oauth/signin"
+    },
+    "maxListingsInShop": 20000,
+    "maxShopsPerCheckShopSync": 300,
+    "waitOnBlockingOperationDelay": 1000
+  },
+  "logging": {
+    "consoleLevel": "debug",
+    "loggly": {
+      "logLevel": "info",
+      "token": false,
+      "serverType": "worker",
+      "velaEnvironment": "unspecified"
+    }
+  },
+  "auth": {
+    "prefix": ""
+  },
+  "serverScheme": "",
+  "serverDomain": "",
+  "serverPort": "",
+  "terminateOnDisconnect": true,
+  "rabbitmq": {
+    "uri": "amqp://user1:pass1@localhost/vela"
+  },
+  "numberOfInstaces": 1,
+  "roles": {
+    "syncShops": true,
+    "applyOperations": true
+  },
+  "applyOperationsQueue": "apply-operations",
+  "AWS": {
+    "images": {
+      "region": "us-west-1",
+      "bucketName": "images-dev.getvela.com",
+      "sslEnabled": true,
+      "signedURLExpiration": 10
+    }
+  }
+}
+

@@ -1,0 +1,42 @@
+.hive-toggle, .hive-toggle-placeholder {
+  height: 15px;
+  width: 30px;
+  position: relative;
+
+}
+
+.hive-toggle {
+  cursor: pointer;
+  border-radius: 15px;
+  border: 1px solid #EBEBEB;
+  background: #F2F2F2;
+  transition: all 1000ms;
+
+  &:before {
+    width: 15px;
+    height: 15px;
+    content: '×';
+    display: block;
+    background-color: #FAF8F8;
+    background-image: linear-gradient(to bottom, white, #F7F5F5);
+    border: 1px solid #e6e6e6;
+    border-radius: 15px;
+    position: absolute;
+    left: 0px;
+    line-height: 13px;
+    text-align: center;
+    font-size: 9px;
+    color: @c-muted-red;
+    transition: all 160ms cubic-bezier(0.905, 0.095, 0.190, 0.940);
+    margin: -1px -0 0 -1px;
+  }
+  &.checked {
+    background: #FFFFFF;
+  }
+  &.checked:before {
+    left: 14px;
+    border-color: #D8D8D8;
+    color: rgba(255, 255, 255, 0);
+    margin-left: 0px;
+  }
+}

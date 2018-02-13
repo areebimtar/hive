@@ -1,0 +1,28 @@
+{"_doc": "In this scenario etsy returns listing as unavailable - state=unavailable and some fields are missing in the listing",
+
+	"include_jsons": [
+		"template_gv2_shop.json",
+		"template_gv2_draft_generated_by_count.json",
+		"template_gv2_no_active.json",
+		"template_gv2_no_inactive.json"
+	],
+
+	"GET": {
+		"/v2/listings/([0-9]+)": {
+			"function": "external_json_list",
+			"data": {
+				"file": "listings_status_unavailable_data.json"
+			}
+		},
+
+		"/v2/shops/14458117/listings/draft": {
+			"data": {
+				"results_template": {
+					"last_modified_tsz" : 1504086100
+				}
+			}
+		}
+
+	},
+
+" vim: set foldmethod=indent foldlevel=2 foldnestmax=3 : ": 1 }

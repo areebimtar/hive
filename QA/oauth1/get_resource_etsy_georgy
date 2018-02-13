@@ -1,0 +1,16 @@
+#!/bin/bash
+if [ -n "$1" ]; then
+	res=("--resource" "$1")
+else
+	res=("--resource" "/shops/RandomName4Shop/listings/draft")
+fi
+script_dir=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd -P)
+python3 "$script_dir/get_oauth_etsy.py" \
+	--client-token "$VELA_CLIENT_TOKEN" \
+	--client-secret "$VELA_CLIENT_SECRET" \
+	--user-token "$USER_TOKEN_GEORGY" \
+	--user-secret "$USER_SECRET_GEORGY" \
+	--method get	\
+	"${res[@]}"
+
+#--authorize

@@ -1,0 +1,2831 @@
+[
+  {
+    "id": 100,
+    "name": "TeeShirtSize",
+    "displayNames": [
+      "Size"
+    ],
+    "attribute": "never",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 200,
+    "name": "Primary color",
+    "displayNames": [
+      "Primary color",
+      "Color"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 500,
+    "name": "Finish",
+    "displayNames": [
+      "Finish"
+    ],
+    "attribute": "never",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 501,
+    "name": "Dimensions",
+    "displayNames": [
+      "Dimensions"
+    ],
+    "attribute": "never",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 502,
+    "name": "Fabric",
+    "displayNames": [
+      "Fabric"
+    ],
+    "attribute": "never",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 503,
+    "name": "Flavor",
+    "displayNames": [
+      "Flavor"
+    ],
+    "attribute": "never",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 504,
+    "name": "Diameter",
+    "displayNames": [
+      "Diameter"
+    ],
+    "attribute": "never",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 505,
+    "name": "Height",
+    "displayNames": [
+      "Height"
+    ],
+    "attribute": "never",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 506,
+    "name": "Length",
+    "displayNames": [
+      "Length"
+    ],
+    "attribute": "never",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 507,
+    "name": "Material",
+    "displayNames": [
+      "Material"
+    ],
+    "attribute": "never",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 508,
+    "name": "Pattern",
+    "displayNames": [
+      "Pattern"
+    ],
+    "attribute": "never",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 509,
+    "name": "Scent",
+    "displayNames": [
+      "Scent"
+    ],
+    "attribute": "never",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 510,
+    "name": "Style",
+    "displayNames": [
+      "Style"
+    ],
+    "attribute": "never",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 511,
+    "name": "Weight",
+    "displayNames": [
+      "Weight"
+    ],
+    "attribute": "never",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 512,
+    "name": "Width",
+    "displayNames": [
+      "Width"
+    ],
+    "attribute": "never",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 513,
+    "name": "Custom1",
+    "displayNames": [
+      "Custom Property"
+    ],
+    "attribute": "never",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 514,
+    "name": "Custom2",
+    "displayNames": [
+      "Custom Property"
+    ],
+    "attribute": "never",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 515,
+    "name": "Device",
+    "displayNames": [
+      "Device"
+    ],
+    "attribute": "never",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 52047899002,
+    "name": "Secondary color",
+    "displayNames": [
+      "Secondary color"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 46803063659,
+    "name": "Holiday",
+    "displayNames": [
+      "Holiday"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 46803063641,
+    "name": "Occasion",
+    "displayNames": [
+      "Occasion"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626759838,
+    "name": "Length",
+    "displayNames": [
+      "Length",
+      "Bracelet length",
+      "Drop length",
+      "Necklace length",
+      "Collar length"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626759898,
+    "name": "Width",
+    "displayNames": [
+      "Width",
+      "Horizontal width",
+      "Bracelet width",
+      "Pendant width",
+      "Bib width",
+      "Cameo width",
+      "Locket width",
+      "Tassel width",
+      "Collar width"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 148789511775,
+    "name": "Can be personalized",
+    "displayNames": [
+      "Can be personalized"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868018123,
+    "name": "Gemstone type",
+    "displayNames": [
+      "Gemstone",
+      "Stone",
+      "Gem type"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 168246862721,
+    "name": "Jewelry style",
+    "displayNames": [
+      "Style",
+      "Jewelry style"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626760084,
+    "name": "Theme",
+    "displayNames": [
+      "Theme"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 145330288530,
+    "name": "Recipient",
+    "displayNames": [
+      "Recipient"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 148789511893,
+    "name": "Material multi",
+    "displayNames": [
+      "Material",
+      "Bead material",
+      "Case material"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626759834,
+    "name": "Height",
+    "displayNames": [
+      "Height",
+      "Pendant height",
+      "Bib height",
+      "Cameo height",
+      "Locket height",
+      "Tassel height"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 54142602037,
+    "name": "Depth",
+    "displayNames": [
+      "Depth"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 52047898162,
+    "name": "Volume",
+    "displayNames": [
+      "Volume",
+      "Size",
+      "Capacity",
+      "Pitcher capacity",
+      "Cup capacity",
+      "Punch bowl capacity"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 145330288592,
+    "name": "Room",
+    "displayNames": [
+      "Room"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 52047899318,
+    "name": "Kids' clothing size",
+    "displayNames": [
+      "Size"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 60534587806,
+    "name": "Kids' sock size",
+    "displayNames": [
+      "Sock size"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 62809790395,
+    "name": "Men's shirt size",
+    "displayNames": [
+      "Size",
+      "Shirt size",
+      "Jacket size"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 62809790419,
+    "name": "Men's pants size",
+    "displayNames": [
+      "Size",
+      "Pants size"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 62809790441,
+    "name": "Men's neck size",
+    "displayNames": [
+      "Neck size"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 60534587804,
+    "name": "Adult sock size",
+    "displayNames": [
+      "Sock size"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 62809790533,
+    "name": "Unisex shirt size",
+    "displayNames": [
+      "Size",
+      "Unisex shirt size"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 62809790503,
+    "name": "Unisex pants size",
+    "displayNames": [
+      "Size",
+      "Unisex pants size"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 52047899294,
+    "name": "Women's clothing size",
+    "displayNames": [
+      "Size",
+      "Women's clothing size"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 62809790555,
+    "name": "Band size",
+    "displayNames": [
+      "Band size"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 60534587776,
+    "name": "Cup size",
+    "displayNames": [
+      "Cup size"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 60534587808,
+    "name": "Corset waist size",
+    "displayNames": [
+      "Corset waist size"
+    ],
+    "attribute": true,
+    "variation": true,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626759760,
+    "name": "Craft type",
+    "displayNames": [
+      "Craft type",
+      "Craft"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508545,
+    "name": "Tools power source",
+    "displayNames": [
+      "Tools power source"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508857,
+    "name": "Set",
+    "displayNames": [
+      "Set"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 148789511779,
+    "name": "Bed size",
+    "displayNames": [
+      "Size"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394318,
+    "name": "Pattern",
+    "displayNames": [
+      "Design",
+      "Pattern"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626759726,
+    "name": "Shape",
+    "displayNames": [
+      "Shape",
+      "Bead shape",
+      "Stone shape",
+      "Bristle shape"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 148789511877,
+    "name": "Rug type",
+    "displayNames": [
+      "Type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 145330288652,
+    "name": "Home style",
+    "displayNames": [
+      "Style"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626759828,
+    "name": "Diameter",
+    "displayNames": [
+      "Diameter",
+      "Wheel diameter"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448158096,
+    "name": "Recycled",
+    "displayNames": [
+      "Recycled"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 148789511843,
+    "name": "Sofa type",
+    "displayNames": [
+      "Type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 145330288606,
+    "name": "Sleeper",
+    "displayNames": [
+      "Sleeper"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 148789511869,
+    "name": "Reclining",
+    "displayNames": [
+      "Reclining"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 148789511807,
+    "name": "Decorative pillow type",
+    "displayNames": [
+      "Type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 145330288644,
+    "name": "Pillow cover material",
+    "displayNames": [
+      "Cover material"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 148789511881,
+    "name": "Pillow fill material",
+    "displayNames": [
+      "Fill material"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 148789511799,
+    "name": "Hypoallergenic",
+    "displayNames": [
+      "Hypoallergenic"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 145330288558,
+    "name": "Framing",
+    "displayNames": [
+      "Framing"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448162614,
+    "name": "Chain length",
+    "displayNames": [
+      "Length",
+      "Chain length"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508445,
+    "name": "Chain style",
+    "displayNames": [
+      "Chain style"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 164901867924,
+    "name": "Jewelry closure type",
+    "displayNames": [
+      "Closure"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 164901868332,
+    "name": "Gauge (Thickness)",
+    "displayNames": [
+      "Gauge (Thickness)"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 168246862971,
+    "name": "Beaded",
+    "displayNames": [
+      "Beaded"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 164901868306,
+    "name": "Lip ring type",
+    "displayNames": [
+      "Type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 164901868318,
+    "name": "Pierced",
+    "displayNames": [
+      "Pierced"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 164901868326,
+    "name": "Nose piercing type",
+    "displayNames": [
+      "Type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508791,
+    "name": "Magnetic",
+    "displayNames": [
+      "Magnetic"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 168246863071,
+    "name": "Shoulder jewelry type",
+    "displayNames": [
+      "Type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394348,
+    "name": "Adjustable",
+    "displayNames": [
+      "Adjustable",
+      "Adjustable length"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 164901868044,
+    "name": "Spinner",
+    "displayNames": [
+      "Spinner"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448162796,
+    "name": "Small jewelry length",
+    "displayNames": [
+      "Length"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 164901868006,
+    "name": "Small jewelry width",
+    "displayNames": [
+      "Width"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 168246862993,
+    "name": "Clothing clip use",
+    "displayNames": [
+      "Use",
+      "Clothing clip use"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 168246862775,
+    "name": "Earring location",
+    "displayNames": [
+      "Location",
+      "Earring location"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 168246863015,
+    "name": "Gauge plug earring type",
+    "displayNames": [
+      "Type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 164901868330,
+    "name": "Number of necklace strands",
+    "displayNames": [
+      "Number of strands"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 164901867152,
+    "name": "Raw",
+    "displayNames": [
+      "Raw stone"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105721677642,
+    "name": "Band color",
+    "displayNames": [
+      "Band color"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105721677568,
+    "name": "Gem color",
+    "displayNames": [
+      "Gem color"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 54142602013,
+    "name": "Ring size",
+    "displayNames": [
+      "Ring size"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 168246862893,
+    "name": "Watch readout",
+    "displayNames": [
+      "Readout"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 168246862933,
+    "name": "Watch power",
+    "displayNames": [
+      "Power"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 164901868338,
+    "name": "Memorial type",
+    "displayNames": [
+      "Memorial type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 54142601979,
+    "name": "Kids' shoe size",
+    "displayNames": [
+      "Size"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 52047899182,
+    "name": "Men's shoe size",
+    "displayNames": [
+      "Size"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 60534587684,
+    "name": "Unisex shoe size",
+    "displayNames": [
+      "Size"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 52047899204,
+    "name": "Women's shoe size",
+    "displayNames": [
+      "Size"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448150644,
+    "name": "Jewelry type",
+    "displayNames": [
+      "Jewelry type"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 164901868340,
+    "name": "Watch band material",
+    "displayNames": [
+      "Band material",
+      "Material"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548267721,
+    "name": "Box bag length",
+    "displayNames": [
+      "Length"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448163592,
+    "name": "Box bag width",
+    "displayNames": [
+      "Width"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 168246863037,
+    "name": "Box bag height",
+    "displayNames": [
+      "Height"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448162080,
+    "name": "Canvas length",
+    "displayNames": [
+      "Length"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448163338,
+    "name": "Canvas width",
+    "displayNames": [
+      "Width"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626760362,
+    "name": "General material",
+    "displayNames": [
+      "Material",
+      "Clay type",
+      "Ceramic type"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868018115,
+    "name": "Essential oil",
+    "displayNames": [
+      "Essential oil"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626760408,
+    "name": "Food safe",
+    "displayNames": [
+      "Food safe"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548267963,
+    "name": "Cord length",
+    "displayNames": [
+      "Length"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508391,
+    "name": "Bead size",
+    "displayNames": [
+      "Bead size"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508413,
+    "name": "Bead hole size",
+    "displayNames": [
+      "Bead hole size"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508453,
+    "name": "Drill style",
+    "displayNames": [
+      "Drill style"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626760334,
+    "name": "Patterned",
+    "displayNames": [
+      "Patterned"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626760324,
+    "name": "Mixed lot",
+    "displayNames": [
+      "Mixed lot"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508751,
+    "name": "Fusible",
+    "displayNames": [
+      "Fusible"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626759850,
+    "name": "Number of strands",
+    "displayNames": [
+      "Number of strands"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 195341066804,
+    "name": "Crimpable",
+    "displayNames": [
+      "Crimpable"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548262633,
+    "name": "Organic",
+    "displayNames": [
+      "Organic"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508865,
+    "name": "Primary fiber",
+    "displayNames": [
+      "Primary fiber"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508877,
+    "name": "Secondary fiber",
+    "displayNames": [
+      "Secondary fiber"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508547,
+    "name": "Yarn weight",
+    "displayNames": [
+      "Yarn weight"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868017229,
+    "name": "Number of skeins",
+    "displayNames": [
+      "Number of skeins"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508905,
+    "name": "Art yarn",
+    "displayNames": [
+      "Art yarn"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868017707,
+    "name": "Hand painted or dyed",
+    "displayNames": [
+      "Hand painted or dyed"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448162292,
+    "name": "Ribbon length",
+    "displayNames": [
+      "Length"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508565,
+    "name": "Bristle material",
+    "displayNames": [
+      "Bristle material"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508571,
+    "name": "Handle material",
+    "displayNames": [
+      "Handle material"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508541,
+    "name": "Paint brush medium",
+    "displayNames": [
+      "Medium"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626759960,
+    "name": "Brush size",
+    "displayNames": [
+      "Size"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548266959,
+    "name": "Tool length",
+    "displayNames": [
+      "Length"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548267171,
+    "name": "Frame length",
+    "displayNames": [
+      "Length"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448163528,
+    "name": "Frame width",
+    "displayNames": [
+      "Width"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626759854,
+    "name": "Thickness",
+    "displayNames": [
+      "Thickness"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508853,
+    "name": "Self-adhesive",
+    "displayNames": [
+      "Self-adhesive"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508461,
+    "name": "Furniture & décor position",
+    "displayNames": [
+      "Position"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626759824,
+    "name": "Shoe type",
+    "displayNames": [
+      "Shoe type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548267387,
+    "name": "Fastener length",
+    "displayNames": [
+      "Length"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448163414,
+    "name": "Fastener width",
+    "displayNames": [
+      "Width"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508573,
+    "name": "Metal type",
+    "displayNames": [
+      "Metal type"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626759740,
+    "name": "Buckle type",
+    "displayNames": [
+      "Type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508779,
+    "name": "Invisible",
+    "displayNames": [
+      "Invisible"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548267513,
+    "name": "Zipper length",
+    "displayNames": [
+      "Length"
+    ],
+    "attribute": true,
+    "variation": true,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626759744,
+    "name": "Clothespin type",
+    "displayNames": [
+      "Type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508719,
+    "name": "Finished",
+    "displayNames": [
+      "Finished"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626760092,
+    "name": "Cut to size",
+    "displayNames": [
+      "Cut to size"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626760110,
+    "name": "Dishwasher safe",
+    "displayNames": [
+      "Dishwasher safe"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626760330,
+    "name": "Non-stick",
+    "displayNames": [
+      "Non-stick"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626760308,
+    "name": "Microwave safe",
+    "displayNames": [
+      "Microwave safe"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548259291,
+    "name": "Oven safe",
+    "displayNames": [
+      "Oven safe"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508615,
+    "name": "Double-sided",
+    "displayNames": [
+      "Double-sided"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508561,
+    "name": "Blade material",
+    "displayNames": [
+      "Blade material",
+      "Material"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508525,
+    "name": "Handedness",
+    "displayNames": [
+      "Handedness"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626760340,
+    "name": "Safety",
+    "displayNames": [
+      "Safety"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548268121,
+    "name": "Pan mat length",
+    "displayNames": [
+      "Length"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548268575,
+    "name": "Pan mat width",
+    "displayNames": [
+      "Width"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508303,
+    "name": "Saw type",
+    "displayNames": [
+      "Saw type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508223,
+    "name": "Axe type",
+    "displayNames": [
+      "Type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508917,
+    "name": "Hinged",
+    "displayNames": [
+      "Hinged"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448163444,
+    "name": "Tool width",
+    "displayNames": [
+      "Width"
+    ],
+    "attribute": true,
+    "variation": true,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508299,
+    "name": "Lens type",
+    "displayNames": [
+      "Lens type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626759772,
+    "name": "Filter type",
+    "displayNames": [
+      "Filter type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508775,
+    "name": "Illuminated",
+    "displayNames": [
+      "Illuminated"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508531,
+    "name": "Magnification strength",
+    "displayNames": [
+      "Magnification strength"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394446,
+    "name": "Clip",
+    "displayNames": [
+      "Clip"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868017361,
+    "name": "Lighting position",
+    "displayNames": [
+      "Position"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508213,
+    "name": "Format",
+    "displayNames": [
+      "Format"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868018029,
+    "name": "Self-published",
+    "displayNames": [
+      "Self-published"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448161866,
+    "name": "Air dry",
+    "displayNames": [
+      "Air dry"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868018037,
+    "name": "Tanned",
+    "displayNames": [
+      "Tanned"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868017061,
+    "name": "Animal type",
+    "displayNames": [
+      "Animal type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626760166,
+    "name": "Encaustic",
+    "displayNames": [
+      "Encaustic"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394948,
+    "name": "Wax type",
+    "displayNames": [
+      "Wax type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508575,
+    "name": "Wood type",
+    "displayNames": [
+      "Wood type"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626759826,
+    "name": "Stamp & seal type",
+    "displayNames": [
+      "Stamp type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394884,
+    "name": "Ink color",
+    "displayNames": [
+      "Ink color"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868018047,
+    "name": "Waxed",
+    "displayNames": [
+      "Waxed"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394478,
+    "name": "Coated",
+    "displayNames": [
+      "Coated"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394848,
+    "name": "Refillable",
+    "displayNames": [
+      "Refillable"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394852,
+    "name": "Retractable",
+    "displayNames": [
+      "Retractable"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868017151,
+    "name": "Pen point type",
+    "displayNames": [
+      "Point type"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626760300,
+    "name": "Marking",
+    "displayNames": [
+      "Marking"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394676,
+    "name": "Mechanical",
+    "displayNames": [
+      "Mechanical"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508859,
+    "name": "Washable",
+    "displayNames": [
+      "Washable"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394696,
+    "name": "Metallic",
+    "displayNames": [
+      "Metallic"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868017683,
+    "name": "Dry-erase",
+    "displayNames": [
+      "Dry-erase"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508679,
+    "name": "Fabric",
+    "displayNames": [
+      "Fabric"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837393956,
+    "name": "Chalk type",
+    "displayNames": [
+      "Chalk type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394242,
+    "name": "Sharpener power source",
+    "displayNames": [
+      "Power source"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394734,
+    "name": "Mountable",
+    "displayNames": [
+      "Mountable"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394586,
+    "name": "Paint included",
+    "displayNames": [
+      "Paint included"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394122,
+    "name": "Number of wells",
+    "displayNames": [
+      "Number of wells"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868017937,
+    "name": "Natural",
+    "displayNames": [
+      "Natural"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837393972,
+    "name": "Dye type",
+    "displayNames": [
+      "Dye type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868017147,
+    "name": "Miniature type",
+    "displayNames": [
+      "Miniature type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394172,
+    "name": "Fabric purpose",
+    "displayNames": [
+      "Purpose"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394514,
+    "name": "Fat quarters",
+    "displayNames": [
+      "Fat quarters"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394530,
+    "name": "Hand printed",
+    "displayNames": [
+      "Hand printed"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394874,
+    "name": "Waterproof",
+    "displayNames": [
+      "Waterproof"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394880,
+    "name": "Microfiber",
+    "displayNames": [
+      "Microfiber"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508889,
+    "name": "Primary fabric type",
+    "displayNames": [
+      "Primary fabric",
+      "Primary fabric type"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626760372,
+    "name": "Secondary fabric type",
+    "displayNames": [
+      "Secondary fabric"
+    ],
+    "attribute": true,
+    "variation": true,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548262737,
+    "name": "Pleated or ruffled",
+    "displayNames": [
+      "Pleated or ruffled"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448158748,
+    "name": "Wired",
+    "displayNames": [
+      "Wired"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548268307,
+    "name": "Ribbon width",
+    "displayNames": [
+      "Width"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508761,
+    "name": "Glitter",
+    "displayNames": [
+      "Glitter"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394936,
+    "name": "Jump ring type",
+    "displayNames": [
+      "Type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508411,
+    "name": "Number of cups",
+    "displayNames": [
+      "Number of cups"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508301,
+    "name": "Oil type",
+    "displayNames": [
+      "Oil type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508311,
+    "name": "Thickening agent type",
+    "displayNames": [
+      "Thickening agent type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626760052,
+    "name": "Glue use",
+    "displayNames": [
+      "Glue use"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508495,
+    "name": "Glue format",
+    "displayNames": [
+      "Glue format"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626760068,
+    "name": "Nipper use",
+    "displayNames": [
+      "Nipper use"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626759874,
+    "name": "Watts",
+    "displayNames": [
+      "Watts"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626759742,
+    "name": "Bulb type",
+    "displayNames": [
+      "Bulb type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508305,
+    "name": "Shade attachment type",
+    "displayNames": [
+      "Shade attachment type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508269,
+    "name": "Lamp part type",
+    "displayNames": [
+      "Lamp part type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448163014,
+    "name": "Fabric length",
+    "displayNames": [
+      "Length"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548268399,
+    "name": "Fabric width",
+    "displayNames": [
+      "Width"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508847,
+    "name": "Sealable",
+    "displayNames": [
+      "Sealable"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508785,
+    "name": "Lid",
+    "displayNames": [
+      "Lid"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508231,
+    "name": "Candle type",
+    "displayNames": [
+      "Candle type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868017353,
+    "name": "Label attachment",
+    "displayNames": [
+      "Label attachment"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837393986,
+    "name": "Flower type",
+    "displayNames": [
+      "Type"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868017541,
+    "name": "Artificial",
+    "displayNames": [
+      "Artificial"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394950,
+    "name": "Stabilizer weight",
+    "displayNames": [
+      "Weight"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448163234,
+    "name": "Epoxy resin volume",
+    "displayNames": [
+      "Volume"
+    ],
+    "attribute": true,
+    "variation": true,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394152,
+    "name": "Carat weight",
+    "displayNames": [
+      "Carat weight"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868017695,
+    "name": "Faceted",
+    "displayNames": [
+      "Faceted"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394398,
+    "name": "Carved",
+    "displayNames": [
+      "Carved"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394628,
+    "name": "Lab created",
+    "displayNames": [
+      "Lab created"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 136027449574,
+    "name": "Cabochon",
+    "displayNames": [
+      "Cabochon"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394284,
+    "name": "Stone type",
+    "displayNames": [
+      "Stone type"
+    ],
+    "attribute": true,
+    "variation": true,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448162872,
+    "name": "Wood length",
+    "displayNames": [
+      "Length"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548268489,
+    "name": "Wood width",
+    "displayNames": [
+      "Width"
+    ],
+    "attribute": "always",
+    "variation": "always",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394842,
+    "name": "Pinnable dress form",
+    "displayNames": [
+      "Pinnable"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448150580,
+    "name": "Hammer type",
+    "displayNames": [
+      "Hammer type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448151614,
+    "name": "Screwdriver type",
+    "displayNames": [
+      "Screwdriver type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548263217,
+    "name": "USB port",
+    "displayNames": [
+      "USB port"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548258527,
+    "name": "Kiln size",
+    "displayNames": [
+      "Size"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448153102,
+    "name": "Cone number",
+    "displayNames": [
+      "Cone number"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448153970,
+    "name": "Kiln heat source",
+    "displayNames": [
+      "Heat source"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448154304,
+    "name": "Kiln loading location",
+    "displayNames": [
+      "Loading location"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548260831,
+    "name": "Digital display",
+    "displayNames": [
+      "Digital display"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448151932,
+    "name": "Spinning wheel type",
+    "displayNames": [
+      "Spinning wheel type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548259653,
+    "name": "Treadle count",
+    "displayNames": [
+      "Treadle count"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868018045,
+    "name": "Watercolor",
+    "displayNames": [
+      "Watercolor"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448163160,
+    "name": "Correction fluid volume",
+    "displayNames": [
+      "Volume"
+    ],
+    "attribute": true,
+    "variation": true,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626760070,
+    "name": "Paint base",
+    "displayNames": [
+      "Paint base"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868017737,
+    "name": "Heat resistant",
+    "displayNames": [
+      "Heat resistant"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868017341,
+    "name": "Glove size",
+    "displayNames": [
+      "Glove size"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868018139,
+    "name": "Protective clothing type",
+    "displayNames": [
+      "Clothing type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868017163,
+    "name": "Sponge type",
+    "displayNames": [
+      "Sponge type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868017127,
+    "name": "Doll part type",
+    "displayNames": [
+      "Part type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394224,
+    "name": "Thread weight",
+    "displayNames": [
+      "Thread weight"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868018039,
+    "name": "Variegated",
+    "displayNames": [
+      "Variegated"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 99837394826,
+    "name": "Pearl",
+    "displayNames": [
+      "Pearl"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548259175,
+    "name": "Number of folds",
+    "displayNames": [
+      "Number of folds"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626760402,
+    "name": "Iron-on",
+    "displayNames": [
+      "Iron-on"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448161930,
+    "name": "Acetone",
+    "displayNames": [
+      "Acetone"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868017833,
+    "name": "Lined",
+    "displayNames": [
+      "Lined"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868017681,
+    "name": "Dried",
+    "displayNames": [
+      "Dried"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548256085,
+    "name": "Seed type",
+    "displayNames": [
+      "Seed type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548254781,
+    "name": "Chisel type",
+    "displayNames": [
+      "Chisel type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448150378,
+    "name": "Clamp type",
+    "displayNames": [
+      "Clamp type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548256431,
+    "name": "Number of vials",
+    "displayNames": [
+      "Number of vials"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448156004,
+    "name": "Cork-backed",
+    "displayNames": [
+      "Cork-backed"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448153404,
+    "name": "Degrees",
+    "displayNames": [
+      "Degrees"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448151468,
+    "name": "Pliers type",
+    "displayNames": [
+      "Pliers type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448154918,
+    "name": "Sandpaper grit",
+    "displayNames": [
+      "Grit"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548257697,
+    "name": "Crochet hook size",
+    "displayNames": [
+      "Size"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548260009,
+    "name": "Filament diameter",
+    "displayNames": [
+      "Filament diameter"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448155682,
+    "name": "Automatic needle threader",
+    "displayNames": [
+      "Automatic needle threader"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548260379,
+    "name": "Built-in stitches",
+    "displayNames": [
+      "Built-in stitches"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448152000,
+    "name": "Number of needles",
+    "displayNames": [
+      "Number of needles"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448151118,
+    "name": "Nail type",
+    "displayNames": [
+      "Nail type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548254915,
+    "name": "Hair clip type",
+    "displayNames": [
+      "Hair clip type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102868017149,
+    "name": "Needle threader type",
+    "displayNames": [
+      "Threader type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626760420,
+    "name": "Machine",
+    "displayNames": [
+      "Machine"
+    ],
+    "attribute": "always",
+    "variation": "never",
+    "alwaysAvailable": false
+  },
+  {
+    "id": 102448151274,
+    "name": "Nut type",
+    "displayNames": [
+      "Nut type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548259917,
+    "name": "Nut thread grade",
+    "displayNames": [
+      "Nut thread grade"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 105548258589,
+    "name": "Knitting needle size",
+    "displayNames": [
+      "Size"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 49673508249,
+    "name": "Knitting needle point type",
+    "displayNames": [
+      "Point type"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626760086,
+    "name": "Circular",
+    "displayNames": [
+      "Circular"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  },
+  {
+    "id": 47626760390,
+    "name": "Glass cover",
+    "displayNames": [
+      "Glass cover"
+    ],
+    "attribute": true,
+    "variation": false,
+    "alwaysAvailable": false
+  }
+]

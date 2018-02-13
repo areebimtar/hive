@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Create DB + migrate, start etsy emulator for QA_INSTANCE_VIRT=0
+
+[[ "$1" != "-h" && "$1" != "--help" ]] || { echo "`basename $0` [shishito-params]   - runs tests on the current build"; exit 1; }
+set -e; script_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")"); . "$script_dir/../lib/functions.sh"
+
+QA_INSTANCE_VIRT=0 setup-test
+
+RESULT_MESSAGE="$PROG: finished successfully"

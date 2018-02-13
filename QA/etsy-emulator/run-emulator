@@ -1,0 +1,64 @@
+#!/bin/bash
+
+
+#--------------------------------------------------------------------------------
+# Kill process with command param
+kill_process() {
+	[ $# -ge 2 ] || { echo "Error: kill_process: at least 2 params expected, got ($@)"; exit 1; }
+	local cmd=$1 params regex i pid param
+	shift; params=$@
+	
+		# compute regex
+	regex="^ *[0-9][0-9]*  *$(echo "$cmd" | sed 's/\//\\\//g')"
+	for param in "${params[@]}"; do
+		regex="$regex[ ]"$(echo "$param" | sed 's/\//\\\//g')
+	done
+	regex="$regex\$"
+
+	i=10
+	while [ $i -gt 0 ]; do
+		pid=$(ps -eopid,command | awk  "/$regex/ {print \$1}")
+		if [ -n "$pid" ]; then
+			if [[ "$pid" =~ ^[0-9][0-9]*$ ]]; then
+				echo "killing PID $pid"
+				kill "$pid"
+				sleep 1
+			else
+				echo "ERROR: not killing strange PID '$pid'"
+			fi
+		else
+			break
+		fi
+		i=$((i - 1))
+	done
+	if [ "$i" -eq 0 ]; then
+		echo "Error: cannot kill process '$pid' ($regex)"
+		exit 1
+	fi
+}
+
+
+for v in ETEST_HOST ETEST_PORT ETEST_NODE_BINARY; do
+	[ -n "${!v}" ] || { echo "Env var '$v' not defined"; exit 1; }
+done
+params=("$@")
+kill_process "$ETEST_NODE_BINARY" app.js "${params[@]}"
+
+cd `dirname "$0"` || exit 1
+rm -f test_id.txt
+while true; do
+	echo "ETEST_HOST='$ETEST_HOST'"
+	export ETEST_TEST_ID=`cat test_id.txt 2>/dev/null`
+	echo "ETEST_TEST_ID='$ETEST_TEST_ID'"
+	"$ETEST_NODE_BINARY" app.js "${params[@]}"
+	return_code=$?
+	if [ $return_code -eq 143  -o $return_code -eq 130 ]; then
+		echo "Node killed by a signal, exiting"
+		exit 0
+	fi
+	if [ $return_code -ne 0  -a $return_code -ne 100 ]; then
+		echo "Error: node exited with code $return_code"
+		rm -f test_id.txt
+		sleep 1
+	fi
+done

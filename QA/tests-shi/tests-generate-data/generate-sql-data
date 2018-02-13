@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+script_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")")
+cd "$script_dir"
+
+# Read config
+. ../etc/qa.cfg
+. ../etc/virt0.cfg
+
+# Start selenium if needed
+ps -ef | grep 'java[ ].*selenium-server' >/dev/null || {
+	selenium &> /dev/null&
+	sleep 3
+}
+
+# Run shishito
+"$script_dir/../bin/shi" --test_directory tests-generate-data $*

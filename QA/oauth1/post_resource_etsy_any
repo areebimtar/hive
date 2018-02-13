@@ -1,0 +1,20 @@
+#!/bin/bash
+if [ -z "$4" ]; then
+	printf "%s\n%s\n" "Usage: $0 <token> <secret> <url> <data>" "$0"' xxx yyyy /v2/listings/472667359/images '\''{"listing_id": "472667359", "rank:": "1", "overwrite": "1", "base64:image": "'\''`base64 -w 0 my.img`'\''"}'\'
+	exit 1
+fi
+token=$1
+secret=$2
+resource=$3
+data=$4
+script_dir=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd -P)
+python3 "$script_dir/get_oauth_etsy.py" \
+	--client-token "$ETSY_CLIENT_TOKEN"	\
+	--client-secret "$ETSY_CLIENT_SECRET"	\
+	--user-token "$token"	\
+	--user-secret "$secret"	\
+	--resource "$resource" \
+	--method post	\
+	--data "$data"
+
+#--authorize

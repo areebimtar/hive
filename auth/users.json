@@ -1,0 +1,38 @@
+{
+  "user1": {
+    "id": "1",
+    "name": "user1",
+    "hash": "$2a$10$1j1kJPFS7UmrAf/LR97i2OnlOD6IJPvB6RC2cH9/r23ef4K2KKqve",
+    "companyId": "1",
+    "db": "db1"
+  },
+  "user2": {
+    "id": "2",
+    "name": "user2",
+    "hash": "$2a$10$DEUiOb6ZsBWlSpmsAq9W8eF3lY4hMSaboYOVMPn4nJ7ME2KAo1Bqa",
+    "companyId": "2",
+    "db": "db1"
+  },
+  "user3": {
+    "id": "3",
+    "name": "user3",
+    "hash": "$2a$10$NxLTdCmcoTiwanDgRcmPM.hP23ntOmoXJWLzrN7VbOFF9hsviJFOa",
+    "companyId": "3",
+    "db": "db1"
+  },
+
+  "jkillian@myhiveonline.com": {
+    "id": "4",
+    "name": "jkillian@myhiveonline.com",
+    "hash": "$2a$10$YUPtvRLYLRJ7Skjl2u1pHuV7xlWer.eX1CK0bLbdQ7B2HF/GA0o6S",
+    "companyId": "4",
+    "db": "db1"
+  },
+  "jwkillian12@gmail.com": {
+    "id": "5",
+    "name": "jwkillian12@gmail.com",
+    "hash": "$2a$10$c4BQe1JbvntLWm5JFLCXOOXxdMe4tZBgJbKx23xk2KzGlXay0PcWy",
+    "companyId": "5",
+    "db": "db1"
+  }
+}

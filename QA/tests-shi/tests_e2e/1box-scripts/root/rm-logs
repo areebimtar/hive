@@ -1,0 +1,15 @@
+#!/bin/bash
+
+LOGS='
+/var/log/hive-manager.log
+/var/log/hive-manager2.log
+/var/log/hive-workers/*.log
+/var/log/hive-handlers/*.log
+/var/log/hive-web.log
+/var/log/hive-auth.log
+'
+for i in $LOGS; do
+	> "$i"
+done
+chown hive:hive $LOGS
+

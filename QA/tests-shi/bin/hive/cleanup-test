@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Script to run when a single virtual test has compleyed
+# - kill the nodes
+# - drop database
+
+[[ "$1" != "-h" && "$1" != "--help" ]] || { echo "`basename $0` runs postgres database migration script from the current build."; exit 1; }
+set -e; s_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")"); . "$s_dir/../../lib/functions.sh" "$s_dir"
+
+export QA_INSTANCE_VIRT=${QA_INSTANCE_VIRT:-0}
+read_configs virt
+
+restart-product --kill
+restart-etsy --kill
+drop-db-postgres
+
+
+RESULT_MESSAGE="$PROG: finished successfully"

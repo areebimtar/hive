@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Restart auth server
+
+[[ "$1" != "-h" && "$1" != "--help" ]] || { echo "Usage: `basename $0` <cci_build_no>"; exit 1; }
+set -e; s_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")"); . "$s_dir/../../lib/functions.sh" "$s_dir"
+
+export QA_INSTANCE_VIRT=${QA_INSTANCE_VIRT:-0}
+read_configs virt
+check_variables QA_PRODUCT_HOST QA_AUTH_HTTPS_PORT QA_AUTH_HTTP_PORT QA_AUTH_HTTPS_PORT QA_PGUSER QA_PGPASSWORD QA_PGDATABASE_AUTH QA_WEB_HTTPS_PORT QA_RABBIT_URI
+
+product_dir="$INSTANCES_DIR/$QA_INSTANCE/virt/$QA_INSTANCE_VIRT/builds/current/product"
+param="$product_dir/dist/auth/server.js"
+
+if [ "$1" = "--kill" ]; then
+	kill_process "$QA_NODE_BINARY" "$param"
+else
+	[ -n "$QA_LOG_DIR" ] && log_file="$QA_LOG_DIR/auth-$QA_INSTANCE_VIRT.log" || log_file=''
+
+	export HIVE_WEB_URL="https://$QA_PRODUCT_HOST:$QA_WEB_HTTPS_PORT"
+	export HIVE_HTTP_PORT=$QA_AUTH_HTTP_PORT
+	export HIVE_AUTH_PORT=$QA_AUTH_HTTPS_PORT
+	export DB_USER=$QA_PGUSER
+	export DB_PASSWORD=$QA_PGPASSWORD
+	export AUTH_DB_NAME=$QA_PGDATABASE_AUTH
+	export RABBIT_URI=$QA_RABBIT_URI
+	export SESSION_STORE_DB_CONNECTION_STRING="$QA_SESSION_STORE_DB_CONNECTION_STRING"
+
+	restart_process "$QA_NODE_BINARY" "$product_dir" "$log_file" "$param"
+fi
+
+RESULT_MESSAGE="$PROG: finished successfully"

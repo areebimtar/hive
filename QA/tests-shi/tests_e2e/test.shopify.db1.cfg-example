@@ -1,0 +1,20 @@
+#!/bin/bash
+host=janj.getvela.com
+export QA_PRODUCT_HOST=$host
+export QA_AUTH_HTTP_PORT=80
+export QA_AUTH_HTTPS_PORT=443
+export QA_WEB_HTTP_PORT=8080 # 443?
+export QA_WEB_HTTPS_PORT=30443
+export QA_PRODUCT_HOST_AUTH=login.$host
+export DATABASE_URL=postgres://hive:xxx@$host:5432/hive
+export SHOP_NAME="Vela QA Store 1"
+
+export QA_VELA_USER=janj@salsitasoft.com
+export QA_VELA_PASSWORD=xxx
+export QA_RABBIT_HOST=$host
+export QA_RABBIT_USER=user1
+export QA_RABBIT_PASSWORD=xxx
+export QA_RABBIT_VHOST=vela
+export LOG_CLEAN_SCRIPT="ssh root@$host './rm-logs'"
+export LOG_GREP_SCRIPT="ssh root@$host './grep-logs'"
+export GET_BUILD_NUMBER_SCRIPT="ssh root@$host './get_build_number.sh'"

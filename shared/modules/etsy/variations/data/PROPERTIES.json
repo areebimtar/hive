@@ -1,0 +1,200 @@
+{
+  "200": {
+    "property_id": 200,
+    "name": "Color",
+    "input_name": null,
+    "label": null,
+    "param": null,
+    "default_option": null,
+    "description": "Color",
+    "is_custom": false,
+    "title": "Color:"
+  },
+  "504": {
+    "property_id": 504,
+    "name": "Diameter",
+    "input_name": null,
+    "label": null,
+    "param": null,
+    "default_option": null,
+    "description": "Diameter",
+    "is_custom": false,
+    "title": "Diameter:"
+  },
+  "501": {
+    "property_id": 501,
+    "name": "Dimensions",
+    "input_name": null,
+    "label": null,
+    "param": null,
+    "default_option": null,
+    "description": "Dimensions",
+    "is_custom": false,
+    "title": "Dimensions:"
+  },
+  "502": {
+    "property_id": 502,
+    "name": "Fabric",
+    "input_name": null,
+    "label": null,
+    "param": null,
+    "default_option": null,
+    "description": "Fabric",
+    "is_custom": false,
+    "title": "Fabric:"
+  },
+  "500": {
+    "property_id": 500,
+    "name": "Finish",
+    "input_name": null,
+    "label": null,
+    "param": null,
+    "default_option": null,
+    "description": "Finish",
+    "is_custom": false,
+    "title": "Finish:"
+  },
+  "503": {
+    "property_id": 503,
+    "name": "Flavor",
+    "input_name": null,
+    "label": null,
+    "param": null,
+    "default_option": null,
+    "description": "Flavor",
+    "is_custom": false,
+    "title": "Flavor:"
+  },
+  "505": {
+    "property_id": 505,
+    "name": "Height",
+    "input_name": null,
+    "label": null,
+    "param": null,
+    "default_option": null,
+    "description": "Height",
+    "is_custom": false,
+    "title": "Height:"
+  },
+  "506": {
+    "property_id": 506,
+    "name": "Length",
+    "input_name": null,
+    "label": null,
+    "param": null,
+    "default_option": null,
+    "description": "Length",
+    "is_custom": false,
+    "title": "Length:"
+  },
+  "507": {
+    "property_id": 507,
+    "name": "Material",
+    "input_name": null,
+    "label": null,
+    "param": null,
+    "default_option": null,
+    "description": "Material",
+    "is_custom": false,
+    "title": "Material:"
+  },
+  "508": {
+    "property_id": 508,
+    "name": "Pattern",
+    "input_name": null,
+    "label": null,
+    "param": null,
+    "default_option": null,
+    "description": "Pattern",
+    "is_custom": false,
+    "title": "Pattern:"
+  },
+  "509": {
+    "property_id": 509,
+    "name": "Scent",
+    "input_name": null,
+    "label": null,
+    "param": null,
+    "default_option": null,
+    "description": "Scent",
+    "is_custom": false,
+    "title": "Scent:"
+  },
+  "100": {
+    "property_id": 100,
+    "name": "Size",
+    "input_name": null,
+    "label": null,
+    "param": null,
+    "default_option": null,
+    "description": "Size",
+    "is_custom": false,
+    "title": "Size:"
+  },
+  "510": {
+    "property_id": 510,
+    "name": "Style",
+    "input_name": null,
+    "label": null,
+    "param": null,
+    "default_option": null,
+    "description": "Style",
+    "is_custom": false,
+    "title": "Style:"
+  },
+  "511": {
+    "property_id": 511,
+    "name": "Weight",
+    "input_name": null,
+    "label": null,
+    "param": null,
+    "default_option": null,
+    "description": "Weight",
+    "is_custom": false,
+    "title": "Weight:"
+  },
+  "512": {
+    "property_id": 512,
+    "name": "Width",
+    "input_name": null,
+    "label": null,
+    "param": null,
+    "default_option": null,
+    "description": "Width",
+    "is_custom": false,
+    "title": "Width:"
+  },
+  "513": {
+    "property_id": 513,
+    "name": "Custom Property",
+    "input_name": null,
+    "label": null,
+    "param": null,
+    "default_option": null,
+    "description": "Custom Property",
+    "is_custom": true,
+    "title": "Custom Property:"
+  },
+  "514": {
+    "property_id": 514,
+    "name": "Custom Property",
+    "input_name": null,
+    "label": null,
+    "param": null,
+    "default_option": null,
+    "description": "Custom Property",
+    "is_custom": true,
+    "title": "Custom Property:"
+  },
+  "515": {
+    "property_id": 515,
+    "name": "Device",
+    "input_name": null,
+    "label": null,
+    "param": null,
+    "default_option": null,
+    "description": "Device",
+    "is_custom": false,
+    "title": "Device:"
+  }
+}

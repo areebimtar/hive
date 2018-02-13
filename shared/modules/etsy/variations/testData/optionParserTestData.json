@@ -1,0 +1,199 @@
+{
+  "weightInPounds": {
+    "taxonomyId": 419,
+    "propertyId": 511,
+    "options": [
+      {
+        "valueId": 2561610251,
+        "value": "5",
+        "formattedValue": "5 lbs"
+      },
+      {
+        "valueId": 2912611737,
+        "value": "8",
+        "formattedValue": "8 lbs"
+      }
+    ]
+  },
+  "heightWithPrices": {
+    "taxonomyId": 216,
+    "propertyId": 505,
+    "options": [
+      {
+        "valueId": 2685612075,
+        "value": "5",
+        "formattedValue": "5 cm [US$4.00]"
+      },
+      {
+        "valueId": 2624158705,
+        "value": "10",
+        "formattedValue": "10 cm [US$5.00]"
+      }
+    ]
+  },
+  "sizeWithRecipientAndPrices" : {
+    "taxonomyId": 419,
+    "propertyId": 100,
+    "options": [
+      {
+        "valueId": 1536126429,
+        "value": "80",
+        "formattedValue": "EU 80 - Girls [US$34.00]"
+      },
+      {
+        "valueId": 2885099763,
+        "value": "110",
+        "formattedValue": "EU 110 - Girls [US$44.00]"
+      }
+    ]
+  },
+  "noQualifiers" : {
+    "taxonomyId": 419,
+    "propertyId": 200,
+    "options": [
+      {
+        "valueId": 1166197770,
+        "value": "Brown",
+        "formattedValue": "Brown"
+      }
+    ]
+  },
+  "alphaSizeWithRecipient": {
+    "taxonomyId": 419,
+    "propertyId": 100,
+    "options": [
+      {
+        "valueId": 1166388104,
+        "value": "XXS",
+        "formattedValue": "XXS - Girls"
+      },
+      {
+        "valueId": 1166388116,
+        "value": "M",
+        "formattedValue": "M - Girls"
+      }
+    ]
+  },
+  "alphaSizeWithoutRecipient": {
+    "taxonomyId": 216,
+    "propertyId": 100,
+    "options": [
+      {
+        "valueId": 1166388112,
+        "value": "S",
+        "formattedValue": "S"
+      },
+      {
+        "valueId": 1166388126,
+        "value": "XL",
+        "formattedValue": "XL"
+      }
+    ]
+  },
+  "babiesRecipientMonthsSizing": {
+    "taxonomyId": 419,
+    "propertyId": 100,
+    "options": [
+      {
+        "valueId": 101,
+        "value": "Newborn",
+        "formattedValue": "Newborn - Babies"
+      },
+      {
+        "valueId": 103,
+        "value": "3-6 Months",
+        "formattedValue": "3-6 Months - Babies"
+      }
+    ]
+  },
+  "babiesRecipientCustomMonthsSizing": {
+    "taxonomyId": 419,
+    "propertyId": 100,
+    "options": [
+      {
+        "valueId": 3206478932,
+        "value": "Itty Bitty",
+        "formattedValue": "Itty Bitty - Babies"
+      }
+    ]
+  },
+  "babiesRecipientMixSuggestedAndCustomSizing": {
+    "taxonomyId": 419,
+    "propertyId": 100,
+    "options": [
+      {
+        "valueId": 3206478932,
+        "value": "Itty Bitty",
+        "formattedValue": "Itty Bitty - Babies"
+      },
+      {
+        "valueId": 101,
+        "value": "Newborn",
+        "formattedValue": "Newborn - Babies"
+      },
+      {
+        "valueId": 24663677319,
+        "value": "Teeny tiny",
+        "formattedValue": "Teeny tiny - Babies"
+      }
+    ]
+  },
+  "babyGirlsRecipientMixSuggestedAndCustomSizing": {
+    "taxonomyId": 419,
+    "propertyId": 100,
+    "options": [
+      {
+        "valueId": 3206478932,
+        "value": "Itty Bitty",
+        "formattedValue": "Itty Bitty - Baby Girls"
+      },
+      {
+        "valueId": 101,
+        "value": "Newborn",
+        "formattedValue": "Newborn - Baby Girls"
+      },
+      {
+        "valueId": 24663677319,
+        "value": "Teeny tiny",
+        "formattedValue": "Teeny tiny - Baby Girls"
+      }
+    ]
+  },
+  "noRecipientCustomOtherSizes": {
+    "taxonomyId": 216,
+    "propertyId": 100,
+    "options": [
+      {
+        "valueId": 18770453327,
+        "value": "custom 1",
+        "formattedValue": "custom 1"
+      },
+      {
+        "valueId": 18770453347,
+        "value": "custom 2",
+        "formattedValue": "custom 2"
+      },
+      {
+        "valueId": 18770453371,
+        "value": "custom 3",
+        "formattedValue": "custom 3"
+      }
+    ]
+  },
+  "troubleWithHatsAndCapsForBabies": {
+    "taxonomyId": 25,
+    "propertyId": 100,
+    "options": [
+      {
+        "formattedValue" : "2T-4T",
+        "value" : "2T-4T",
+        "valueId" : 2716041136
+      },
+      {
+        "formattedValue" : "12-24 Months",
+        "value" : "12-24 Months",
+        "valueId" : 2296968514
+      }
+    ]
+  }
+}

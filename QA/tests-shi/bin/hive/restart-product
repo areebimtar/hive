@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Restart hive processes
+
+[[ "$1" != "-h" && "$1" != "--help" ]] || { echo "`basename $0` runs postgres database migration script from the current build."; exit 1; }
+set -e; s_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")"); . "$s_dir/../../lib/functions.sh" "$s_dir"
+
+export QA_INSTANCE_VIRT=${QA_INSTANCE_VIRT:-0}
+read_configs virt
+
+PROCESSES='manager web worker auth'
+tmp_dir=`mktemp -d /tmp/restart-product.XXXXXXXXXXXXX`
+for proc in $PROCESSES; do
+	("restart-$proc" "$@" && echo 'SUCCESS' > "$tmp_dir/${proc}-result.log" ) &> "$tmp_dir/$proc.log" &
+done
+wait
+
+final_result=ok
+for proc in $PROCESSES; do
+	cat "$tmp_dir/$proc.log" || true;
+	result=$(<"$tmp_dir/${proc}-result.log") || true
+	[ "$result" = "SUCCESS" ] || final_result=error
+done
+rm -rf "$tmp_dir"
+
+[ "$final_result" = 'ok' ] || die "Cannot restart product processes"
+
+RESULT_MESSAGE="$PROG: finished successfully"

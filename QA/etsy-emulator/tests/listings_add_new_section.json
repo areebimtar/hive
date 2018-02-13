@@ -1,0 +1,68 @@
+{"_doc": "In this scenario Etsy reacts to adding a new section - assumes that a new section is POSTed after 1st GET /v2/shops/14458117/sections - see listings_add_new_section_secdata.json file",
+
+	"include_jsons": [
+		"template_gv2_shop.json",
+		"template_gv2_active_generated_by_count.json",
+		"template_gv2_no_draft.json",
+		"template_gv2_no_inactive.json"
+	],
+
+	"GET": {
+		"/v2/shops/14458117/listings/active": {
+			"data": {
+				"body": {
+					"count": 6
+				}
+			}
+		},
+
+		"/v2/listings/([0-9]+)": {
+			"function": "external_json_list",
+			"data": {
+				"file": "listings_02_active.json"
+			}
+		},
+
+		"/v2/shops/14458117/sections": {
+			"function": "dynamic_json_list",
+			"data": {
+				"file": "listings_add_new_section_secdata.json"
+			}
+		}
+	},
+
+	"PUT": {
+		"/v2/listings/([0-9]+)": {
+			"function": "fixed_json",
+			"data": {
+				"body": {
+					"count": 1,
+					"results": [ { } ],
+					"type": "Listing"
+				}
+			}
+		}
+	},
+
+	"POST": {
+		"/v2/shops/14458117/sections": {
+			"function": "fixed_json",
+			"data": {
+				"body": {
+					"count": 1,
+					"results": [
+						{
+							"active_listing_count": 0,
+							"rank": 7,
+							"shop_section_id": 66666666,
+							"title": "New section",
+							"user_id": 106321453
+						}
+					],
+					"type": "ShopSection"
+				}
+			}
+		}
+	}
+
+}

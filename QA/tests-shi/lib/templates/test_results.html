@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>Test Report</title>
+		<link href="style.css" rel="stylesheet"/>
+		<script src="jquery.js"></script>
+		<script src="main.js"></script>
+	</head>
+	<body>
+		<p>Report generated on {{ datetime|e }}</p>
+		<div id="summary-wrapper">
+			<p>
+			<span class="all clickable">{{ stats['all'] }} tests</span> ran in {{ test_run_time|e }} seconds.
+				<br/>
+				<span class="passed clickable">{{ stats['passed'] }} passed</span>, 
+				<span class="skipped clickable">{{ stats['skipped'] }} skipped</span>, 
+				<span class="failed clickable">{{ stats['failed'] }} failed</span>, 
+				<span class="error clickable">{{ stats['errors'] }} errors</span>.
+				<br/>
+			</p>
+			<span class="clickable hide_all_errors">Hide all errors</span>, 
+			<span class="clickable show_all_errors">Show all errors</span>
+		</div>
+		<div id="summary-space">
+		</div>
+		<table id="results-table">
+			<thead id="results-table-head">
+				<tr>
+					<th class="sortable" col="result">Result</th>
+					<th class="sortable" col="class">Class</th>
+					<th class="sortable" col="name">Name</th>
+					<th class="sortable numeric" col="duration">Duration</th>
+					<th>Links to BrowserStack</th>
+				</tr>
+			</thead>
+			<tbody id="results-table-body">
+				{% for tc in test_cases %}
+				{% if tc.result == 'success' %}
+				<tr class="passed results-table-row">
+					<td class="col-result">Passed</td>
+				{% elif tc.result == 'failure' %}
+				<tr class="failed results-table-row">
+					<td class="col-result">Failed</td>
+				{% elif tc.result == 'xfail' %}
+				<tr class="xfailed results-table-row">
+					<td class="col-result">XFailed</td>
+				{% elif tc.result == 'xpass' %}
+				<tr class="xpassed results-table-row">
+					<td class="col-result">XPassed</td>
+				{% elif tc.result == 'skipped' %}
+				<tr class="skipped results-table-row">
+					<td class="col-result">Skipped</td>
+				{% elif tc.result == 'error' %}
+				<tr class="error results-table-row">
+					<td class="col-result">Error</td>
+				{% else %}
+				<tr class="error results-table-row">
+					<td class="col-result">{{ tc.result|e }}</td>
+				{% endif %}
+					<td class="col-class">{{ tc.classname|e }}</td>
+					<td class="col-name">{{ tc.name|e }}</td>
+					<td class="col-duration">{{ tc.duration|e }}</td>
+					<td class="col-links"></td>
+				{% if tc.result == 'success' %}
+					<td class="debug"></td>
+				{% else %}
+					<td class="debug">
+						<div class="log">{{ tc.failure_message|e }}
+							{% if 'screenshot' in tc %}
+							<br /><img src="screenshots/{{ tc.screenshot|e }}"/>
+							{% endif %}
+							{% if 'debug' in tc %}
+							<br /><a href="debug_events/{{ tc.debug|e }}">Console log</a>
+							{% endif %}
+						</div>
+					</td>
+				</tr>
+				{% endif %}
+				{% endfor %}
+			</tbody>
+		</table>
+	</body>
+</html>

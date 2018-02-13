@@ -1,0 +1,56 @@
+[
+  {
+    "formattedValue": "Woman 21 - 23 inches",
+    "value": "Woman 21 - 23",
+    "valueId": 20109391326,
+    "propertyId": 100,
+    "taxonomyId": 30,
+    "productId": 44402,
+    "recipient": "not_specified"
+  },
+  {
+    "formattedValue": "Teen 19 - 21 inches",
+    "value": "Teen 19 - 21",
+    "valueId": 20131574285,
+    "propertyId": 100,
+    "taxonomyId": 30,
+    "productId": 44402,
+    "recipient": "not_specified"
+  },
+  {
+    "formattedValue": "Woman 21 - 23 inches",
+    "value": "Woman 21 - 23",
+    "valueId": 20109391326,
+    "propertyId": 100,
+    "taxonomyId": 30,
+    "productId": 44414,
+    "recipient": "not_specified"
+  },
+  {
+    "formattedValue": "Teen 19 - 21 inches",
+    "value": "Teen 19 - 21",
+    "valueId": 20131574285,
+    "propertyId": 100,
+    "taxonomyId": 30,
+    "productId": 44414,
+    "recipient": "not_specified"
+  },
+  {
+    "formattedValue": "Woman 21 - 23 inches",
+    "value": "Woman 21 - 23",
+    "valueId": 20109391326,
+    "propertyId": 100,
+    "taxonomyId": 30,
+    "productId": 44434,
+    "recipient": "not_specified"
+  },
+  {
+    "formattedValue": "Teen 19 - 21 inches",
+    "value": "Teen 19 - 21",
+    "valueId": 20131574285,
+    "propertyId": 100,
+    "taxonomyId": 30,
+    "productId": 44434,
+    "recipient": "not_specified"
+  }
+]

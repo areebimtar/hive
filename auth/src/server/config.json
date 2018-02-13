@@ -1,0 +1,61 @@
+{
+  "webUrl": "https://getvela.com",
+
+  "httpPort": 80,
+
+  "session": {
+    "secretKey": "super duper secret key",
+    "cookieName": "sid",
+    "cookieDomain": ".getvela.com",
+    "cookieExpiresIn": 86400000,
+    "secureCookie": false,
+    "store": {
+      "dbConnectionString": "postgresql://hive_auth:12345@localhost/hive_auth"
+    }
+  },
+
+  "auth": {
+    "scheme": "https",
+    "host": "hive-dev.salsitasoft.com",
+    "port": 443
+  },
+
+  "db": {
+    "host": "localhost",
+    "port": 5432,
+    "database": "auth",
+    "user": "hive",
+    "logQueries": true,
+    "slowQueriesMinDuration": 2500
+  },
+
+  "crypto": {
+    "privateKey": "/srv/hive/cert/salsitasoft_com_2016.key",
+    "publicKey": "/srv/hive/cert/salsitasoft_com_2016.public.key",
+    "certificate": "/srv/hive/cert/salsitasoft_com_bundle_2016.crt"
+  },
+
+  "mandrill": {
+    "apikey": "invalidKey"
+  },
+
+  "logging": {
+    "consoleLevel": "debug",
+    "loggly": {
+      "logLevel": "info",
+      "token": false,
+      "serverType": "auth",
+      "velaEnvironment": "unspecified"
+    }
+  },
+
+  "frontendVars": {
+    "welcomeUrl": "/",
+    "mixpanelToken": null,
+    "intercomAppId": null
+  },
+
+  "users": {
+    "newUserDbName": "db2"
+  }
+}

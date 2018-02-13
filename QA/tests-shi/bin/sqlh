@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+Die() { printf "Error: %s\n" "$*"; exit 1; }
+
+#--------------------------------------------------------------------------------
+# Run psql file
+run_sql() {
+	local instance=$1
+	local sql_file=$2
+	local db_name="QA_PGDATABASE_$instance"
+	local db_host="QA_PGHOST_$instance"
+	local db_port="QA_PGPORT_$instance"
+	local db_user="QA_PGUSER_$instance"
+	local db_pass="QA_PGPASSWORD_$instance"
+
+	PGPASSWORD="${!db_pass}" psql -h "${!db_host}" -p "${!db_port}" -U "${!db_user}" "${!db_name}"
+}
+
+#--------------------------------------------------------------------------------
+# Main
+
+[[ "$1" = "" || "$1" =~ ^[0-9][0-9]$ || "$1" = "AUTH" ]] || Die "Incorrect parameter $1
+Usage: $0 [ instance ]  # $0 01"
+
+instance=${1:-00}
+
+PARAMS="
+	QA_PGDATABASE_$instance
+	QA_PGHOST_$instance
+	QA_PGPORT_$instance
+	QA_PGUSER_$instance
+	QA_PGPASSWORD_$instance
+"
+for param in $PARAMS; do
+	[ -n "${!param}" ] || Die "$param undefined"
+done
+
+run_sql "$instance"

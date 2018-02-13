@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+
+set -e
+
+Die() { printf "Error: %s\n" "$*"; exit 1; }
+
+
+#--------------------------------------------------------------------------------
+# Restart node 
+# TODO -  system service?
+restart_node() {
+	local instance_type=$1 instance=$2 kill_only=$3 pid i=10 cmd param regex subdir
+	local product_dir="QA_PRODUCT_DIR_$instance"
+	local host="QA_PRODUCT_HOST_$instance"
+	local port="QA_PRODUCT_PORT_$instance"
+	local db_user="QA_PGUSER_$instance"
+	local db_pass="QA_PGPASSWORD_$instance"
+	local manager_port="QA_MANAGER_PORT_$instance"
+
+	subdir=$instance_type
+
+	cmd="$QA_NODE_BINARY"
+	param="${!product_dir}/dist/$subdir/server.js"
+	regex="^ *[0-9][0-9]*  *$(echo "$cmd" | sed 's/\//\\\//g')[ ]$(echo "$param" | sed 's/\//\\\//g')\$"
+
+	while [ $i -gt 0 ]; do
+		pid=$(ps -eopid,cmd | awk  "/$regex/ {print \$1}")
+		if [ -n "$pid" ]; then
+			if [[ "$pid" =~ ^[0-9][0-9]*$ ]]; then
+				echo "killing PID $pid"
+				kill "$pid"
+				sleep 1
+			else
+				Die "not killing strange PID '$pid'"
+			fi
+		else
+			break
+		fi
+		i=$((i - 1))
+	done
+
+	if [ "$kill_only" != 'y' ]; then
+		export NODE_ENV=production
+		export SETUP=false
+		export SERVER_DOMAIN=${!host}
+		export PORT=${!port}
+		export PG_USER=${!db_user}
+		export DB_PASSWORD=${!db_pass}
+		export ETSY_KEY=$QA_ETSY_KEY
+		export ETSY_SECRET=$QA_ETSY_SECRET
+		export HIVE_MANAGER_PORT=${!manager_port}
+
+		cd "${!product_dir}"
+		echo "$cmd" "$param" 
+		"$cmd" "$param" &
+	fi
+}
+
+
+#--------------------------------------------------------------------------------
+# Main
+kill_only=n
+if [ "$1" = "--kill" ]; then
+	kill_only=y
+	shift
+fi
+[[ "$1" = "" || "$1" =~ ^[0-9][0-9]$ || "$1" =~ ^[mw][0-9][0-9]$ || "$1" = "AUTH" ]] || Die "Incorrect parameter $1
+Usage: $0 [--kill ] [ instance ]
+	00    app instance 00
+	m00   sync manager instance 00
+	w00   worker instance 00
+	AUTH  auth instance"
+
+instance=${1:-00}
+instance_type=web
+instance_log="hive_web_$instance.log"
+logfile_var="QA_NODE_LOG_FILE_$instance"
+if [[ "$instance" =~ ^m[0-9][0-9]$ ]]; then
+	instance_type=manager
+	instance=${instance:1}
+	instance_log="hive_manager_$instance.log"
+elif [[ "$instance" =~ ^w[0-9][0-9]$ ]]; then
+	instance_type=worker
+	instance=${instance:1}
+	instance_log="hive_worker_$instance.log"
+elif [ "$instance" = "AUTH" ]; then
+	instance_type=auth
+	instance_log="hive_auth.log"
+fi
+
+PARAMS="
+	QA_PRODUCT_DIR_$instance
+	QA_PRODUCT_HOST_$instance
+	QA_PRODUCT_PORT_$instance
+	QA_PGUSER_$instance
+	QA_PGPASSWORD_$instance
+	QA_NODE_BINARY
+	QA_ETSY_KEY
+	QA_ETSY_SECRET
+"
+[ "$instance" = 'AUTH' ] || PARAMS="$PARAMS QA_MANAGER_PORT_$instance"
+
+for param in $PARAMS; do
+	[ -n "${!param}" ] || Die "$param undefined"
+done
+
+log_file=${!logfile_var}
+log_file=${log_file:-/var/tmp/$instance_log}
+restart_node "$instance_type" "$instance" "$kill_only" >> "$log_file" 2>&1

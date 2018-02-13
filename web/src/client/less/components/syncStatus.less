@@ -1,0 +1,125 @@
+.sync-status {
+  background-color: #f3f3f3;
+  bottom: 0;
+  color: #575757;
+  height: 30px;
+  line-height: 30px;
+  position: fixed;
+  padding-left: 10px;
+  font-size: @fs--1;
+  width: 202px;
+  z-index: 9999;
+  border-top: 1px solid #c6c6c6;
+
+  &::before {
+    .vela-font;
+    content: @vela-font-var-sync;
+    font-size: @fs--1;
+    vertical-align: middle;
+    margin-right: 7px;
+  }
+  &.rotating {
+    &::before {
+      margin-top: -1px;
+      animation: rotating 2s linear infinite;
+    }
+  }
+
+  &.hidden {
+    display: none !important;
+  }
+
+  .sync-info-overlay {
+    display: none;
+    position: fixed;
+    background: rgba(0, 0, 0, 0.5);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .sync-info-popup {
+    display: none;
+    .dropdown(@c-light-grey-2);
+    box-shadow: 0 1px 2px @c-light-grey-2;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 45px;
+    width: 230px;
+    padding: 50px 20px 40px 20px;
+    text-align: center;
+
+    &::after {
+      .triangle(down, 10px, 7px, @c-white);
+      bottom: -7px;
+      left: 15px;
+    }
+
+    &::before {
+      .triangle(down, 11px, 8px, @c-light-grey-2);
+      bottom: -8px;
+      left: 14px;
+    }
+
+    .sync-image::before {
+      color: #71ACf2;
+      font-size: 36px;
+      content: @vela-font-var-sync;
+      animation: rotating 2s linear infinite;
+      display: inline-block;
+      transform-origin: 49% 48%;
+    }
+
+    .primary-text, .secondary-text {
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .primary-text {
+      margin-top: 20px;
+      font-weight: 500;
+    }
+
+    .secondary-text {
+      margin-top: 10px;
+    }
+
+    button {
+      margin-top: 20px;
+      display: none;
+    }
+
+  }
+
+  &.show-popup {
+    .sync-info-popup {
+      display: block;
+      button {
+        display: inline-block;
+      }
+    }
+
+    .sync-info-overlay {
+      display: block;
+    }
+  }
+
+  &.suppressed:hover .sync-info-popup {
+    display: block;
+  }
+
+  &.suppressed .sync-info-popup:hover, &.suppressed .sync-info-overlay:hover {
+    display: none;
+  }
+}
+.sync-bulk {
+  .sync-status {
+    width: 179px;
+  }
+}
+
+// suppress the sync status modal if another modal is open
+.ReactModal__Body--open .sync-status {
+  display: none !important;
+}

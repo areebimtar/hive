@@ -1,0 +1,58 @@
+.tabs-container {
+  .tab {
+    color: @c-light-grey-2;
+    border: 1px @c-xtra-light-grey solid;
+    border-bottom: none;
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 3px 3px 0 0;
+    margin-right: 10px;
+    margin-bottom: -1px;
+    cursor: pointer;
+    font-size: 11px;
+    position: relative;
+
+    &.selected {
+      background: @c-white;
+      border-color: @c-light-grey-2;
+      border-bottom: 1px @c-white solid;
+    }
+
+    &.disabled {
+      cursor: default;
+    }
+
+    &.error::after {
+      content: 'Error';
+      display: inline-block;
+      width: 45px;
+      height: 18px;
+      border-radius: 3px;
+      background-color: @c-error-background-color;
+      border: 1px solid @c-error-border-color;
+      position: absolute;
+      top: -13px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0px;
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 16px;
+      text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
+      text-align: center;
+    }
+
+    // don't show error flag on first tab only when selected
+    &:first-of-type.error.selected::after {
+      display: none;
+    }
+  }
+
+  .tab-body {
+    border: 1px @c-light-grey-2 solid;
+    background: @c-white;
+    border-radius: 0 5px 5px 5px;
+  }
+}

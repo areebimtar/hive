@@ -1,0 +1,135 @@
+{
+	"include_jsons": [
+		"template_gv2_shop.json",
+		"template_gv2_six_sections.json",
+		"template_gv2_no_active.json"
+		],
+
+	"GET": {
+		"/v2/shops/14458117/listings/draft": {
+			"function": "fixed_json",
+			"data": {
+				"body": {
+					"count": 3,
+					"pagination": {
+						"effective_limit": 100,
+						"effective_offset": 0,
+						"effective_page": 1,
+						"next_offset": 100,
+						"next_page": 2
+					},
+					"params": {
+						"limit": "100",
+						"offset": 0,
+						"page": null,
+						"shop_id": "14458117"
+					},
+					"results": [
+						{
+							"can_write_inventory": true,
+							"last_modified_tsz": 1450269283,
+							"listing_id": 100001,
+							"original_creation_tsz": 1426453409,
+							"state": "draft"
+						},
+						{
+							"can_write_inventory": true,
+							"last_modified_tsz": 1450269283,
+							"listing_id": 100002,
+							"original_creation_tsz": 1426453407,
+							"state": "draft"
+						},
+						{
+							"can_write_inventory": true,
+							"last_modified_tsz": 1450269283,
+							"listing_id": 100003,
+							"original_creation_tsz": 1426453406,
+							"state": "draft"
+						}
+					],
+					"type": "Listing"
+				}
+			}
+		},
+
+
+		"/v2/shops/14458117/listings/expired": {
+			"function": "fixed_json",
+			"data": {
+				"body": {
+					"count": 2,
+					"pagination": {
+						"effective_limit": 100,
+						"effective_offset": 0,
+						"effective_page": 1,
+						"next_offset": null,
+						"next_page": null
+					},
+					"params": {
+						"limit": "100",
+						"offset": 0,
+						"page": null,
+						"shop_id": "14458117"
+					},
+					"results": [
+						{
+							"can_write_inventory": true,
+							"last_modified_tsz": 1450269283,
+							"listing_id": 100004,
+							"original_creation_tsz": 1426451498,
+							"state": "expired"
+						},
+						{
+							"can_write_inventory": true,
+							"last_modified_tsz": 1450269283,
+							"listing_id": 100005,
+							"original_creation_tsz": 1426453202,
+							"state": "expired"
+						}
+					],
+					"type": "Listing"
+				}
+			}
+		},
+
+		"/v2/shops/14458117/listings/inactive": {
+			"function": "fixed_json",
+			"data": {
+				"body": {
+					"count": 1,
+					"pagination": {
+						"effective_limit": 100,
+						"effective_offset": 0,
+						"effective_page": 1,
+						"next_offset": null,
+						"next_page": null
+					},
+					"params": {
+						"limit": "100",
+						"offset": 0,
+						"page": null,
+						"shop_id": "14458117"
+					},
+					"results": [
+						{
+							"can_write_inventory": true,
+							"last_modified_tsz": 1450269283,
+							"listing_id": 100006,
+							"original_creation_tsz": 1394775101,
+							"state": "inactive"
+						}
+					],
+					"type": "Listing"
+				}
+			}
+		},
+
+		"/v2/listings/([0-9]+)": {
+			"function": "external_json_list",
+			"data": {
+				"file": "listings_09_active.json"
+			}
+		}
+	},
+
+" vim: set foldmethod=indent foldlevel=2 foldnestmax=3 : ": 1 }

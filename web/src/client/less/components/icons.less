@@ -1,0 +1,55 @@
+@vela-font-path:              "../../fonts";
+@vela-font-size-base:         @fs-0;
+@vela-font-line-height-base:  1;
+@vela-font-css-prefix:        vela-font;
+
+@font-face {
+  font-family: 'VelaFont';
+  src:url("@{vela-font-path}/vela.eot");
+  src:url("@{vela-font-path}/vela.eot?#iefix") format("embedded-opentype"),
+  url("@{vela-font-path}/vela.woff") format("woff"),
+  url("@{vela-font-path}/vela.ttf") format("truetype"),
+  url("@{vela-font-path}/vela.svg#vela") format("svg");
+  font-weight: @font-weight-thin;
+  font-style: normal;
+}
+.@{vela-font-css-prefix} {
+   display: inline-block;
+   font: normal normal normal @vela-font-size-base/@vela-font-line-height-base VelaFont;
+   font-size: inherit;
+   text-rendering: auto;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+ }
+
+@vela-font-var-check: "\61";
+@vela-font-var-close: "\62";
+@vela-font-var-delete: "\63";
+@vela-font-var-group-6: "\64";
+@vela-font-var-large-down-chevron: "\65";
+@vela-font-var-logo: "\66";
+@vela-font-var-logomark: "\67";
+@vela-font-var-search: "\68";
+@vela-font-var-shape: "\69";
+@vela-font-var-small-check: "\6a";
+@vela-font-var-small-down-chevron: "\6b";
+@vela-font-var-sync: "\6c";
+@vela-font-var-tag-delete: "\6d";
+@vela-font-var-view: "\6e";
+@vela-font-var-logo-vertical: "\6f";
+
+.@{vela-font-css-prefix}-check:before { content: @vela-font-var-check; }
+.@{vela-font-css-prefix}-close:before { content: @vela-font-var-close; }
+.@{vela-font-css-prefix}-delete:before { content: @vela-font-var-delete; }
+.@{vela-font-css-prefix}-group-6:before { content: @vela-font-var-group-6; }
+.@{vela-font-css-prefix}-large-down-chevron:before { content: @vela-font-var-large-down-chevron; }
+.@{vela-font-css-prefix}-logo:before { content: @vela-font-var-logo; }
+.@{vela-font-css-prefix}-logomark:before { content: @vela-font-var-logomark; }
+.@{vela-font-css-prefix}-search:before { content: @vela-font-var-search; }
+.@{vela-font-css-prefix}-shape:before { content: @vela-font-var-shape; }
+.@{vela-font-css-prefix}-small-check:before { content: @vela-font-var-small-check; }
+.@{vela-font-css-prefix}-small-down-chevron:before { content: @vela-font-var-small-down-chevron; }
+.@{vela-font-css-prefix}-sync:before { content: @vela-font-var-sync; }
+.@{vela-font-css-prefix}-tag-delete:before { content: @vela-font-var-tag-delete; }
+.@{vela-font-css-prefix}-view:before { content: @vela-font-var-view; }
+.@{vela-font-css-prefix}-logo-vertical:before { content: @vela-font-var-logo-vertical; }

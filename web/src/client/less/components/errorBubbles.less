@@ -1,0 +1,81 @@
+.error-bubble {
+  background: @c-error-background-color;
+  padding: 3px 10px;
+  border: 1px solid @c-error-border-color;
+  border-radius: 3px;
+  color: white;
+  text-align: left;
+  z-index: 100;
+  font-size: 11px;
+  white-space: nowrap;
+  &:empty {
+    display: none;
+  }
+}
+
+.error-bubble-right {
+  .error-bubble();
+  position: absolute;
+  left: ~"calc(100% + 5px)";
+  top: -3px;
+
+  &::after {
+    width: 6px;
+    height: 15px;
+    position: absolute;
+    content: url(../../img/red-arrow.svg);
+    left: -5px;
+    top: ~"calc(50% - 8px)";
+  }
+}
+
+.error-bubble-left {
+  .error-bubble();
+  position: absolute;
+  right: ~"calc(100% + 5px)";
+  top: -3px;
+
+  &::after {
+    width: 6px;
+    height: 15px;
+    position: absolute;
+    transform: rotate(180deg);
+    content: url(../../img/red-arrow.svg);
+    right: -5px;
+    top: ~"calc(50% - 8px)";
+  }
+}
+
+.error-bubble-top {
+  .error-bubble();
+  position: absolute;
+  bottom: ~"calc(100% + 5px)";
+  left: 20px;
+
+  &::after {
+    width: 6px;
+    height: 15px;
+    position: absolute;
+    transform: rotate(270deg);
+    content: url(../../img/red-arrow.svg);
+    left: 8px;
+    top: ~"calc(100% - 5px)";
+  }
+}
+
+.error-bubble-bottom {
+  .error-bubble();
+  position: absolute;
+  top: ~"calc(100% + 5px)";
+  left: 20px;
+
+  &::after {
+    width: 6px;
+    height: 15px;
+    position: absolute;
+    transform: rotate(90deg);
+    content: url(../../img/red-arrow.svg);
+    left: 8px;
+    bottom: ~"calc(100% - 5px)";
+  }
+}

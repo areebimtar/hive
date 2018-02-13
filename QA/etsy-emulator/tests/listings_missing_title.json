@@ -1,0 +1,30 @@
+{"_doc": "In this scenario etsy returns invalid data for the listing - title is missing",
+
+	"include_jsons": [
+		"template_gv2_shop.json",
+		"template_gv2_six_sections.json",
+		"template_gv2_draft_generated_by_count.json",
+		"template_gv2_no_active.json",
+		"template_gv2_no_inactive.json"
+	],
+
+	"GET": {
+		"/v2/shops/14458117/listings/draft": {
+			"data": {
+				"results_template": {
+					"last_modified_tsz" : 1504086100,
+					"state" : "draft"
+				}
+			}
+		},
+
+		"/v2/listings/([0-9]+)": {
+			"function": "external_json_list",
+			"data": {
+				"file": "listings_missing_title_data.json"
+			}
+		}
+	},
+
+" vim: set foldmethod=indent foldlevel=2 foldnestmax=3 : ": 1 }
+

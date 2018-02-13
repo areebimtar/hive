@@ -1,0 +1,22 @@
+{
+	"include_jsons": [
+		"template_gv2_shop.json",
+		"template_gv2_active_generated_by_count.json",
+		"template_gv2_no_draft.json",
+		"template_gv2_no_inactive.json"
+	],
+
+	"GET": {
+		"/v2/shops/8545731/listings/active": {
+			"data": {
+				"body": { "count": 1 }
+			}
+		},
+		"/v2/listings/([0-9]+)": {
+			"function": "external_json_list",
+			"data": {
+				"file": "listings_04_active.json"
+			}
+		}
+	}
+}

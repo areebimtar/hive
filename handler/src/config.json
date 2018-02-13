@@ -1,0 +1,83 @@
+{
+  "db": {
+    "host": "localhost",
+    "port": 5432,
+    "database": "hive",
+    "user": "hive",
+    "logQueries": true,
+    "slowQueriesMinDuration": 2500
+  },
+  "shopify": {
+    "auth": {
+      "apiKey": "api key",
+      "apiSecretKey": "api secret key",
+      "accessTokenURL": "/admin/oauth/access_token",
+      "userAuthorizationURL": "/admin/oauth/authorize",
+      "apiUrl": "https://{shop_name}.myshopify.com"
+    },
+    "rateLimit": {
+      "size": 38,
+      "refreshRate": 2
+    },
+    "maxListingsPerCheckShopSync": 300,
+    "checkShopSyncMessageTTL": 300000
+  },
+  "logging": {
+    "consoleLevel": "debug",
+    "loggly": {
+      "logLevel": "info",
+      "token": false,
+      "serverType": "worker",
+      "velaEnvironment": "unspecified"
+    }
+  },
+  "rabbitmq": {
+    "uri": "amqp://user1:pass1@localhost/vela"
+  },
+  "roles": {
+    "assignUniquePrefix": {
+      "numberOfInstaces": 10
+    },
+    "shopifySyncShop": {
+      "numberOfInstaces": 10
+    },
+    "shopifyToAPICall": {
+      "numberOfInstaces": 10
+    },
+    "shopifyRateLimit": {
+      "numberOfInstaces": 1
+    },
+    "shopifyAPICall": {
+      "numberOfInstaces": 10
+    },
+    "shopifyDownloadProduct": {
+      "numberOfInstaces": 10
+    },
+    "shopifyAggregate": {
+      "numberOfInstaces": 10
+    },
+    "shopifyUploadProduct": {
+      "numberOfInstaces": 10
+    },
+    "shopifyApplyOperations": {
+      "numberOfInstaces": 10
+    },
+    "shopifyApplyOperationsSplitter": {
+      "numberOfInstaces": 10
+    },
+    "scheduleShopSync": {
+      "numberOfInstaces": 0
+    }
+  },
+  "prefix": "prefix",
+  "AWS": {
+    "images": {
+      "region": "us-west-1",
+      "bucketName": "images-dev.getvela.com",
+      "sslEnabled": true,
+      "signedURLExpiration": 10
+    }
+  },
+  "retries": 2
+}
+

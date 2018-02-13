@@ -1,0 +1,40 @@
+{
+    "count": 3,
+    "pagination": {
+        "effective_limit": 100000,
+        "effective_offset": 0,
+        "effective_page": 1,
+        "next_offset": null,
+        "next_page": null
+    },
+    "params": {
+        "limit": "100",
+        "offset": 0,
+        "page": null,
+        "shop_id": "14458117"
+    },
+    "results": [
+        {
+            "can_write_inventory": true,
+            "last_modified_tsz": 1450269283,
+            "listing_id": 100004,
+            "original_creation_tsz": 1426453409,
+            "state": "edit"
+        },
+        {
+            "can_write_inventory": true,
+            "last_modified_tsz": 1450269283,
+            "listing_id": 100005,
+            "original_creation_tsz": 1426453409,
+            "state": "unavailable"
+        },
+        {
+            "can_write_inventory": true,
+            "last_modified_tsz": 1450269283,
+            "listing_id": 100006,
+            "original_creation_tsz": 1426453409,
+            "state": "active"
+        }
+    ],
+    "type": "Listing"
+}

@@ -1,0 +1,630 @@
+@import './errorBubbles';
+
+@option-name-column-width: 160px;
+@option-price-column-width: 60px;
+@option-stock-column-width: 60px;
+@option-delete-column-width: 30px;
+
+
+.bulk-edit--variations {
+  min-height: 125px;
+
+  .profile-editor {
+    position: relative;
+  }
+  .bulk-edit--actionform {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: auto;
+  }
+
+  .profile-selector {
+    width: 200px;
+    margin-right: @baseline;
+  }
+
+  .profile-item {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .profile-delete {
+    color: #ACACAC;
+    cursor: pointer;
+
+    &::before {
+      .vela-font;
+      content: @vela-font-var-delete;
+    }
+  }
+
+  &.editing-profile {
+    .bulk-edit--action-items::before {
+      display: none;
+    }
+
+    .bulk-edit--actions {
+      border-radius: 0;
+      &::before, &::after {
+        display: none;
+      }
+    }
+  }
+
+  .bulk-edit--variations-value {
+    background: @c-bulk-bar-background;
+    border-top: 1px solid @border-gray-shade;
+
+    .bulk-edit--variations-row {
+      display: flex;
+      width: calc(~'100% - 65px');
+    }
+
+    .image-container {
+      padding: 14px;
+
+      .image {
+        border: 1px solid @border-gray-shade;
+        width: 50px;
+        height: 50px;
+      }
+    }
+  }
+
+  & > .error {
+    background: @c-bulk-bar-background;
+    padding: 20px 40px;
+    text-align: center;
+  }
+  .variation-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    &.read-only {
+      border: 1px solid @c-preview-border-color;
+    }
+  }
+
+}
+
+.bulk-edit--variations .read-only, .table-variations .read-only {
+  .rw-dropdownlist-picker {
+    display: none;
+  }
+
+  .rw-widget {
+    border-color: @c-disabled-border;
+  }
+
+  pointer-events: none;
+}
+
+// Modal to confirm profile deletion
+.profile-delete-confirm {
+  display: block;
+  > div {
+    margin-bottom: (@baseline / 2);
+  }
+}
+
+// Modal to confirm profile change
+.profile-change-confirm {
+  > div {
+    margin-bottom: (@baseline / 2);
+  }
+  + .bulk-edit-modal-buttons button {
+    min-width: 120px;
+    &.apply {
+      margin-top: 14px;
+    }
+  }
+}
+
+.bulk-edit--taxonomy {
+  .empty-taxonomy-error {
+    position: absolute;
+    top: 1px;
+    line-height: 1.6em;
+    width: 285px;
+    left: calc(~'100% + 10px');
+    color: #888888;
+    font-size: 11px;
+    font-weight: 400;
+  }
+}
+
+.bulk-edit--profile {
+  .profile-input-name {
+    position: relative;
+  }
+}
+
+.bulk-edit--profile-actions {
+  margin-left: @baseline;
+}
+
+// variation table rows must match bulk editor row exactly to make the 2 variations line up.
+.table-row-column.table-variations {
+  width: 100% !important;
+  max-width: 100% !important;
+
+  .body {
+    padding-right: 0 !important;
+  }
+
+  .thumbnail {
+    margin-right: 14px !important;
+  }
+  .variation-pair {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    &.active {
+      border: 1px solid @c-preview-border-color;
+    }
+  }
+}
+
+
+.variation-pair {
+  max-width: 1060px;
+  font-size: 11px;
+  display: inline-block;
+
+  .profile-selector {
+    display: inline-block;
+    border-bottom: 1px solid @c-xtra-light-grey;
+    width: 100%;
+    padding: 15px @baseline;
+
+    .rw-dropdownlist {
+      width: 180px;
+    }
+  }
+
+  &.active .profile-selector {
+    .rw-dropdownlist {
+      border-color: @c-disabled-border;
+    }
+    .rw-dropdownlist-picker::before {
+      display: none;
+    }
+  }
+
+  .variation-items {
+    width: 100%;
+    display: flex;
+  }
+
+  .variations-wrapper {
+    display: flex;
+  }
+
+  .taxonomy-preview {
+    border-bottom: 1px solid @c-xtra-light-grey;
+    padding: 5px @baseline;
+
+    .taxonomy {
+      position: relative;
+      &::before {
+        .vela-font;
+        content: @vela-font-var-shape;
+        font-size: 8px;
+        margin: 0 5px;
+      }
+      &:first-of-type {
+        &::before {
+          display: none;
+        }
+      }
+    }
+  }
+
+
+  .variation-item {
+    position: relative;
+    display: inline-block;
+    width: 50%;
+    min-width: 235px;
+    max-width: 350px;
+    cursor: default;
+
+    + .variation-item {
+      border-left: 1px solid #e9e9e9;
+    }
+
+    &.first {
+      min-width: 400px;
+      max-width: 450px;
+    }
+    &.select-two {
+      width: 55%;
+      max-width: 450px;
+    }
+    &.select-three {
+      width: 60%;
+      max-width: 600px;
+    }
+
+    &.read-only {
+      .variation-item-settings, .variation-item-options-header, .variation-item-option {
+        pointer-events: none;
+      }
+    }
+
+    &.first {
+      flex-grow: 0;
+    }
+
+
+    .variation-item-settings, .variation-item-options-header, .variation-item-options, .variation-item-options-footer {
+      padding-left: 10px;
+    }
+    .variation-item-options-footer {
+      .error-container {
+        position: relative;
+        display: inline-block;
+        font-size: 11px;
+        > .error {
+          .error-bubble-bottom();
+        }
+        .add-option-combo .error {
+          .error-bubble-right();
+          top: 8px;
+        }
+
+        .add-option-combo input[type="text"] {
+          font-size: 11px;
+        }
+      }
+
+    }
+
+  }
+
+  &.bulk .variation-item {
+    border-radius: 0;
+    border: none;
+    border-right: 1px solid #e0e0e0;
+
+    &.first {
+      border-left: 1px solid #e0e0e0;
+    }
+  }
+
+  .variation-item {
+    margin-left: 8px;
+  }
+  .variation-item.first {  margin-left: 0; }
+
+  .variation-item-settings {
+    display: flex;
+    .label {
+      font-size: 11px;
+      color: #929292;
+      margin-bottom: 10px;
+    }
+    .setting {
+      flex-grow: 1;
+      padding: 10px;
+      max-width: 200px;
+      min-width: 120px;
+    }
+    .rw-state-disabled {
+      color: #777777 !important;
+      background: none;
+    }
+  }
+  .variation-item-options-header {
+    display: flex;
+    border-bottom: 1px solid @border-gray-shade;
+    font-size: 11px;
+    padding-bottom: 5px;
+    color: #929292;
+
+    .name-column {
+      width: @option-name-column-width;
+      flex-grow: 1;
+      padding-left: 10px;
+    }
+
+    .price-column {
+      width: @option-price-column-width;
+      color: @blue-link;
+      cursor: pointer;
+      white-space: nowrap;
+      text-align: center;
+      position: relative;
+
+      &.no-click {
+        color: #929292;
+      }
+
+      .error {
+        .error-bubble-top();
+      }
+    }
+    .stock-column {
+      width: @option-stock-column-width;
+      text-align: center;
+    }
+    .delete-column {
+      width: @option-delete-column-width;
+    }
+  }
+
+  .variation-item-options, .variation-item-options-footer {
+    .variation-item-option {
+      padding: 0;
+      margin: 10px 0;
+
+      input {
+        .inline-edit-input;
+      }
+    }
+
+  }
+
+  .variation-item-options {
+    max-height: 130px;
+    overflow-y: auto;
+  }
+
+  .add-option-combo {
+    padding: 10px;
+    z-index: 1;
+
+    input {
+      .inline-edit-input;
+    }
+
+    .rw-combobox {
+      .input-focus;
+    }
+
+    .rw-popup-container {
+      z-index: 1;
+    }
+
+    .rw-list-option.rw-state-focus {
+      border-radius: 0;
+    }
+
+    .add-option-combo-item {
+      position: relative;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+    }
+
+    .add-all {
+      background-image: linear-gradient(0deg, #FCFCFC 0%, @c-white 100%);
+      padding: 6px 0 0 10px;
+      height: 35px;
+      border-top: 1px @c-light-grey-2 solid;
+      cursor: pointer;
+      text-align: center;
+      font-size: 11px;
+
+      span.check-icon {
+        position: relative;
+        margin-left: -2px;
+        font-size: 11px;
+        &::before {
+          position: absolute;
+          top: 1px;
+          right: 5px;
+          display: block;
+          .vela-font;
+          content: @vela-font-var-check;
+          font-size: 11px;
+        }
+      }
+    }
+
+    // don't use the arrow on the top of this
+    .rw-popup-container {
+      .rw-list {
+        height: 120px;
+      }
+
+      .rw-popup {
+        margin-top: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border-top: transparent;
+        overflow: hidden;
+
+        &::after {
+          display: none;
+        }
+        &::before {
+          display: none;
+        }
+      }
+    }
+
+    &.no-suggested-options {
+      .rw-widget {
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+      }
+
+      .rw-popup-container {
+        display: none !important;
+      }
+    }
+
+    .rw-combobox {
+      max-width: 300px;
+      display: inline-block;
+      margin-right: 10px;
+
+      ul {
+        div.already-added {
+          cursor: default;
+          padding-right: 15px;
+
+          &::after {
+            display: block;
+            position: absolute;
+            right: 12px;
+            .vela-font;
+            content: @vela-font-var-check;
+            line-height: 40px;
+            font-size: 11px;
+          }
+        }
+      }
+    }
+
+    .add-button {
+      height: 24px;
+      font-size: 11px;
+      position: relative;
+      top: -1px;
+      border-radius: 3px;
+    }
+  }
+
+
+  .variation-item-option {
+    display: flex;
+    padding: 10px;
+
+    .name-column {
+      width: @option-name-column-width;
+      padding-left: 10px;
+      flex-grow: 1;
+      display: flex;
+
+      .grab-target {
+        cursor: -webkit-grab;
+        cursor: -moz-grab;
+        cursor: grab;
+        display: flex;
+      }
+
+      .variation-item-option-name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-width: 50px;
+      }
+      .variation-item-option-line {
+        flex: 1;
+        border-bottom: 1px solid @border-gray-shade;
+        margin: 0px 0px 5px 20px;
+      }
+    }
+
+    .price-column {
+      width: @option-price-column-width;
+      text-align: center;
+    }
+
+    .variation-item-option-price {
+      margin: 0 auto;
+      font-size: 11px;
+      color: #7f7f7f;
+      white-space: nowrap;
+      text-align: center;
+      position: relative;
+      width: 50px;
+
+      input {
+        font-size: 11px;
+        width: 50px;
+        text-align: right;
+        padding: 1px 5px 0 5px;
+        margin: -5px 0px;
+        color: #929292;
+      }
+      .error {
+        .error-bubble-left();
+      }
+    }
+
+    .stock-column {
+      width: @option-stock-column-width;
+      margin: 0;
+      .in-stock::before {
+        .vela-font;
+        content: @vela-font-var-small-check;
+        color: @c-muted-green;
+      }
+      .out-of-stock::before {
+        .vela-font;
+        content: @vela-font-var-tag-delete;
+        color: @c-muted-red;
+      }
+
+      .hive-toggle {
+        margin: auto;
+      }
+
+      .hive-toggle-placeholder {
+        margin: auto;
+        width: 12px;
+      }
+
+    }
+
+    .delete-column {
+      width: @option-delete-column-width;
+    }
+
+    .option-delete {
+      color: #ACACAC;
+      cursor: pointer;
+
+      &::before {
+        .vela-font;
+        content: @vela-font-var-delete;
+      }
+    }
+  }
+
+  .variation-item-option-handle {
+    position: relative;
+    padding-left: 1.9em;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.5em;
+      width: 1em;
+      height: 0.1em;
+      background: @c-light-grey-2;
+      box-shadow: 0 0.25em 0 0 @c-light-grey-2, 0 0.5em 0 0 @c-light-grey-2;
+    }
+  }
+
+  // no drag-drop for read-only
+  .read-only .variation-item-option {
+    cursor: default;
+
+    .variation-item-option-handle {
+      display: none;
+    }
+  }
+
+
+  .delete-variation-item {
+    position: absolute;
+    top: 11px;
+    right: 17px;
+    cursor: pointer;
+    &::before {
+      .vela-font;
+      font-size: 10px;
+      content: @vela-font-var-close;
+      color: @c-dark-grey;
+    }
+  }
+
+  .read-only .delete-variation-item {
+    display: none;
+  }
+}

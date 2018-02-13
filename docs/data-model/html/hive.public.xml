@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<database name="hive" schema="public" type="PostgreSQL - 9.6.3">
+   <tables>
+      <table name="accounts" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('account_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="bigserial">
+            <child column="account_id" foreignKey="shop_account_fkey" implied="false" onDeleteCascade="true" table="shops"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="channel_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="id" foreignKey="account_channel_fkey" implied="false" onDeleteCascade="false" table="channels"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="company_id" nullable="false" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" digits="0" id="3" name="oauth_token" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="4" name="oauth_token_secret" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="accounts_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="aggregates" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="shop_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="id" foreignKey="aggregates_shop_id_fkey" implied="false" onDeleteCascade="true" table="shops"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="message_id" nullable="false" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="2" name="status" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="3" name="message" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="4" name="parent_message_id" nullable="false" remarks="" size="2147483647" type="text"/>
+         <index name="aggregates_message_id_key" unique="true">
+            <column ascending="true" name="message_id"/>
+         </index>
+         <index name="unique_shop_id_message_id" unique="true">
+            <column ascending="true" name="shop_id"/>
+            <column ascending="true" name="message_id"/>
+         </index>
+      </table>
+      <table name="attributes" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('attributes_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="bigserial"/>
+         <column autoUpdated="false" digits="0" id="1" name="product_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="id" foreignKey="attributes_product_id_fkey" implied="false" onDeleteCascade="true" table="product_properties"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="property_id" nullable="true" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" digits="0" id="3" name="scale_id" nullable="true" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" digits="0" id="4" name="value_ids" nullable="true" remarks="" size="19" type="_int8"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="5" name="modified" nullable="false" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="6" name="deleted" nullable="false" remarks="" size="1" type="bool"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="attributes_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="channels" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="int8">
+            <child column="channel_id" foreignKey="account_channel_fkey" implied="false" onDeleteCascade="false" table="accounts"/>
+            <child column="channel_id" foreignKey="task_queue_channel_id_fkey" implied="false" onDeleteCascade="false" table="task_queue"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="name" nullable="false" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="channels_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="channels_name_key" unique="true">
+            <column ascending="true" name="name"/>
+         </index>
+      </table>
+      <table name="images" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('image_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="bigserial"/>
+         <column autoUpdated="false" digits="0" id="1" name="channel_image_id" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="2" name="thumbnail_url" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="3" name="fullsize_url" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="4" name="vela_image_id" nullable="true" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" digits="0" id="5" name="shop_id" nullable="true" remarks="" size="19" type="int8">
+            <parent column="id" foreignKey="images_shop_id_fkey" implied="false" onDeleteCascade="false" table="shops"/>
+         </column>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="images_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="images_etsy_image_id_idx" unique="false">
+            <column ascending="true" name="channel_image_id"/>
+         </index>
+         <index name="images_shop_id" unique="false">
+            <column ascending="true" name="shop_id"/>
+         </index>
+      </table>
+      <table name="pgmigrations" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('pgmigrations_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial"/>
+         <column autoUpdated="false" digits="0" id="1" name="name" nullable="false" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="6" id="2" name="run_on" nullable="false" remarks="" size="29" type="timestamp"/>
+      </table>
+      <table name="product_offering_options" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('product_offering_option_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="bigserial"/>
+         <column autoUpdated="false" digits="0" id="1" name="product_offering_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="id" foreignKey="product_offering_options_product_offering_fkey" implied="false" onDeleteCascade="true" table="product_offerings"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="variation_option_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="id" foreignKey="product_offering_options_variation_options_fkey" implied="false" onDeleteCascade="true" table="variation_options"/>
+         </column>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="product_offering_options_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="product_offerings_option_product_offering_id_index" unique="false">
+            <column ascending="true" name="product_offering_id"/>
+         </index>
+         <index name="product_offerings_option_variation_option_id_index" unique="false">
+            <column ascending="true" name="variation_option_id"/>
+         </index>
+      </table>
+      <table name="product_offerings" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('product_offering_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="bigserial">
+            <child column="product_offering_id" foreignKey="product_offering_options_product_offering_fkey" implied="false" onDeleteCascade="true" table="product_offering_options"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="product_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="id" foreignKey="product_offerings_product_properties_fkey" implied="false" onDeleteCascade="true" table="product_properties"/>
+         </column>
+         <column autoUpdated="false" digits="2" id="2" name="price" nullable="true" remarks="" size="9" type="numeric"/>
+         <column autoUpdated="false" digits="0" id="3" name="sku" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="4" name="quantity" nullable="true" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="5" name="visibility" nullable="true" remarks="" size="1" type="bool"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="product_offerings_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="product_offerings_product_id_index" unique="false">
+            <column ascending="true" name="product_id"/>
+         </index>
+      </table>
+      <table name="product_properties" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('product_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="bigserial">
+            <child column="product_id" foreignKey="attributes_product_id_fkey" implied="false" onDeleteCascade="true" table="attributes"/>
+            <child column="product_id" foreignKey="product_offerings_product_properties_fkey" implied="false" onDeleteCascade="true" table="product_offerings"/>
+            <child column="product_id" foreignKey="variations_product_properties_fkey" implied="false" onDeleteCascade="true" table="variations"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="shop_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="id" foreignKey="product_properties_shop_fkey" implied="false" onDeleteCascade="true" table="shops"/>
+         </column>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="2" name="_hive_is_invalid" nullable="false" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="3" name="_hive_invalid_reason" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="4" name="listing_id" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="5" name="state" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="6" name="modified_by_hive" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="6" id="7" name="last_modified_tsz" nullable="true" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" digits="6" id="8" name="_hive_last_modified_tsz" nullable="true" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" defaultValue="ARRAY[]::bigint[]" digits="0" id="9" name="photos" nullable="false" remarks="" size="19" type="_int8"/>
+         <column autoUpdated="false" digits="0" id="10" name="title" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="11" name="description" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="6" id="12" name="creation_tsz" nullable="true" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" digits="6" id="13" name="ending_tsz" nullable="true" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" digits="0" id="14" name="price" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="15" name="quantity" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="6" id="16" name="state_tsz" nullable="true" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" digits="0" id="17" name="taxonomy_id" nullable="true" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" digits="0" id="18" name="section_id" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" defaultValue="ARRAY[]::text[]" digits="0" id="19" name="tags" nullable="false" remarks="" size="2147483647" type="_text"/>
+         <column autoUpdated="false" defaultValue="ARRAY[]::text[]" digits="0" id="20" name="materials" nullable="false" remarks="" size="2147483647" type="_text"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="21" name="_hive_on_new_schema" nullable="false" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" defaultValue="ARRAY[]::text[]" digits="0" id="22" name="_hive_changed_properties" nullable="false" remarks="" size="2147483647" type="_text"/>
+         <column autoUpdated="false" digits="6" id="23" name="_hive_last_sync" nullable="true" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="24" name="can_write_inventory" nullable="false" remarks="" size="1" type="bool"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="product_properties_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="product_properties_materials" unique="false">
+            <column ascending="true" name="materials"/>
+         </index>
+         <index name="product_properties_section_id" unique="false">
+            <column ascending="true" name="section_id"/>
+         </index>
+         <index name="product_properties_tags" unique="false">
+            <column ascending="true" name="tags"/>
+         </index>
+         <index name="product_properties_taxonomy_id" unique="false">
+            <column ascending="true" name="taxonomy_id"/>
+         </index>
+         <index name="unique_channel_listing_id_shop_id" unique="true">
+            <column ascending="true" name="listing_id"/>
+            <column ascending="true" name="shop_id"/>
+         </index>
+      </table>
+      <table name="shop_sections" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('shop_sections_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="bigserial"/>
+         <column autoUpdated="false" digits="0" id="1" name="shop_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="id" foreignKey="shop_sections_shop_fkey" implied="false" onDeleteCascade="true" table="shops"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="section_id" nullable="true" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" digits="0" id="3" name="value" nullable="true" remarks="" size="2147483647" type="text"/>
+      </table>
+      <table name="shopify_products" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('shopify_products_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial"/>
+         <column autoUpdated="false" digits="0" id="1" name="shop_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="id" foreignKey="shopify_products_shop_id_fkey" implied="false" onDeleteCascade="true" table="shops"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="product_id" nullable="false" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="3" name="title" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="4" name="body_html" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" defaultValue="ARRAY[]::bigint[]" digits="0" id="5" name="photos" nullable="false" remarks="" size="19" type="_int8"/>
+         <column autoUpdated="false" digits="6" id="6" name="updated_at" nullable="true" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="7" name="_hive_is_invalid" nullable="false" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="8" name="_hive_invalid_reason" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="9" name="_hive_modified_by_hive" nullable="false" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="6" id="10" name="_hive_updated_at" nullable="true" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" defaultValue="ARRAY[]::text[]" digits="0" id="11" name="changed_properties" nullable="false" remarks="" size="2147483647" type="_text"/>
+         <column autoUpdated="false" digits="6" id="12" name="last_sync" nullable="true" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" defaultValue="ARRAY[]::text[]" digits="0" id="13" name="tags" nullable="false" remarks="" size="2147483647" type="_text"/>
+         <column autoUpdated="false" digits="0" id="14" name="product_type" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="15" name="vendor" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="shopify_products_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="shopify_products_product_id_key" unique="true">
+            <column ascending="true" name="product_id"/>
+         </index>
+         <index name="shopify_products_product_type" unique="false">
+            <column ascending="true" name="product_type"/>
+         </index>
+         <index name="shopify_products_tags" unique="false">
+            <column ascending="true" name="tags"/>
+         </index>
+         <index name="shopify_products_vendor" unique="false">
+            <column ascending="true" name="vendor"/>
+         </index>
+         <index name="unique_product_id_shop_id" unique="true">
+            <column ascending="true" name="product_id"/>
+            <column ascending="true" name="shop_id"/>
+         </index>
+      </table>
+      <table name="shops" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('shop_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="bigserial">
+            <child column="shop_id" foreignKey="aggregates_shop_id_fkey" implied="false" onDeleteCascade="true" table="aggregates"/>
+            <child column="shop_id" foreignKey="images_shop_id_fkey" implied="false" onDeleteCascade="false" table="images"/>
+            <child column="shop_id" foreignKey="product_properties_shop_fkey" implied="false" onDeleteCascade="true" table="product_properties"/>
+            <child column="shop_id" foreignKey="shop_sections_shop_fkey" implied="false" onDeleteCascade="true" table="shop_sections"/>
+            <child column="shop_id" foreignKey="shopify_products_shop_id_fkey" implied="false" onDeleteCascade="true" table="shopify_products"/>
+            <child column="shop_id" foreignKey="sync_shop_shop_id_fkey" implied="false" onDeleteCascade="true" table="sync_shop"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="account_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="id" foreignKey="shop_account_fkey" implied="false" onDeleteCascade="true" table="accounts"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="name" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="3" name="channel_shop_id" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="4" name="sync_status" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="5" name="to_download" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="6" name="downloaded" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="7" name="to_upload" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="8" name="uploaded" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="9" name="rabbit" nullable="false" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" defaultValue="'1999-01-01 00:00:00+01'::timestamp with time zone" digits="6" id="10" name="last_sync_timestamp" nullable="false" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="11" name="invalid" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="12" name="error" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="13" name="inventory" nullable="false" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="14" name="applying_operations" nullable="false" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="15" name="to_apply" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="16" name="applied" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="17" name="channel_user_id" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="shops_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="sync_shop" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="shop_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="id" foreignKey="sync_shop_shop_id_fkey" implied="false" onDeleteCascade="true" table="shops"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="product_id" nullable="false" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="2" name="created_at" nullable="false" remarks="" size="35" type="timestamptz"/>
+         <index name="sync_shop_product_id_key" unique="true">
+            <column ascending="true" name="product_id"/>
+         </index>
+         <index name="unique_shop_id_product_id" unique="true">
+            <column ascending="true" name="shop_id"/>
+            <column ascending="true" name="product_id"/>
+         </index>
+      </table>
+      <table name="task_queue" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('task_queue_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="bigserial">
+            <child column="parent_id" foreignKey="task_queue_parent_id_fkey" implied="false" onDeleteCascade="true" table="task_queue"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="company_id" nullable="false" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" digits="0" id="2" name="channel_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="id" foreignKey="task_queue_channel_id_fkey" implied="false" onDeleteCascade="false" table="channels"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="3" name="operation" nullable="false" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="4" name="operation_data" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="5" name="created_at" nullable="true" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" digits="0" id="6" name="state" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="6" id="7" name="state_expires_at" nullable="true" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="8" name="retry" nullable="true" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="9" name="parent_id" nullable="true" remarks="" size="19" type="int8">
+            <parent column="id" foreignKey="task_queue_parent_id_fkey" implied="false" onDeleteCascade="true" table="task_queue"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="10" name="suspension_point" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="11" name="result" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="12" name="modified" nullable="true" remarks="" size="1" type="bool"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="task_queue_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="task_queue_created_at" unique="false">
+            <column ascending="true" name="created_at"/>
+         </index>
+         <index name="task_queue_operation" unique="false">
+            <column ascending="true" name="operation"/>
+         </index>
+         <index name="task_queue_parent_id" unique="false">
+            <column ascending="true" name="parent_id"/>
+         </index>
+         <index name="task_queue_state" unique="false">
+            <column ascending="true" name="state"/>
+         </index>
+      </table>
+      <table name="user_profiles" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="user_id" nullable="false" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" digits="0" id="1" name="property_name" nullable="false" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="2" name="property_value" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="3" name="modified_at" nullable="true" remarks="" size="35" type="timestamptz"/>
+         <index name="user_profiles_id" unique="false">
+            <column ascending="true" name="user_id"/>
+         </index>
+         <index name="user_profiles_unique" unique="true">
+            <column ascending="true" name="user_id"/>
+            <column ascending="true" name="property_name"/>
+         </index>
+      </table>
+      <table name="variation_options" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('variation_option_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="bigserial">
+            <child column="variation_option_id" foreignKey="product_offering_options_variation_options_fkey" implied="false" onDeleteCascade="true" table="product_offering_options"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="variation_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="id" foreignKey="variation_options_variation_id_fkey" implied="false" onDeleteCascade="true" table="variations"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="value_id" nullable="true" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" digits="0" id="3" name="value" nullable="false" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="4" name="formatted_value" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" defaultValue="NULL::numeric" digits="2" id="5" name="price" nullable="true" remarks="" size="9" type="numeric"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="6" name="is_available" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="7" name="sequence" nullable="true" remarks="" size="10" type="int4"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="variation_options_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="variation_options_index" unique="false">
+            <column ascending="true" name="variation_id"/>
+         </index>
+      </table>
+      <table name="variations" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('variation_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="bigserial">
+            <child column="variation_id" foreignKey="variation_options_variation_id_fkey" implied="false" onDeleteCascade="true" table="variation_options"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="product_id" nullable="false" remarks="" size="19" type="int8">
+            <parent column="id" foreignKey="variations_product_properties_fkey" implied="false" onDeleteCascade="true" table="product_properties"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="2" name="first" nullable="false" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="3" name="property_id" nullable="false" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" digits="0" id="4" name="formatted_name" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="5" name="scaling_option_id" nullable="true" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" digits="0" id="6" name="recipient_id" nullable="true" remarks="" size="19" type="int8"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="7" name="influences_price" nullable="false" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="8" name="influences_quantity" nullable="false" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="9" name="influences_sku" nullable="false" remarks="" size="1" type="bool"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="variations_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="max_two_props_per_product" unique="true">
+            <column ascending="true" name="product_id"/>
+            <column ascending="true" name="first"/>
+         </index>
+      </table>
+      <table name="vela_images" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('vela_images_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="bigserial"/>
+         <column autoUpdated="false" digits="0" id="1" name="hash" nullable="false" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="2" name="mime" nullable="true" remarks="" size="2147483647" type="text"/>
+      </table>
+   </tables>
+</database>

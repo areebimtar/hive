@@ -1,0 +1,226 @@
+#!/usr/bin/env bash
+# Configure the Product
+# - create virtual directories / symlinks
+# - create virt config files
+
+[[ "$1" != "-h" && "$1" != "--help" ]] || { echo "Usage: `basename $0` <cci_build_no>"; exit 1; }
+set -e; s_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")"); . "$s_dir/../../lib/functions.sh" "$s_dir"
+
+
+#--------------------------------------------------------------------------------
+# Create configuration for virtual instances (esp. port numbers, etc.)
+configure_virt_instances() {
+	[ $# -eq 2 ] || die "Error: configure_virt_instances: 2 params expected, got ($@)"
+	local build_no=$1 instance_id=$2 etc_virt_dir i virts num_virts
+	log1 "Configuring product"
+
+		# create virtual configurations
+	virts=(`get_virt_params "$build_no"`)
+	num_virts=${#virts[@]}
+	etc_virt_dir="$INSTANCES_DIR/$instance_id/etc/virt"
+	rm -rf "$etc_virt_dir"; mkdir -p "$etc_virt_dir"
+	for ((i=0 ; i < $num_virts; i++)); do
+		cat > "$etc_virt_dir/env-$i.sh" <<-EOF
+			export QA_INSTANCE_VIRT=$i
+			export QA_WEB_HTTP_PORT=$((i * 20 + $INSTANCE_BASE_PORT + 1))
+			export QA_WEB_HTTPS_PORT=$((i * 20 + $INSTANCE_BASE_PORT + 2))
+			export QA_AUTH_HTTP_PORT=$((i * 20 + $INSTANCE_BASE_PORT + 3))
+			export QA_AUTH_HTTPS_PORT=$((i * 20 + $INSTANCE_BASE_PORT + 4))
+			export QA_MANAGER_PORT=$((i * 20 + $INSTANCE_BASE_PORT + 5))
+			export QA_MANAGER_PORT_API=$((i * 20 + $INSTANCE_BASE_PORT + 6))
+			export QA_ETSY_PORT=$((i * 20 + $INSTANCE_BASE_PORT + 7))
+			export QA_PGDATABASE_AUTH="${QA_INSTANCE}_${i}_$QA_DB_AUTH"
+			export QA_PGDATABASE_HIVE="${QA_INSTANCE}_${i}_$QA_DB_HIVE"
+			export QA_RABBIT_VHOST="${QA_INSTANCE}_${i}_hive"
+			export QA_RABBIT_URI="amqp://$QA_RABBIT_USER:$QA_RABBIT_PASSWORD@$QA_RABBIT_HOST/\$QA_RABBIT_VHOST"
+			export QA_SESSION_STORE_DB_CONNECTION_STRING="postgresql://$QA_PGUSER:$QA_PGPASSWORD@$QA_PGHOST:$QA_PGPORT/${QA_INSTANCE}_${i}_$QA_DB_AUTH"
+		EOF
+	done
+}
+
+
+
+#--------------------------------------------------------------------------------
+# Create test hive-auth config file
+configure_auth() {
+	[ $# -eq 2 ] || die "Error: configure_auth: 2 params expected, got ($@)"
+	local build_no=$1 instance_id=$2
+	local cfg_file="$INSTANCES_DIR/$instance_id/builds/$build_no/product/dist/auth/config.json"
+
+	log2 "Configuring Auth ($cfg_file)"
+	cat > "$cfg_file" <<-EOF
+	{
+	    "session": {
+	        "secretKey": "$QA_SESSION_SECRET_KEY",
+	        "cookieDomain": "$QA_COOKIES_DOMAIN",
+	        "cookieName": "sid",
+	        "cookieExpiresIn": 86400000
+	    },
+
+	    "auth": {
+	        "scheme": "https",
+	        "host": "$QA_PRODUCT_HOST"
+	    },
+	    "db": {
+	        "host": "$QA_PGHOST",
+	        "port": $QA_PGPORT,
+	        "logQueries": true
+	    },
+	    "crypto": {
+	        "privateKey": "$TLS_PRIV_KEY",
+	        "publicKey": "$TLS_PUB_KEY",
+	        "certificate": "$TLS_CERTIFICATE"
+	    },
+	    "logging": {
+	        "consoleLevel": "debug"
+	    },
+	    "mandrill": {
+	        "apikey": "$QA_MANDRIL_API_KEY"
+	    },
+	    "users": {
+	        "newUserDbName": "db1"
+	    }
+	}
+EOF
+}
+
+
+#--------------------------------------------------------------------------------
+# Create test hive-web config file
+configure_web() {
+	[ $# -eq 2 ] || die "Error: configure_web: 2 params expected, got ($@)"
+	local build_no=$1 instance_id=$2
+	local cfg_file="$INSTANCES_DIR/$instance_id/builds/$build_no/product/dist/web/config.json"
+
+	log2 "Configuring Web ($cfg_file)"
+	cat > "$cfg_file" <<-EOF
+	{
+
+	    "session": {
+	        "secretKey": "$QA_SESSION_SECRET_KEY",
+	        "cookieDomain": "$QA_COOKIES_DOMAIN",
+	        "cookieName": "sid",
+	        "cookieExpiresIn": 86400000
+	    },
+	    "crypto": {
+	        "privateKey": "$TLS_PRIV_KEY",
+	        "publicKey": "$TLS_PUB_KEY",
+	        "certificate": "$TLS_CERTIFICATE"
+	    },
+
+	    "db": {
+	        "db1": {
+	            "host": "$QA_PGHOST",
+	            "port": $QA_PGPORT,
+	            "logQueries": true
+	        }
+	    },
+
+	    "auth": {
+	        "prefix": "/auth"
+	    },
+	    "etsy": {
+	        "auth": {
+	            "consumerKey": "$QA_ETSY_KEY",
+	            "consumerSecret": "$QA_ETSY_SECRET"
+	        }
+	    },
+	    "logging": {
+	        "consoleLevel": "debug"
+	    },
+	    "serverScheme": "https",
+	    "serverDomain": "$QA_PRODUCT_HOST",
+	    "intercom": {
+	        "secureModeSecretKey": "$QA_INTERCOM_KEY"
+	    }
+	}
+EOF
+}
+
+
+#--------------------------------------------------------------------------------
+# Create test hive-manager config file
+configure_manager() {
+	[ $# -eq 2 ] || die "Error: configure_manager: 2 params expected, got ($@)"
+	local build_no=$1 instance_id=$2
+	local cfg_file="$INSTANCES_DIR/$instance_id/builds/$build_no/product/dist/manager/config.json"
+
+	log2 "Configuring Manager ($cfg_file)"
+	cat > "$cfg_file" <<-EOF
+	{
+	    "db": {
+	        "name": "db1",
+	        "host": "$QA_PGHOST",
+	        "port": $QA_PGPORT,
+	        "logQueries": true
+	    },
+	    "logging": {
+	        "consoleLevel": "debug"
+	    },
+	    "manager": {
+	        "dailyQuotaReserve": 20,
+	        "rateLimitPerSecond": 30
+	    }
+	}
+EOF
+}
+
+
+#--------------------------------------------------------------------------------
+# Create test hive-worker config file
+configure_worker() {
+	[ $# -eq 2 ] || die "Error: configure_worker: 2 params expected, got ($@)"
+	local build_no=$1 instance_id=$2
+	local cfg_file="$INSTANCES_DIR/$instance_id/builds/$build_no/product/dist/worker/config.json"
+
+	log2 "Configuring Worker ($cfg_file)"
+	cat > "$cfg_file" <<-EOF
+	{
+	    "db": {
+	        "name": "db1",
+	        "host": "$QA_PGHOST",
+	        "port": $QA_PGPORT,
+	        "logQueries": true
+	    },
+	    "etsy": {
+	        "auth": {
+	            "consumerKey": "$QA_ETSY_KEY",
+	            "consumerSecret": "$QA_ETSY_SECRET"
+	        },
+	        "maxShopsPerCheckShopSync": 300
+	    },
+	    "logging": {
+	        "consoleLevel": "debug"
+	    },
+	    "auth": {
+	        "prefix": ""
+	    },
+	    "serverScheme": "",
+	    "serverDomain": "",
+	    "serverPort": "",
+	    "terminateOnDisconnect": true
+	}
+EOF
+}
+
+
+
+#--------------------------------------------------------------------------------
+# Main
+build_no=$1
+[[ "$build_no" =~ ^[0-9][0-9]*$ ]] || die "$PROG: build_number parameter expected"
+
+
+read_configs
+check_variables INSTANCE_BASE_PORT QA_COOKIES_DOMAIN QA_PRODUCT_HOST QA_PGHOST QA_PGPORT QA_MANDRIL_API_KEY \
+	TLS_PUB_KEY TLS_PRIV_KEY TLS_CERTIFICATE QA_INTERCOM_KEY QA_RABBIT_USER QA_RABBIT_PASSWORD QA_RABBIT_HOST QA_DB_AUTH QA_DB_HIVE
+
+
+configure_virt_instances "$build_no" "$QA_INSTANCE"
+virtualize_product "$build_no" "$QA_INSTANCE"
+configure_auth "$build_no" "$QA_INSTANCE"
+configure_web "$build_no" "$QA_INSTANCE"
+configure_manager "$build_no" "$QA_INSTANCE"
+configure_worker "$build_no" "$QA_INSTANCE"
+
+RESULT_MESSAGE="$PROG: finished successfully"

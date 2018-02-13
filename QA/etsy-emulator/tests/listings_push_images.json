@@ -1,0 +1,73 @@
+{"_doc": "In this scenario Etsy returns correct responses for images and their update requests",
+
+	"include_jsons": [
+		"template_gv2_shop.json",
+		"template_gv2_active_generated_by_count.json",
+		"template_gv2_no_draft.json",
+		"template_gv2_no_inactive.json"
+	],
+
+	"GET": {
+		"/v2/shops/14458117/listings/active": {
+			"data": {
+				"body": {
+					"count": 4
+				}
+			}
+		},
+
+		"/v2/listings/([0-9]+)": {
+			"function": "external_json_list",
+			"data": {
+				"file": "listings_14_active.json"
+			}
+		},
+
+		"/v2/listings/([0-9]+)/images": {
+			"function": "external_json_list",
+			"data": {
+				"file": "listings_push_images_images.json"
+			}
+		}
+	},
+
+	"PUT": {
+		"/v2/listings/([0-9]+)": {
+			"function": "fixed_json",
+			"data": {
+				"body": {
+					"count": 1,
+					"results": [ { } ],
+					"type": "Listing"
+				}
+			}
+		}
+	},
+
+	"POST": {
+		"/v2/listings/([0-9]+)/images": {
+			"function": "fixed_json",
+			"data": {
+				"body": {
+					"count": 1,
+					"results": [ { } ],
+					"type": "ListingImage"
+				}
+			}
+		}
+	},
+
+	"DELETE": {
+		"/v2/listings/([0-9]+)/images/.*": {
+			"function": "fixed_json",
+			"data": {
+				"body": {
+					"count": 0,
+					"results": [ { } ],
+					"type": "ListingImage"
+				}
+			}
+		}
+	},
+
+" vim: set foldmethod=indent foldlevel=2 foldnestmax=3 : ": 1 }

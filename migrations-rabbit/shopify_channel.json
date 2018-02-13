@@ -1,0 +1,62 @@
+{
+  "exchanges": [
+    { "name": "channel-router", "type": "topic" },
+    { "name": "channel-shopify-router", "type": "topic" },
+    { "name": "shopify-retry-wait", "type": "topic" },
+    { "name": "shopify-to-api-call", "type": "topic" },
+    { "name": "shopify-api-calls", "type": "topic" },
+    { "name": "shopify-api-calls-wait", "type": "topic" },
+    { "name": "shopify-slow-stream-api-calls", "type": "topic" },
+    { "name": "shopify-api-calls-response", "type": "topic" },
+    { "name": "shopify-aggregate", "type": "topic" },
+
+    { "name": "shopify-stats", "type": "topic" }
+  ],
+  "queues": [
+    { "name": "shopify-syncShop" },
+    { "name": "shopify-download-product" },
+    { "name": "shopify-upload-product" },
+    { "name": "shopify-apply-operations" },
+    { "name": "shopify-apply-operations-splitter" },
+    { "name": "shopify-retry-wait", "options": { "arguments": { "x-dead-letter-exchange": "shopify-to-api-call" } } },
+    { "name": "shopify-to-api-call" },
+    { "name": "shopify-api-calls" },
+    { "name": "shopify-api-calls-wait", "options": { "arguments": { "x-dead-letter-exchange": "shopify-api-calls" } } },
+    { "name": "shopify-slow-stream-api-calls" },
+    { "name": "shopify-api-responses-times" },
+    { "name": "shopify-aggregate" },
+
+    { "name": "shopify-stats-tasks-success" },
+    { "name": "shopify-stats-tasks-fail" },
+    { "name": "shopify-stats-tasks-apply-operations" },
+    { "name": "shopify-stats-tasks-sync-shops" }
+  ],
+  "queueBindings": [
+    { "queue": "shopify-syncShop", "exchange": "channel-shopify-router", "pattern": "*.shopify.syncShop.#" },
+    { "queue": "shopify-download-product", "exchange": "channel-shopify-router", "pattern": "*.shopify.downloadProduct.#" },
+    { "queue": "shopify-upload-product", "exchange": "channel-shopify-router", "pattern": "*.shopify.uploadProduct.#" },
+    { "queue": "shopify-apply-operations", "exchange": "channel-shopify-router", "pattern": "*.shopify.applyOperations.#" },
+    { "queue": "shopify-apply-operations-splitter", "exchange": "channel-shopify-router", "pattern": "*.shopify.applyOperationsSplitter.#" },
+    { "queue": "shopify-retry-wait", "exchange": "shopify-retry-wait", "pattern": "#" },
+    { "queue": "shopify-to-api-call", "exchange": "shopify-to-api-call", "pattern": "#" },
+    { "queue": "shopify-api-calls", "exchange": "shopify-api-calls", "pattern": "#" },
+    { "queue": "shopify-api-calls-wait", "exchange": "shopify-api-calls-wait", "pattern": "#" },
+    { "queue": "shopify-slow-stream-api-calls", "exchange": "shopify-slow-stream-api-calls", "pattern": "#" },
+    { "queue": "shopify-api-responses-times", "exchange": "shopify-api-calls-response", "pattern": "#" },
+    { "queue": "shopify-aggregate", "exchange": "shopify-aggregate", "pattern": "#" },
+
+    { "queue": "shopify-stats-tasks-success", "exchange": "shopify-stats", "pattern": "*.shopify.*.subtasksCompleted" },
+    { "queue": "shopify-stats-tasks-success", "exchange": "shopify-stats", "pattern": "*.shopify.*.APICall" },
+    { "queue": "shopify-stats-tasks-fail", "exchange": "shopify-stats", "pattern": "*.shopify.*.error" },
+    { "queue": "shopify-stats-tasks-fail", "exchange": "shopify-stats", "pattern": "*.shopify.*.*.error" },
+    { "queue": "shopify-stats-tasks-apply-operations", "exchange": "shopify-stats", "pattern": "*.shopify.applyOperations" },
+    { "queue": "shopify-stats-tasks-sync-shops", "exchange": "shopify-stats", "pattern": "*.shopify.syncShop" }
+  ],
+  "exchangeBindings": [
+    { "source": "channel-router", "destination": "channel-shopify-router", "pattern": "*.shopify.#" },
+    { "source": "shopify-api-calls-response", "destination": "channel-router",  "pattern": "#" },
+    { "source": "channel-router", "destination": "shopify-stats", "pattern": "#" }
+  ],
+  "messages": [
+  ]
+}

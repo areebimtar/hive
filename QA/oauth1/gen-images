@@ -1,0 +1,14 @@
+#!/bin/bash
+
+get_color() {
+	r=`echo 'obase=16;' $(( $(($RANDOM % 80)) + 175)) |  bc`
+	g=`echo 'obase=16;' $(( $(($RANDOM % 80)) + 175)) |  bc`
+	b=`echo 'obase=16;' $(( $(($RANDOM % 80)) + 175)) |  bc`
+	echo "#$r$g$b"
+}
+
+for i in `seq 5000`; do
+	num=`printf "%04d" $i`
+	echo $num
+	echo $num | convert -size 640x400 -background `get_color` -fill blue -extent 1000x1000  -font Georgia-Bold-Italic -pointsize 200 text:- -crop 634x394+0+0 -bordercolor '#0f0e0e' -border 3 img/$num.png
+done

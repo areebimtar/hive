@@ -1,0 +1,16 @@
+{"_doc": "Template provides correct responses for DELETE attribute requests",
+
+	"DELETE": {
+		"/v2/listings/([0-9]+)/attributes/.*": {
+			"function": "fixed_json",
+			"data": {
+				"body": {
+					"count": 0,
+					"results": [ { } ],
+					"type": "PropertyValue"
+				}
+			}
+		}
+	},
+
+" vim: set foldmethod=indent foldlevel=2 foldnestmax=3 : ": 1 }

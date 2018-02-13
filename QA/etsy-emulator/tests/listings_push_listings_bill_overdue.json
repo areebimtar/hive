@@ -1,0 +1,52 @@
+{"_doc": "In this scenario Etsy returns correct response on listing update when the bill for the shop is overdue",
+
+	"include_jsons": [
+		"template_gv2_shop.json",
+		"template_gv2_active_generated_by_count.json",
+		"template_gv2_no_draft.json",
+		"template_gv2_no_inactive.json"
+	],
+
+	"GET": {
+		"/v2/shops/14458117/listings/active": {
+			"data": {
+				"body": {
+					"count": 4
+				}
+			}
+		},
+
+		"/v2/listings/([0-9]+)": {
+			"function": "external_json_list",
+			"data": {
+				"file": "listings_14_active.json"
+			}
+		}
+	},
+
+	"PUT": {
+		"/v2/listings/100001": {
+			"function": "fixed_json",
+			"data": {
+				"status": 400,
+				"body": {
+					"message":"Bad Request",
+					"status":400,
+					"text":"Cannot edit listing because shop bill is overdue",
+					"method":"PUT",
+					"path":"/v2/listings/100001",
+					"url":"https://openapi.etsy.com/v2/listings/100001?",
+					"params":{
+						"listing_id":100001,
+						"description":"\n\n***all of our items are vintage so they may have some light/general wear but any significant flaws or wear will be listed in the description below***\n\n♡ Item Details ♡ \n\n&gt;painted leather bird clutch\n&gt;genuine leather\n&gt;snap close\n&gt;zip close pocket on the inside\n&gt;so unique!\n\ncondition : excellent\nmaterial(s) : painted leather\n\n♡ measurements ♡ \n\nwidth :  8inches /  20cm\nheight : 5inches /   12.5cm\n\n♡ shipping ♡ \n\n&gt; we can ship as soon as same day...please contact us if you need something shipped for arrival by a certain date\n\n&gt; we do combine shipping! due to variance in size and weight of our items, please message us for a combined shipping price if you wish to purchase more than one item\n\nPE0033\nB#1",
+						"state":"active"
+					},
+					"quotaInfo":{
+						"requestsMade":0
+					}
+				}
+			}
+		}
+	},
+
+" vim: set foldmethod=indent foldlevel=2 foldnestmax=3 : ": 1 }

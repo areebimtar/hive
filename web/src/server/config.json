@@ -1,0 +1,95 @@
+{
+  "session": {
+    "secretKey": "super duper secret key",
+    "cookieName": "sid",
+    "cookieDomain": ".getvela.com",
+    "cookieExpiresIn": 86400000,
+    "secureCookie": false,
+    "store": {
+      "dbConnectionString": "postgresql://hive_auth:12345@localhost/hive_auth"
+    }
+
+  },
+
+  "customSignupPage": "https://welcome.getvela.com",
+  "loginPage": "https://login.getvela.com",
+  "logoutPage": "http://login.getvela.com/logout",
+
+  "httpPort": 80,
+
+  "crypto": {
+    "privateKey": "/srv/hive/cert/salsitasoft_com_2016.key",
+    "publicKey": "/srv/hive/cert/salsitasoft_com_2016.public.key",
+    "certificate": "/srv/hive/cert/salsitasoft_com_bundle_2016.crt"
+  },
+
+  "db": {
+    "db1": {
+      "host": "localhost",
+      "port": 5432,
+      "database": "hive",
+      "user": "hive",
+      "logQueries": true,
+      "slowQueriesMinDuration": 2500
+    }
+  },
+  "auth": {
+    "prefix": "/auth"
+  },
+  "etsy": {
+    "apiUrl": "https://openapi.etsy.com/v2",
+    "auth": {
+      "requestTokenURL": "https://openapi.etsy.com/v2/oauth/request_token",
+      "accessTokenURL": "https://openapi.etsy.com/v2/oauth/access_token",
+      "userAuthorizationURL": "https://www.etsy.com/oauth/signin"
+    }
+  },
+  "shopify": {
+    "auth": {
+      "apiKey": "api key",
+      "apiSecretKey": "api secret key",
+      "accessTokenURL": "/admin/oauth/access_token",
+      "userAuthorizationURL": "/admin/oauth/authorize"
+    }
+  },
+  "logging": {
+    "consoleLevel": "debug",
+    "slowApiThresholdMs": 1000,
+    "loggly": {
+      "logLevel": "info",
+      "token": false,
+      "serverType": "web",
+      "velaEnvironment": "unspecified"
+    },
+    "eventLoop": {
+      "interval": 100,
+      "threshold": 1000
+    }
+  },
+  "serverScheme": "https",
+  "intercom": {
+    "secureModeSecretKey": ""
+  },
+  "rabbitmq": {
+    "uri": "amqp://user1:pass1@localhost/vela"
+  },
+  "frontendVars": {
+    "welcomeUrl": "/",
+    "mixpanelToken": null,
+    "intercomAppId": null,
+    "shopsPollingIntervalShort": 1000,
+    "shopsPollingIntervalLong": 60000,
+    "froalaActivationKey": "secret_key"
+  },
+
+  "syncUpdatesBatchSize": 5,
+  "AWS": {
+    "images": {
+      "region": "us-west-1",
+      "bucketName": "images-dev.getvela.com",
+      "sslEnabled": true,
+      "signedURLExpiration": 10
+    }
+  }
+}
+

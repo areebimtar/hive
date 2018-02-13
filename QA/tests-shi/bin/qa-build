@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# build hive product, install it as a test environment
+
+
+#--------------------------------------------------------------------------------
+build_artifacts() {
+	local HIVE_PRODUCT_DIR=$1
+	cd "$HIVE_PRODUCT_DIR"
+	yarn install
+	yarn add node-sass --force
+	yarn run build_all
+	yarn run build_artifacts
+}
+
+#--------------------------------------------------------------------------------
+if [ "$1" = "--build-artifacts" ]; then
+	shift
+	build_artifacts "$@"
+	exit
+fi
+
+[[ "$1" != "-h" && "$1" != "--help" ]] || { echo "Build and install test hive."; exit 1; }
+set -e; script_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")"); . "$script_dir/../lib/functions.sh"
+
+read_configs
+check_variables QA_NODE_BINARY HIVE_PRODUCT_DIR PRODUCT_ARTIFACTS TEST_ARTIFACTS QA_WEBDRIVER_URL
+
+	# Build artifacts
+log1 "Building hive from $HIVE_PRODUCT_DIR"
+env -i PATH="`dirname "$QA_NODE_BINARY"`:/bin:/usr/bin:/usr/local/bin" CI='true' "$0" --build-artifacts "$HIVE_PRODUCT_DIR"
+
+	# Install
+log1 "Installing hive"
+build_no=0
+build_dir="$INSTANCES_DIR/$QA_INSTANCE/builds/$build_no"
+rm -rf "$build_dir"
+mkdir -p "$build_dir/"{QA,product}
+ln -s "$build_no" "$INSTANCES_DIR/$QA_INSTANCE/builds/current"
+for artifact in $PRODUCT_ARTIFACTS; do tar x -z -C "$build_dir/product" -f "$HIVE_PRODUCT_DIR/$artifact"; done
+for artifact in $TEST_ARTIFACTS;    do tar x -z -C "$build_dir/QA"      -f "$HIVE_PRODUCT_DIR/$artifact"; done
+rm -rf "$build_dir/QA/tests-shi/"{results,results_archive}
+
+	# Configure
+mkdir -p "$INSTANCES_DIR/$QA_INSTANCE/etc" && touch "$INSTANCES_DIR/$QA_INSTANCE/etc/env.sh"
+configure-product "$build_no"
+configure-test "$build_no" "$QA_WEBDRIVER_URL"
+[ -n "$QA_LOG_DIR" ] && mkdir -p "$QA_LOG_DIR"
+QA_INSTANCE_VIRT=0 setup-test
+
+RESULT_MESSAGE="$PROG: finished successfully"

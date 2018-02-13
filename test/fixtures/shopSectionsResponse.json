@@ -1,0 +1,31 @@
+{
+  "count": 3,
+  "results": [
+    {
+      "shop_section_id": 21447533,
+      "title": "testSection_01",
+      "rank": 1,
+      "user_id": 103923743,
+      "active_listing_count": 0
+    },
+    {
+      "shop_section_id": 21447585,
+      "title": "testSection_02",
+      "rank": 2,
+      "user_id": 103923743,
+      "active_listing_count": 0
+    },
+    {
+      "shop_section_id": 21518268,
+      "title": "testSection_03",
+      "rank": 3,
+      "user_id": 103923743,
+      "active_listing_count": 0
+    }
+  ],
+  "params": {
+    "shop_id": "dbtestShop"
+  },
+  "type": "ShopSection",
+  "pagination": {}
+}

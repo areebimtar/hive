@@ -1,0 +1,30 @@
+{
+  "welcome_page": "https://getvela.com",
+  "login_page": "https://login.getvela.com",
+  "skip_welcome_page": false,
+  "timeout_shop_not_ready_sec": 30,
+  "timeout_save_changes_to_vela_sec": 10,
+  "timeout_sync_from_vela_sec": 180,
+  "slack": {
+    "client_key": "***",
+    "access_token": "***",
+    "channels": {
+      "fail": "hive-hc,x-hive",
+      "success": "hive-hc",
+      "error": "hive-hc,hive"
+    }
+  },
+  "etsy": {
+    "consumer_key": "***",
+    "consumer_secret": "***"
+  },
+  "screenshot_path": "/var/www/screens",
+  "screenshot_url": "http://healthcheck.getvela.com/screens",
+  "aws": {
+    "region_name": "us-west-1",
+    "access_key_id": "***",
+    "secret_access_key": "***"
+  },
+  "aws_metric_name": "health-check-sync-shop-duration",
+  "send_metrics_to_aws": true
+}

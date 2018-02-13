@@ -1,0 +1,6 @@
+#!/bin/bash
+script_dir=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd -P)
+VIRTUAL_ENV="$script_dir/venv" PATH="$script_dir/venv/bin:$PATH" "$script_dir/venv/bin/python3" "$script_dir/get_oauth_etsy.py" \
+	--method put	\
+	--resource "$1"	\
+	--data "$2"	\

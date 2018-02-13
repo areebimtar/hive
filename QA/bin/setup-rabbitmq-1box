@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+# (re)create rabbitmq vhost on QA 1box
+# - must be run directly on 1box
+# - hive user must have sudo for rabbitmqctl in /etc/sudoers:
+#	hive ALL=(ALL) NOPASSWD: /usr/sbin/rabbitmqctl
+# - bunny migrate has to be installed and in PATH - https://www.npmjs.com/package/bunny-migrate
+# - rabbitmqadmin has to be installed and in PATH - https://www.rabbitmq.com/management-cli.html
+# - rabbit JSON schemas must be in the same directory - see deploy/rabbit/
+
+set -e
+
+function show_help {
+echo "
+Tool for creating/modifying RabbitMQ setup on QA 1 box
+
+Options:
+	-r - deletes the vhost and creates it again with init schema
+
+	-e <db_name> - creates Etsy setup in Rabbit for DB with name <dn_name>
+
+	-h - shows this help
+"
+}
+
+delete_vhost=false
+db_name=""
+
+while getopts "rhe:" opt; do
+	case "${opt}" in
+		h)
+			show_help
+			exit
+			;;
+		r)
+			delete_vhost=true
+			;;
+		e)
+			db_name=${OPTARG}
+			;;
+		*)
+			echo "ERROR: Invalid parameters"
+			show_help
+
+			exit 1
+                        ;;
+	esac
+done
+
+if ! $delete_vhost && [ -z "$db_name" ]; then
+	show_help
+	exit
+fi
+
+RABBIT_VHOST="vela"
+RABBIT_HOST=localhost
+RABBIT_USER=user1
+RABBIT_PASSWORD="xxx"
+
+if [ "$RABBIT_PASSWORD" = "xxx" ]; then
+	read -sp "Rabbit password: " RABBIT_PASSWORD
+	echo
+fi
+
+rabbit_uri="--uri amqp://$RABBIT_USER:$RABBIT_PASSWORD@$RABBIT_HOST:5672/$RABBIT_VHOST"
+rabbit_bunny_x="--bunny-x bunny-migrate"
+rabbit_init_schema="--schema initial-schema.json"
+rabbit_per_db_schema="--schema per-db-schema.json"
+
+if $delete_vhost; then
+	echo "Deleting vhost and creating it again"
+	sudo rabbitmqctl delete_vhost "$RABBIT_VHOST" &>/dev/null || true
+	sudo rabbitmqctl add_vhost "$RABBIT_VHOST"
+	sudo rabbitmqctl set_permissions -p $RABBIT_VHOST $RABBIT_USER ".*" ".*" ".*"
+
+	echo "Running bunny-migrate init"
+	bunny-migrate init $rabbit_uri $rabbit_bunny_x
+
+	echo "Creating Rabbit initial schema"
+	bunny-migrate add $rabbit_uri $rabbit_bunny_x $rabbit_init_schema --prefix ""
+fi
+
+if [ -n "$db_name" ]; then
+	echo "Creating Rabbit per db setup for DB $db_name"
+	bunny-migrate add $rabbit_uri $rabbit_bunny_x $rabbit_per_db_schema --prefix $db_name
+
+	# do the rest using rabbitmqadmin
+	echo "Adding routing rules for rabbit etsy setup"
+	rabbitmqadmin="rabbitmqadmin -V $RABBIT_VHOST -u $RABBIT_USER -p $RABBIT_PASSWORD"
+	$rabbitmqadmin declare binding source=manager-tasks destination=$db_name.manager-tasks routing_key=$db_name
+	$rabbitmqadmin declare binding source=apply-operations destination=$db_name.apply-operations routing_key=$db_name
+fi
+
+echo "SUCCESS"

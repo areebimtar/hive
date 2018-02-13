@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+QA_PRODUCT_HOST_00=${QA_PRODUCT_HOST_00:-hive_test_00.salsitasoft.com}
+QA_PRODUCT_HOST_01=${QA_PRODUCT_HOST_01:-hive_test_01.salsitasoft.com}
+
+dev=`ip route | awk '/default via/ { print $5 }'`
+host_ip=`ip addr show "$dev" | awk '/^  *inet / {gsub("/.*", "", $2); print $2}' | head -n 1`
+docker kill selenium &>/dev/null
+docker rm selenium &>/dev/null
+docker run -d --name selenium -p 4444:4444 --add-host $QA_PRODUCT_HOST_00:$host_ip --add-host $QA_PRODUCT_HOST_01:$host_ip  docker.salsitasoft.com/selenium

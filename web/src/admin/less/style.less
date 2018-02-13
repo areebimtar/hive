@@ -1,0 +1,69 @@
+.borderless {
+  border-style: none;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.app-name {
+  .clickable;
+  font-weight: 300;
+}
+
+.brand {
+  letter-spacing: 0.05em;
+}
+
+.detail-card-title {
+  padding-bottom: 10px;
+}
+
+.detail-title {
+  font-size: 36px
+}
+
+.shop-detail-name {
+  .detail-title
+}
+
+.user-detail-title {
+  .detail-title
+}
+
+.center {
+  margin: auto;
+}
+
+.spinner-layer-color {
+    border-color: #64b5f6;
+}
+
+.controls-bar {
+  margin-bottom: 16px;
+}
+
+.separator {
+  display: inline-block;
+  width: 16px;
+}
+
+.rotated(@degree) {
+  -webkit-transform: rotate(@degree);
+  -moz-transform: rotate(@degree);
+  -ms-transform: rotate(@degree);
+  -o-transform: rotate(@degree);
+  transform: rotate(@degree);
+}
+
+@keyframes animation-rotating {
+  from { .rotated(360deg); }
+  to { .rotated(0deg); }
+}
+
+.rotating {
+  animation-name: animation-rotating;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}

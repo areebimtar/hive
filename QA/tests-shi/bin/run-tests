@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# Script to run shishito test
+# - 
+
+[[ "$1" != "-h" && "$1" != "--help" ]] || { echo "`basename $0` [shishito-params]   - runs tests on the current build"; exit 1; }
+set -e; script_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")"); . "$script_dir/../lib/functions.sh"
+
+
+#--------------------------------------------------------------------------------
+# Run tests on 'current' build
+run_tests() {
+	[ $# -ge 4 ] || die "Error: run_tests: at least 4 params expected, got ($@)"
+	local instance_id=$1 instance_virt_id=$2 browserstack_auth=$3 qastats_auth=$4 build_dir test_dir build_no
+	local shishito_params=() browserstack_params=() qastats_params=()
+	shift 4; shishito_params=("$@")
+	log1 "*** Running shishito test ***"
+
+	build_dir="$INSTANCES_DIR/$instance_id/builds/current"
+	build_no=$(basename "$(readlink -e "$build_dir")")
+	test_dir="$build_dir/QA/virt/tests-shi-$instance_virt_id"
+	[ -z "$qastats_auth" ] || qastats_params=("--qastats=$qastats_auth")
+	[ -z "$browserstack_auth" ] || browserstack_params=("--browserstack=$browserstack_auth")
+
+	cd "$test_dir"
+	echo "\"shi\" \"--build=$build_no\" \"${browserstack_params[@]}\" \"${qastats_params[@]}\" \"${shishito_params[@]}\""
+	"shi" "--build=$build_no" "${browserstack_params[@]}" "${qastats_params[@]}" "${shishito_params[@]}"
+}
+
+
+
+#--------------------------------------------------------------------------------
+#	Main
+
+export QA_INSTANCE_VIRT=${QA_INSTANCE_VIRT:-0}
+read_configs virt
+
+	# check if we are already running
+prog=$(basename "$0")
+regex="^ *[0-9][0-9]*  *$(echo "/bin/bash" | sed 's/\//\\\//g')[ ]$(echo ".*/$prog" | sed 's/\//\\\//g')(\s|\$)"
+tmp_file=`mktemp`; ps -eopid,command | awk  "/$regex/ {if (\$1 != $$) print \$1}" > "$tmp_file"; pids=$(<"$tmp_file"); rm -f "$tmp_file"
+for pid in $pids; do
+	get_process_env_var "$pid" "QA_INSTANCE" pid_instance
+	get_process_env_var "$pid" "QA_INSTANCE_VIRT" pid_instance_virt
+	if [ "$pid_instance" = "$QA_INSTANCE" -a "$pid_instance_virt" = "$QA_INSTANCE_VIRT" ]; then
+		log "INFO: $prog ($QA_INSTANCE [$QA_INSTANCE_VIRT]) already running"
+		exit 2
+	fi
+done
+
+	# delete old builds
+#TODO find "$INSTANCES_DIR/$QA_INSTANCE/builds" -mindepth 1 -maxdepth 1 -type d -mmin +180 -exec rm -rf '{}' ';' -exec mkdir -p '{}' ';' || true
+
+	# run shishito
+[ "$QA_NO_REPORTING" = y ] && QASTATS_AUTH=''	# we run in parallel, QAStats will be called when all virts complete
+run_tests "$QA_INSTANCE" "$QA_INSTANCE_VIRT" "$BROWSERSTACK_AUTH" "$QASTATS_AUTH" "$@"
+
+RESULT_MESSAGE="$PROG: finished successfully"

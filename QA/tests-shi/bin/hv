@@ -1,0 +1,229 @@
+#!/usr/bin/env bash
+# manage docker containers for hive
+# env. variables:
+#	ETC_HOSTS_UPDATER       -> (opt) program to add/update records in /etc/hosts
+#	                              $ETC_HOSTS_UPDATER $hostname $ip_address
+#	DOCKER_VOLUME_BASE_DIR  -> (opt) where to map DB data, default: $HOME/Docker_volumes/
+#	HIVE_REPO_DIR           -> (opt) hive git repo directory, containing <ROOT>/src/db/
+#	MAIN_JS_FILE            -> (opt) main javascript file to be run by node (default main.js)
+set -e
+
+PROG=`basename $0`
+HELP="$PROG manages hive docker containers.
+Usage:
+	$PROG startdb [<instance-no>] [--fresh]   start docker DB image
+	                                          instance-no can be 0-99
+						  --fresh resets the DB
+	$PROG killdb <instance-name>              stops the container (eg, hive_db03)
+	$PROG makedb                              create a docker DB image
+
+	$PROG startnode [<instance-no>] [--dev]   start docker DB image
+	                                          instance-no can be 0-99
+						  --dev mounts host repo
+	$PROG killnode <instance-name>            stops the container (eg, hive_node03)
+	$PROG makenode                            create a docker nodejs image
+"
+DOCKER_VOLUME_BASE_DIR=${DOCKER_VOLUME_BASE_DIR:-"$HOME/Docker_volumes"}
+MAIN_JS_FILE=${MAIN_JS_FILE:-'xpres.js'}
+[ -n "$HIVE_REPO_DIR" ] || HIVE_REPO_DIR="$(cd "$(dirname "$0")/.." && pwd -P)"
+PG_DATA='/var/lib/pgsql/9.4/data'
+
+
+#--------------------------------------------------------------------------------
+Die() {
+	printf "Error: %s\n" "$*"
+	exit 1
+}
+
+
+#--------------------------------------------------------------------------------
+# validate instance number (should be 0-99)
+# - die on error
+# - set normalized value to out
+# $1 - instance-no to validate
+# $2 - output parameter name
+check_inst_no() {
+	inst_no=$1 out=$2
+	[[ $inst_no =~ ^[0-9][0-9]{0,1}$ ]] || Die "Invalid instance number. Expected 0-99, got $inst_no"
+	inst_no=`printf "%02d" "$inst_no"`
+	eval "$out=\$inst_no"
+}
+
+
+
+#--------------------------------------------------------------------------------
+# check if instance is running, return 0 if it is, 1 otherwise
+# $1 = instance name
+is_instance_running() {
+	local inst_name=$1
+	if  docker ps | tail -n +2| sed -e 's/ *$//' -e 's/.* //' | grep "^$inst_name$" &>/dev/null; then
+		return 0
+	fi
+	return 1
+}
+
+
+#--------------------------------------------------------------------------------
+# create DB docker image
+makedb() {
+	cd "$HIVE_REPO_DIR/src/db"
+	make docker
+}
+
+
+#--------------------------------------------------------------------------------
+# start the DB container hive_dbXX where XX is the instance number
+# volume is mounted on DOCKER_VOLUME_BASE_DIR/hive/$inst_name
+#
+# $x - --fresh 	- if supplied, start the container with "/opt/bin/postgresd --force-create" params
+# $x - <instance-no> (0-99) if not set, 0 is used
+startdb() {
+	local fresh="" param inst_name inst_id inst_ip_addr volume fresh
+	[ $# -le 2 ] || Die "Unexpected parameters $@"
+	inst_no=00
+	for param in "$@"; do
+		if [ "$param" = "--fresh" ]; then
+			fresh=" /opt/bin/postgresd --force-create"
+		else
+			check_inst_no $param inst_no
+		fi
+	done
+	inst_name="hive_db$inst_no"
+
+	volume="$DOCKER_VOLUME_BASE_DIR/hive/$inst_name"
+	mkdir -p "$volume"
+
+	docker kill "$inst_name" &>/dev/null || true
+	docker rm -f "$inst_name" &>/dev/null || true
+	inst_id=$(docker run --name "$inst_name" --hostname "hivedb$inst_no" -v "$volume:$PG_DATA" -d docker.salsitasoft.com/hive-postgres $fresh)
+	inst_ip_addr=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$inst_id")
+	echo "Instance $inst_name ($inst_id) running on $inst_ip_addr"
+
+	if [ -n "$ETC_HOSTS_UPDATER" -a -f "$ETC_HOSTS_UPDATER" -a -x  "$ETC_HOSTS_UPDATER" ]; then
+		"$ETC_HOSTS_UPDATER" "$inst_name" "$inst_ip_addr"
+	fi
+}
+
+
+
+
+#--------------------------------------------------------------------------------
+# stop running container <inst_name>XX where XX is the instance number
+# if not running, just print that fact
+# $1 - instance base name (e.g. hive_db)
+# $2 - instance number (0-99) - if not set, 0 is used
+kill_instance() {
+	local inst_name inst_base_name=$1 inst_no=$2
+	[ $# -le 2 ] || Die "Unexpected parameters $@"
+
+	if [ -n "$inst_no" ]; then
+		check_inst_no $inst_no inst_no
+	else
+		inst_no=00
+	fi
+
+	inst_name="$inst_base_name$inst_no"
+	
+	if  is_instance_running "$inst_name"; then
+		echo docker kill "$inst_name"
+		docker kill "$inst_name"
+	else
+		echo "Container $inst_name is not running"
+	fi
+}
+
+
+#--------------------------------------------------------------------------------
+# stop running instance
+# $1 - instance number (0-99) - if not set, 0 is used
+killdb()   { kill_instance 'hive_db'   "$@"; }
+killnode() { kill_instance 'hive_node' "$@"; }
+
+
+
+#--------------------------------------------------------------------------------
+# create Node docker image
+makenode() {
+	cd "$HIVE_REPO_DIR/src/node"
+	make docker
+}
+
+
+#--------------------------------------------------------------------------------
+# start the node container hive_nodeXX where XX is the instance number
+# check if the DB mode is running, if not, start it too
+# pass DB hostname to the node container
+#
+# $x - --dev 	- if supplied, mount the current repo to /srv/hive
+# $x - <instance-no> (0-99) if not set, 0 is used
+startnode() {
+	local fresh="" param inst_name db_inst_name inst_id inst_ip_addr volume_param add_host_param mount_dev=''
+
+
+	[ $# -le 2 ] || Die "Unexpected parameters $@"
+	inst_no=00
+	for param in "$@"; do
+		if [ "$param" = "--dev" ]; then
+			mount_dev=yes
+		else
+			check_inst_no $param inst_no
+		fi
+	done
+	inst_name="hive_node$inst_no"
+	db_inst_name="hive_db$inst_no"
+
+	if ! is_instance_running "$db_inst_name"; then
+		echo "Starting database"
+		startdb "$inst_no"
+	fi
+
+	db_inst_ip_addr=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$db_inst_name")
+	add_host_param="--add-host=database:$db_inst_ip_addr"
+
+	if [ -n "$mount_dev" ]; then
+		volume_param=" -v $HIVE_REPO_DIR/src/node:/srv/hive"
+	fi
+
+
+	docker kill "$inst_name" &>/dev/null || true
+	docker rm -f "$inst_name" &>/dev/null || true
+	echo "docker run --name \"$inst_name\" --hostname \"$inst_name\" $volume_param $add_host_param -d docker.salsitasoft.com/hive-node /opt/bin/noded \"$MAIN_JS_FILE\""
+	inst_id=$(docker run --name "$inst_name" --hostname "$inst_name" $volume_param $add_host_param -d docker.salsitasoft.com/hive-node /opt/bin/noded "$MAIN_JS_FILE")
+	inst_ip_addr=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$inst_id")
+	echo "Instance $inst_name ($inst_id) running on $inst_ip_addr"
+
+	if [ -n "$ETC_HOSTS_UPDATER" -a -f "$ETC_HOSTS_UPDATER" -a -x  "$ETC_HOSTS_UPDATER" ]; then
+		"$ETC_HOSTS_UPDATER" "$inst_name" "$inst_ip_addr"
+	fi
+}
+
+
+#--------------------------------------------------------------------------------
+# Main
+#--------------------------------------------------------------------------------
+cmd=$1; shift || true
+case "$cmd" in
+	-h|-help|--help)
+		printf "$HELP"
+		;;
+	makedb)
+		makedb "$@"
+		;;
+	startdb)
+		startdb "$@"
+		;;
+	killdb)
+		killdb "$@"
+		;;
+	makenode)
+		makenode "$@"
+		;;
+	startnode)
+		startnode "$@"
+		;;
+	killnode)
+		killnode "$@"
+		;;
+	*)
+		printf "$HELP"
+esac

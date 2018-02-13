@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -e
+
+Die() { printf "Error: %s\n" "$*"; exit 1; }
+
+cd "`dirname $0`"
+
+for i in 00 01 auth; do
+	PGPASSWORD=postgres psql -v ON_ERROR_STOP=1 -h hive_db00 -U postgres test_hive_$i < ../sql/delete-tables.sql
+	PGPASSWORD=postgres psql -v ON_ERROR_STOP=1 -h hive_db00 -U postgres test_hive_$i < ../sql/db-empty.sql
+done
+

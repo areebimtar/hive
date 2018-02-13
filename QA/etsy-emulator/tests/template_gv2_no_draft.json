@@ -1,0 +1,27 @@
+{"_doc": "Template privides empty list of draft listings",
+	"GET": {
+		"/v2/shops/14458117/listings/draft": {
+			"function": "fixed_json",
+			"data": {
+				"body": {
+					"count": 0,
+					"pagination": {
+						"effective_limit": 100,
+						"effective_offset": 0,
+						"effective_page": 1,
+						"next_offset": null,
+						"next_page": null
+					},
+					"params": {
+						"limit": "100",
+						"offset": 0,
+						"page": null,
+						"shop_id": "14458117"
+					},
+					"results": [],
+					"type": "Listing"
+				}
+			}
+		}
+	},
+" vim: set foldmethod=indent foldlevel=2 foldnestmax=3 : ": 1 }

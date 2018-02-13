@@ -1,0 +1,72 @@
+#!/bin/bash
+
+# directories
+export QA_DIR="$HOME/Salsita/hive/QA/tests-shi"		# where the scripts are
+export ETC_DIR="$QA_DIR/etc"
+export INSTANCES_DIR="$HOME/tmp"			# install compiled product here
+export QA_SRV_SESSION_DIR="$QA_DIR/run/sessions"	# allocated bstack resources
+export HIVE_PRODUCT_DIR="$HOME/Salsita/hive"		# compile hive here
+export HIVE_TEST_DIR="$HOME/Salsita/hive/QA"		# copy test cases from here
+export QA_INSTANCE='hive_qa'
+export QA_PROD_DIR='hive'
+
+# downloads
+export PRODUCT_ARTIFACTS="migrations-app.tgz migrations-auth.tgz manager.tgz worker.tgz web.tgz auth.tgz deploy.tgz"
+export TEST_ARTIFACTS="tests-shi.tgz"
+
+# etsy emulator
+export QA_ETSY_HOST='127.0.0.1'
+export QA_ETSY_KEY='TestClientApp1'
+export QA_ETSY_SECRET='TestClientApp1-Secret'
+
+# product configuration
+export TLS_PRIV_KEY="/srv/hive/cert/salsitasoft_com_2017.key"
+export TLS_PUB_KEY="/srv/hive/cert/salsitasoft_com_2017.public.key"
+export TLS_CERTIFICATE="/srv/hive/cert/salsitasoft_com_bundle_2017.crt"
+
+export QA_PRODUCT_HOST='hive_test_00.salsitasoft.com'
+export QA_COOKIES_DOMAIN='hive_test_00.salsitasoft.com'
+export QA_MANDRIL_API_KEY='xxx'
+export QA_GETVELA_MAIL_PASSWORD='xxx'
+export QA_INTERCOM_KEY='xxx'
+
+export QA_PGUSER_ROOT='postgres'
+export QA_PGPASSWORD_ROOT='xxx'
+export QA_PGUSER=hive_qa
+export QA_PGPASSWORD='xxx'
+export QA_DB_AUTH='hive_auth'
+export QA_DB_HIVE='hive'
+export QA_DB_NAMES="$QA_DB_AUTH $QA_DB_HIVE"
+export QA_MIGRATION_SCRIPTS='./migrations-auth ./migrations-app'        # MUST match the QA_DB_NAMES array
+export QA_PGHOST='localhost'
+export QA_PGPORT=5432
+
+export QA_RABBIT_HOST='localhost'
+export QA_RABBIT_USER='xxx'
+export QA_RABBIT_PASSWORD='xxx'
+
+export QA_AWS_IMAGES_ACCESS_KEY_ID='xxx'
+export QA_AWS_IMAGES_SECRET_KEY='xxx'
+export QA_AWS_IMAGES_REGION="us-west-1"
+export QA_AWS_IMAGES_BUCKET_NAME="images-testing.getvela.com"
+
+export QA_S3_USER="$USER@$HOSTNAME"
+
+export QA_SESSION_SECRET_KEY="xxx"
+
+export QA_NODE_BINARY='/opt/node-v8.9.0-linux-x64/bin/node'
+
+# test configuration
+export SHISHITO_ENVIRONMENT=remote
+export QA_WEBDRIVER_URL="http://localhost:4444/wd/hub"
+
+export MAX_PARALLEL_JOBS=4
+export MAX_PARALLEL_INSTANCES=3
+
+export INSTANCE_BASE_PORT=30000
+
+export TEST_DIR_NAMES="tests-shi etsy-emulator"
+export QA_RESTART_ETSY="$QA_DIR/bin/default/restart-etsy"
+
+export QA_USER_ID=`id -u`
+# vim:ft=sh

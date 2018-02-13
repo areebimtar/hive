@@ -1,0 +1,16 @@
+{
+  "exchanges": [
+    { "name": "commands", "type": "fanout" },
+    { "name": "unique-prefix-router", "type": "topic" },
+    { "name": "manager-tasks", "type": "topic" },
+    { "name": "apply-operations", "type": "topic" }
+  ],
+  "queues": [
+    { "name": "commands" }
+  ],
+  "queueBindings": [
+    { "queue": "commands", "exchange": "commands", "pattern": "" }
+  ],
+  "messages": [
+  ]
+}

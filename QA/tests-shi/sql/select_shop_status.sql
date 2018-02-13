@@ -1,0 +1,1 @@
+select name, sync_status, invalid, error from shops where name='GetvelaTest2' order by id;

@@ -1,0 +1,18 @@
+{
+  "count": 0,
+  "results": [],
+  "params": {
+    "shop_id": "14230649",
+    "limit": 25,
+    "offset": 0,
+    "page": null
+  },
+  "type": "Listing",
+  "pagination": {
+    "effective_limit": 25,
+    "effective_offset": 0,
+    "next_offset": null,
+    "effective_page": 1,
+    "next_page": null
+  }
+}

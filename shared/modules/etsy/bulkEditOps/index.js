@@ -1,0 +1,13 @@
+export * as title from './title';
+export * as description from './description';
+export * as tags from './tags';
+export * as materials from './materials';
+export * as quantityInventory from './quantityInventory';
+export * as skuInventory from './skuInventory';
+export * as priceInventory from './priceInventory';
+export * as taxonomy from './taxonomy';
+export * as section from './section';
+export * as photos from './photos';
+export * as variationsInventory from './variationsInventory';
+export * as occasion from './occasion';
+export * as holiday from './holiday';

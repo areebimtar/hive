@@ -1,0 +1,1 @@
+select id, name, last_sync_timestamp from shops where name='GetvelaTest2' order by id;

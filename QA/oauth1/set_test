@@ -1,0 +1,6 @@
+#!/bin/bash
+[ -n "$1" ] || { echo "Error: test name parameter expected 'oath_01'"; exit 1; }
+host=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' etsy 2>/dev/null)
+[ -n "$host" ] || host='service-test'
+curl "http://$host:3000/set_test_id?test_id=$1"
+#curl http://localhost:3000/set_test_id?test_id="$1"

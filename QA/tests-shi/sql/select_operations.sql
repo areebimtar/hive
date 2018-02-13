@@ -1,0 +1,1 @@
+select id, operation, operation_data, state, result from task_queue order by id;

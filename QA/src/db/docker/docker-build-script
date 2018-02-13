@@ -1,0 +1,105 @@
+#!/bin/bash
+# create postgres-9.4 docker image
+set -ex
+PG_DATA='/var/lib/pgsql/9.4/data'
+
+	# initialize postgres
+su - postgres -c "/usr/pgsql-9.4/bin/initdb --locale=en_US.UTF-8 '$PG_DATA'"
+
+
+	# set up access
+cat > "$PG_DATA/pg_hba.conf" <<'EOF'
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+local   all             postgres                                trust
+host    all             hive            10.0.0.0/0              md5
+host    all             postgres        10.0.0.0/0              md5
+EOF
+
+	# db config
+mv "$PG_DATA/postgresql.conf" "$PG_DATA/postgresql.conf.default"
+cat > "$PG_DATA/postgresql.conf" <<'EOF'
+listen_addresses = '*'                  # what IP address(es) to listen on;
+max_connections = 100                   # (change requires restart)
+shared_buffers = 128MB                  # min 128kB
+dynamic_shared_memory_type = posix      # the default is the first option
+log_destination = 'stderr'              # Valid values are combinations of
+logging_collector = on                  # Enable capturing of stderr and csvlog
+log_directory = 'pg_log'                # directory where log files are written,
+log_filename = 'postgresql-%a.log'      # log file name pattern,
+log_truncate_on_rotation = on           # If on, an existing log file with the
+log_rotation_age = 1d                   # Automatic rotation of logfiles will
+log_rotation_size = 0                   # Automatic rotation of logfiles will
+log_line_prefix = '< %m >'              # special values:
+log_timezone = 'GMT'
+datestyle = 'iso, mdy'
+timezone = 'GMT'
+lc_messages = 'en_US.UTF-8'             # locale for system error message
+lc_monetary = 'en_US.UTF-8'             # locale for monetary formatting
+lc_numeric = 'en_US.UTF-8'              # locale for number formatting
+lc_time = 'en_US.UTF-8'                 # locale for time formatting
+default_text_search_config = 'pg_catalog.english'
+EOF
+
+chown postgres:postgres -R "$PG_DATA"
+
+
+
+
+	# create startup script that would
+	# - create the DB instance if needed
+	# - start the DB as postgres
+mkdir -p /opt/bin
+cat > "/opt/bin/postgresd" <<EOF
+#!/bin/bash
+	echo "Running \$0 (\$@)"
+	# initialize DB if needed/required
+if [ "\$1" = "--force-create" -o ! -f "$PG_DATA/postgresql.conf" ]; then
+	echo "Initializing database"
+	set -ex
+	mkdir -p "$PG_DATA"
+	cd "$PG_DATA"
+	rm -rf *
+	tar xf /var/pg-data.tgz
+	chown -R postgres:postgres .
+fi
+
+	# start DB
+exec /usr/sbin/chpst -u postgres:postgres -P /bin/env -i /usr/pgsql-9.4/bin/postgres -D "$PG_DATA"
+
+EOF
+
+
+	# Start DB, create schema, roles...
+su - postgres -c "/usr/pgsql-9.4/bin/postgres -D '$PG_DATA' >/tmp/postgres.log 2>&1" &
+i=20
+while [ $i -gt 0 ]; do
+	sleep 1
+	if echo 'select version from version();' | su - postgres -c psql; then	# is the DB up yet?
+		break
+	fi
+	i=`expr $i - 1`
+done
+
+for db_name in test_hive_00 test_hive_01; do
+	(sed "s/<%DB_NAME%>/$db_name/g" < /create-db-template.sql ; cat /create-db.sql) | su - postgres -c 'psql -v ON_ERROR_STOP=1' || exit 1
+done
+for db_name in test_hive_auth; do
+	(sed "s/<%DB_NAME%>/$db_name/g" < /create-db-template.sql ; cat /create-db-auth.sql) | su - postgres -c 'psql -v ON_ERROR_STOP=1' || exit 1
+done
+
+	# shutdown
+sleep 2
+kill -TERM `pidof postgres`
+i=20
+while pidof postgres; do
+	kill -TERM `pidof postgres`
+	sleep 1
+	i=$((i-1))
+	[ $i -gt 0 ] || break; 
+done
+
+
+	# make a terball to be used at runtime when the db-data volume is not initialized
+cd "$PG_DATA"
+tar czf /var/pg-data.tgz .
+chown postgres:postgres /var/pg-data.tgz

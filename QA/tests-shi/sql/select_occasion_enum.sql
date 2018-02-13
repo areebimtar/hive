@@ -1,0 +1,1 @@
+SELECT property_value FROM products WHERE property_name = 'occasion' AND id NOT IN (SELECT id FROM products WHERE property_name = '_HIVE_is_invalid' and property_value = 'true') ORDER BY property_value;

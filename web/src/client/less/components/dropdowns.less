@@ -1,0 +1,96 @@
+.bulk-edit-dropdown,
+.rw-popup-container .rw-popup {
+  transition-duration: 200ms;
+  transition-property: cubic-bezier(0.93, 0, 0, 1.555);
+  .dropdown(@c-light-grey-2);
+  box-shadow: 0 1px 2px @c-light-grey-2;
+  margin-top: 10px;
+  overflow: initial;
+
+  &::after {
+    .triangle(up, 8px, 4px, @c-white);
+    top: -4px;
+    right: 9px;
+  }
+  &::before {
+    .triangle(up, 9px, 5px, @c-light-grey-2);
+    top: -6px;
+    right: 8px;
+  }
+  ul {
+    padding: 0;
+    li {
+      .dropdown-li();
+      .text-ellipsis;
+      &.rw-state-focus {
+        background: rgba(0,0,0,.05) !important;
+      }
+    }
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: @c-scrollbars;
+  }
+
+  .add-new {
+    border-top: 1px solid #bebebe;
+    padding: 6px;
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    input[type="text"] {
+      width: 140px;
+      margin-right: 7px;
+    }
+    .add-new-input {
+      flex: 1;
+      padding-right: 5px;
+      min-width: 1px;
+
+      input {
+        min-width: 50px;
+        width: 100%;
+      }
+    }
+
+    button {
+      padding: 0 5px;
+      width: 50px;
+      border-radius: 3px;
+      font-size: 11px;
+    }
+  }
+}
+.bulk-edit-dropdown {
+  padding: 2px;
+  width: 210px;
+  right: 0;
+  ul {
+    height: 240px;
+    overflow-y: scroll;
+  }
+}
+
+.bulk-edit-dropdown-parent {
+  .error.tooltip.right {
+    top: 0;
+    left: ~"calc(100% + 10px)";
+  }
+}
+
+// hide the down arrow on read-only dropdowns
+.bulk-edit-dropdown-item.read-only .bulk-edit-dropdown-parent::after {
+  display: none;
+}
+
+.rw-combobox.clean {
+  border: 1px solid #DCDCDC;
+  padding-right: 0px;
+  .rw-select {
+    display: none;
+  }
+}

@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+kill_only=''
+[ "$1" != "--kill" ] || kill_only='--kill'
+
+rm -f /tmp/hive_auth.log  /tmp/hive_manager_00.log  /tmp/hive_web_00.log  /tmp/hive_worker_00.log
+
+pids=()
+
+cd "`dirname "$0"`"
+./restart_node $kill_only 00 & pids+=($!)
+./restart_node $kill_only m00 & pids+=($!)
+./restart_node $kill_only AUTH & pids+=($!)
+sleep 1
+./restart_node $kill_only w00 & pids+=($!)
+
+RESULT=0
+for pid in "${pids[@]}"; do
+	wait "$pid" || RESULT=1
+done
+ps -ef | grep /node
+exit "$RESULT"

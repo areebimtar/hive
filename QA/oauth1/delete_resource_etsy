@@ -1,0 +1,9 @@
+#!/bin/bash
+script_dir=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd -P)
+python3 "$script_dir/get_oauth_etsy.py" \
+	--method delete	\
+	--client-token "$VELA_CLIENT_TOKEN" \
+	--client-secret "$VELA_CLIENT_SECRET" \
+	--user-token "$USER_TOKEN_GEORGY" \
+	--user-secret "$USER_SECRET_GEORGY" \
+	--resource "$1"

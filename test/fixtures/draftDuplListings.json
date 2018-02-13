@@ -1,0 +1,151 @@
+{
+  "count": 2,
+  "results": [
+    {
+      "listing_id": 517821416,
+      "state": "draft",
+      "user_id": 103923743,
+      "category_id": 68888604,
+      "title": "auto_test_listing_02 20170518_171155",
+      "description": "description 20170518_171155",
+      "creation_tsz": 1495120321,
+      "ending_tsz": 1505747521,
+      "original_creation_tsz": 1495120321,
+      "last_modified_tsz": 1495120499,
+      "price": "42.00",
+      "currency_code": "USD",
+      "quantity": 33,
+      "tags": [
+        "test-tag-01",
+        "test-tag-02"
+      ],
+      "category_path": [
+        "Bags and Purses",
+        "Backpack"
+      ],
+      "category_path_ids": [
+        69150455,
+        68888604
+      ],
+      "materials": [
+        "test material 01",
+        "test material 02"
+      ],
+      "shop_section_id": 21447533,
+      "featured_rank": null,
+      "state_tsz": 1495120321,
+      "url": "https://www.etsy.com/listing/517821416/autotestlisting02-20170518171155?utm_source=velainvetoryapi&utm_medium=api&utm_campaign=api",
+      "views": 0,
+      "num_favorers": 0,
+      "shipping_template_id": 40258571152,
+      "processing_min": 1,
+      "processing_max": 2,
+      "who_made": "i_did",
+      "is_supply": "true",
+      "when_made": "2010_2017",
+      "item_weight": null,
+      "item_weight_units": null,
+      "item_length": null,
+      "item_width": null,
+      "item_height": null,
+      "item_dimensions_unit": null,
+      "is_private": false,
+      "recipient": null,
+      "occasion": null,
+      "style": null,
+      "non_taxable": false,
+      "is_customizable": false,
+      "is_digital": false,
+      "file_data": "",
+      "should_auto_renew": false,
+      "language": "en-US",
+      "has_variations": false,
+      "taxonomy_id": 136,
+      "taxonomy_path": [
+        "Bags & Purses",
+        "Backpacks"
+      ],
+      "used_manufacturer": false
+    },
+    {
+      "listing_id": 517821416,
+      "state": "draft",
+      "user_id": 103923743,
+      "category_id": 68888604,
+      "title": "auto_test_listing_01 20170518_171155",
+      "description": "description 20170518_171155",
+      "creation_tsz": 1495120320,
+      "ending_tsz": 1505747520,
+      "original_creation_tsz": 1495120320,
+      "last_modified_tsz": 1495120503,
+      "price": "42.00",
+      "currency_code": "USD",
+      "quantity": 33,
+      "tags": [
+        "test-tag-01",
+        "test-tag-02"
+      ],
+      "category_path": [
+        "Bags and Purses",
+        "Backpack"
+      ],
+      "category_path_ids": [
+        69150455,
+        68888604
+      ],
+      "materials": [
+        "test material 01",
+        "test material 02"
+      ],
+      "shop_section_id": 21447533,
+      "featured_rank": null,
+      "state_tsz": 1495120320,
+      "url": "https://www.etsy.com/listing/517821414/autotestlisting01-20170518171155?utm_source=velainvetoryapi&utm_medium=api&utm_campaign=api",
+      "views": 0,
+      "num_favorers": 0,
+      "shipping_template_id": 40258571152,
+      "processing_min": 1,
+      "processing_max": 2,
+      "who_made": "i_did",
+      "is_supply": "true",
+      "when_made": "2010_2017",
+      "item_weight": null,
+      "item_weight_units": null,
+      "item_length": null,
+      "item_width": null,
+      "item_height": null,
+      "item_dimensions_unit": null,
+      "is_private": false,
+      "recipient": null,
+      "occasion": null,
+      "style": null,
+      "non_taxable": false,
+      "is_customizable": false,
+      "is_digital": false,
+      "file_data": "",
+      "should_auto_renew": false,
+      "language": "en-US",
+      "has_variations": false,
+      "taxonomy_id": 136,
+      "taxonomy_path": [
+        "Bags & Purses",
+        "Backpacks"
+      ],
+      "used_manufacturer": false
+    }
+  ],
+  "params": {
+    "shop_id": "14230649",
+    "limit": 25,
+    "offset": 0,
+    "page": null
+  },
+  "type": "Listing",
+  "pagination": {
+    "effective_limit": 25,
+    "effective_offset": 0,
+    "next_offset": null,
+    "effective_page": 1,
+    "next_page": null
+  }
+}

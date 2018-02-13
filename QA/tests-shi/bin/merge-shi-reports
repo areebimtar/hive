@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Send a slack post
+
+set -e; script_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")"); . "$script_dir/../lib/functions.sh"
+
+read_configs
+
+"$script_dir/../lib/merge-shi-reports.py" "$@"
+
+RESULT_MESSAGE="$PROG: finished successfully"

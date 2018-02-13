@@ -1,0 +1,20 @@
+{
+  "channel": "shopify",
+  "db": {
+    "name": "db1",
+    "url": "postgres://hive:***@<hostname>:5432/hive"
+  },
+  "vela": {
+    "user": "health-check1",
+    "password": "***",
+    "shop_name": "Vela Health-Check Store"
+  },
+  "listing1": {
+    "title_start": "TEST_001",
+    "state": "Published"
+  },
+  "listing2": {
+    "title_start": "TEST_002",
+    "state": "Published"
+  }
+}

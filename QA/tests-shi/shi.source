@@ -1,0 +1,14 @@
+#!/bin/bash
+
+script_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")")
+virt_suffix=''
+if [[ "$script_dir" =~ -[0-9][0-9]*$ ]]; then
+	virt_suffix=-${script_dir##*-}
+fi
+	# generate test data
+for i in `seq 2 100`; do
+	num=`printf "%02d" $i`
+	if [ -e "../etsy-emulator$virt_suffix/tests/generators/gen_listings_${num}.py" ]; then
+		"../etsy-emulator$virt_suffix/tests/generators/gen_listings_${num}.py" > "../etsy-emulator$virt_suffix/tests/listings_${num}_active.json"
+	fi
+done

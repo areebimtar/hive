@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -e
+
+export VIRTUAL_ENV=$HOME/Salsita/shishito/venv
+export PYTHONPATH=$HOME/Salsita/shishito
+export PATH=/opt/firefox:$PATH
+script_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")")
+cd "$script_dir/.."
+"$VIRTUAL_ENV/bin/python3" -i start_py.py
+

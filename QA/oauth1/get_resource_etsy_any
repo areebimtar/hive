@@ -1,0 +1,19 @@
+#!/bin/bash
+if [ -z "$3" ]; then
+	echo "$0 <token> <secret> <resource>   # /listings/275432668?includes=User,Shop,Section,Images,MainImage,Translations,Manufacturers,Variations&language=en "; exit 1
+fi
+token=$1
+secret=$2
+resource=$3
+script_dir=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd -P)
+#VIRTUAL_ENV="$script_dir/venv" PATH="$script_dir/venv/bin:$PATH" "$script_dir/venv/bin/python3" "$script_dir/get_oauth_etsy.py" \
+python3 "$script_dir/get_oauth_etsy.py" \
+	--client-token "$VELA_CLIENT_TOKEN" \
+	--client-secret "$VELA_CLIENT_SECRET" \
+	--user-token "$token"	\
+	--user-secret "$secret"	\
+	--resource "$resource" \
+	--method get	\
+	"${res[@]}"
+
+#--authorize

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Load hive variables, start pycharm
+
+[[ "$1" != "-h" && "$1" != "--help" ]] || { echo "`basename $0` - load variables from ../etc and starts pycharm"; exit 1; }
+set -e; script_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")")
+
+. "$script_dir/../etc/qa.cfg"
+. "$script_dir/../etc/virt0.cfg"
+pycharm &

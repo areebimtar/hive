@@ -1,0 +1,40 @@
+{"_doc": "In this scenario last_updated_tsz for shop is set  past enough in order to trigger sync and shop is marked in Vacation mode",
+
+	"include_jsons": [
+		"template_gv2_shop.json",
+		"template_gv2_single_draft.json",
+		"template_gv2_no_active.json",
+		"template_gv2_no_inactive.json"
+	],
+
+	"GET": {
+		"/v2/users/106321453/shops": {
+			"data": {
+				"body": {
+					"results": [
+						{
+							"last_updated_tsz": 1408783000,
+							"is_vacation": true,
+							"vacation_message": "Back in February\r\n"
+						}
+					]
+				}
+			}
+		},
+
+		"/v2/shops/14458117": {
+			"data": {
+				"body": {
+					"results": [
+						{
+							"last_updated_tsz": 1408783000,
+							"is_vacation": true,
+							"vacation_message": "Back in February\r\n"
+						}
+					]
+				}
+			}
+		}
+	},
+
+" vim: set foldmethod=indent foldlevel=2 foldnestmax=3 : ": 1 }

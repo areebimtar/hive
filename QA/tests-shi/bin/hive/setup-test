@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Migrate existing (empty) database to the level of the current build
+
+[[ "$1" != "-h" && "$1" != "--help" ]] || { echo "`basename $0` runs postgres database migration script from the current build."; exit 1; }
+set -e; s_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")"); . "$s_dir/../../lib/functions.sh" "$s_dir"
+
+export QA_INSTANCE_VIRT=${QA_INSTANCE_VIRT:-0}
+read_configs virt
+
+setup-db-postgres
+create-postgres-fdw
+setup-rabbitmq
+
+migrate-db
+
+restart-etsy
+
+
+RESULT_MESSAGE="$PROG: finished successfully"

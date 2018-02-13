@@ -1,0 +1,282 @@
+#!/usr/bin/env bash
+
+function show_help {
+	echo "Usage: $0 [ -s | -m ] [ -w ] [ -f <sql_file> ] [ -h ]
+    Tool for migrating supported sql files to current DB schema.
+    Note: supported DBs are hive and auth.
+
+    Operations:
+	-m	Perform migration operation using migration startpoint files
+		and generate new startpoint files for next migration.
+		Migration startpoint file is expected to correspond to previous
+		version of DB - the same schema  as SQL files before migration
+
+	-s	Generate new migration startpoint files only - skeleton of the current DBs
+		These files are needed for the next migration
+
+    Operation options:
+	-w	Rewrite original files after successfull operation.
+		If not specified, only file(s) \"<filename>_migrated\" will be
+		created and original files will remain intact.
+
+    Migration operation options:
+	-f <filename>	SQL file to migrate
+			If not specified, all supported files are migrated
+
+    Help:
+	-h show this help"
+}
+
+[ "$1" = "-h" ] && { show_help ; exit 0; }
+
+set -e; script_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")");. "$script_dir/../../lib/functions.sh"
+
+(( ${BASH_VERSION%%.*} < 4 )) && die "You need bash version 4+"
+
+# Execute sql that is read from stdin
+function run_sql_query {
+	local database=$1
+	PGPASSWORD=$QA_PGPASSWORD psql -t --no-align --no-psqlrc -v ON_ERROR_STOP=1 -h "$QA_PGHOST" -p "$QA_PGPORT" -U "$QA_PGUSER" "$database"
+}
+
+# Run psql file under specified user and password, parameters: username password sql_file
+run_sql_file () {
+	local database=$1 user=$2 password=$3 sql_file=$4
+
+	PGPASSWORD=$password psql -v ON_ERROR_STOP=1 -h "$QA_PGHOST" -p "$QA_PGPORT" -U "$user" "$database" < "$sql_file"
+}
+
+
+# Get sql commands for truncating all tables, return it in stdout
+function get_truncate_tables_sql {
+	local key=$1 return_val tables table
+
+	tables=`echo "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name;" | run_sql_query "${database_name[$key]}"`
+	return_val=""
+	for table in $tables; do
+	    return_val=$return_val"TRUNCATE $table CASCADE;\n"
+	done
+	echo "$return_val"
+}
+
+
+function get_migrations_hash {
+	local key=$1 migrations
+	
+	migrations=`echo "SELECT name FROM pgmigrations ORDER BY id;" | run_sql_query "${database_name[$key]}"`
+	echo "$migrations" | md5sum | head -c32
+}
+
+# Copy README section from original file to new file
+# Parameters: src - original file, dest - new file
+function copy_readme {
+	local src="$1" dest="$2" readme_start="^-- README" readme_end="^-- END OF README --" readme_text
+
+	readme_text=`sed "/$readme_start/,/$readme_end/!d" $src`
+	if [ -n "$readme_text" ]; then
+	    (echo "$readme_text" ; echo) >> $dest
+	fi
+}
+
+# Generate startpoint file - skeleton of the database
+function prepare_startpoint_files {
+	local filename_hive="${startpoint_file[hive]}${migrated_suffix}"
+	local filename_auth="${startpoint_file[hive_auth]}${migrated_suffix}"
+	log1 "Preparing startpoint files ${startpoint_file[hive]} and ${startpoint_file[hive_auth]}"
+
+	files+=("${startpoint_file[hive]}")
+	files+=("${startpoint_file[hive_auth]}")
+	"$QA_DIR/bin/setup-db-postgres"
+	"$QA_DIR/bin/hive/create-postgres-fdw"
+	"$QA_DIR/bin/hive/migrate-db"
+	echo "-- Startpoint file for migration of listings files, generated using script `basename "$0"`, migrations hash: `get_migrations_hash hive`" > "$filename_hive"
+	echo "-- Startpoint file for migration of auth files, generated using script `basename "$0"`, migrations hash: `get_migrations_hash hive_auth`" > "$filename_auth"
+	"$QA_DIR/bin/sqldump" >> "$filename_hive"
+	log "Generated: $filename_hive"
+	"$QA_DIR/bin/sqldump" AUTH >> "$filename_auth"
+	log "Generated: $filename_auth"
+}
+
+
+# Migrate file - first check, whether it is supported, then call the proper migration
+# Parameters - full_filename - name of the file to migrate
+function migrate_file {
+	local full_filename="$1" filename="`basename $1`"
+	if [[ "$filename" =~ ^listings_.*\.sql$ ]]; then
+		migrate_listing_file "$full_filename"
+	elif [[ "$filename" =~ ^auth_.*\.sql$ ]]; then
+		migrate_auth_file "$full_filename"
+	elif [ "$filename" = "$cleanup_file_hive" ]; then
+		migrate_cleanup_file hive "$full_filename"
+	elif [ "$filename" = "$cleanup_file_auth" ]; then
+		migrate_cleanup_file hive_auth "$full_filename"
+	else
+		die "Unsupported file $filename"
+	fi
+}
+
+# Migrate one listings file
+# Parameters: listing_file - name of the file to migrate
+function migrate_listing_file {
+	local src dest sql_commands key=hive
+	src="$1"
+	dest="${src}${migrated_suffix}"
+
+	files+=("$src")
+	log1 "Migrating `basename "$src"` to `basename "$dest"`"
+	[[ -r "${startpoint_file[$key]}" ]] || die "Migration startpoint file ${startpoint_file[$key]} not found."
+
+	"$QA_DIR/bin/setup-db-postgres"
+	"$QA_DIR/bin/hive/create-postgres-fdw"
+	run_sql_file "${database_name[$key]}" "$QA_PGUSER_ROOT" "$QA_PGPASSWORD_ROOT" "${startpoint_file[$key]}"
+	run_sql_file "${database_name[$key]}" "$QA_PGUSER" "$QA_PGPASSWORD" "$src"
+	"$QA_DIR/bin/hive/migrate-db"
+	echo "-- Test data listings file, migrated using script `basename "$0"`, migrations hash: `get_migrations_hash $key`" > "$dest"
+	copy_readme "$src" "$dest"
+	"$QA_DIR/bin/sqldump" --data-only >> "$dest"
+
+	# Remove setting of row_security
+	sed -i "/SET row_security/d" "$dest"
+
+	# Insert the beginning of the transaction and truncating all tables in proper place
+	sql_commands='BEGIN TRANSACTION;\n'"`get_truncate_tables_sql $key`"
+	sed -i "/SET search_path/a $sql_commands" "$dest"
+
+	# Add commit of transaction at the end of the file
+	echo "COMMIT;" >> "$dest"
+}
+
+function migrate_auth_file {
+	local src dest sql_commands key=hive_auth
+	src="$1"
+	dest="${src}${migrated_suffix}"
+
+	files+=("$src")
+	log1 "Migrating `basename "$src"` to `basename "$dest"`"
+	[[ -r "${startpoint_file[$key]}" ]] || die "Migration startpoint file ${startpoint_file[$key]} not found."
+
+	"$QA_DIR/bin/setup-db-postgres"
+	"$QA_DIR/bin/hive/create-postgres-fdw"
+	run_sql_file "${database_name[$key]}" "$QA_PGUSER_ROOT" "$QA_PGPASSWORD_ROOT" "${startpoint_file[$key]}"
+	run_sql_file "${database_name[$key]}" "$QA_PGUSER" "$QA_PGPASSWORD" "$src"
+	"$QA_DIR/bin/hive/migrate-db"
+	echo "-- Test data auth file, migrated using script `basename "$0"`, migrations hash: `get_migrations_hash $key`" > "$dest"
+	copy_readme "$src" "$dest"
+	"$QA_DIR/bin/sqldump" AUTH --data-only >> "$dest"
+
+	# Remove setting of row_security
+	sed -i "/SET row_security/d" "$dest"
+
+	# Insert the beginning of the transaction and truncating all tables in proper place
+	sql_commands='BEGIN TRANSACTION;\n'"`get_truncate_tables_sql $key`"
+	sed -i "/SET search_path/a $sql_commands" "$dest"
+
+	# Add commit of transaction at the end of the file
+	echo "COMMIT;" >> "$dest"
+}
+
+
+# Migrate DB cleanup file
+# Parameters: cleanup_file - name of the cleanup file to migrate
+function migrate_cleanup_file {
+	local key=$1 src="$2" dest sql_commands
+	dest="${src}${migrated_suffix}"
+	files+=("$src")
+	log1 "Migrating `basename "$src"` to `basename "$dest"`"
+	"$QA_DIR/bin/setup-db-postgres"
+	"$QA_DIR/bin/hive/create-postgres-fdw"
+	run_sql_file "${database_name[$key]}" "$QA_PGUSER_ROOT" "$QA_PGPASSWORD_ROOT" "${startpoint_file[$key]}"
+	"$QA_DIR/bin/hive/migrate-db"
+	echo "-- Cleanup data file, migrated using script `basename "$0"`, migrations hash: `get_migrations_hash "$key"`" > "$dest"
+	copy_readme "$src" "$dest"
+	# Add truncating all tables wrapped in transaction
+	sql_commands='BEGIN TRANSACTION;\n'"`get_truncate_tables_sql "$key"`"'COMMIT;\n'
+	sed -i -e "\$a$sql_commands" "$dest"
+}
+
+read_configs
+check_variables QA_DIR QA_INSTANCE QA_PGPASSWORD QA_PGUSER QA_PGHOST QA_PGPORT QA_PGUSER_ROOT QA_PGPASSWORD_ROOT
+
+declare -A startpoint_file
+startpoint_file[hive]="$QA_DIR/sql/migration_startpoint_hivedb.sql"
+startpoint_file[hive_auth]="$QA_DIR/sql/migration_startpoint_authdb.sql"
+
+migrated_suffix=_migrated
+cleanup_file_hive="clean_db_00.sql"
+cleanup_file_auth="clean_db_auth.sql"
+
+rewrite=false
+files=()
+
+declare -A database_name
+database_name[hive]="${QA_INSTANCE}_0_${QA_DB_HIVE}"
+database_name[hive_auth]="${QA_INSTANCE}_0_${QA_DB_AUTH}"
+
+export QA_INSTANCE_VIRT=0
+
+
+# Process parameters
+[ "$#" -eq 0 ] && (show_help; die "Invalid parameters")
+
+while getopts "smwf:h" opt; do
+	case "${opt}" in
+		s)
+			[ -n "$operation" ] && (show_help ; die "Choose either -s or -m parameter")
+			operation=startpoint
+			;;
+		m)
+			[ -n "$operation" ] && (show_help ; die "Choose either -s or -m parameter")
+			operation=migrate
+			;;
+		w)
+			rewrite=true
+			;;
+		f)
+			filename=${OPTARG}
+			;;
+		*)
+			show_help
+			die "Invalid parameters"
+			;;
+	esac
+done
+
+# Stop hive
+log1 "Stopping HIVE to prevent changes in DB"
+$QA_DIR/bin/hive/restart-product --kill
+
+if [ "$operation" = "startpoint" ]; then
+	log1 "Preparing new startpoint files"
+
+	prepare_startpoint_files
+elif [ "$operation" = "migrate" ]; then
+	if [ -n "$filename" ]; then
+		log1 "Migrating file $filename"
+		[ -r "$filename" ] || die "File not found: $filename"
+		migrate_file "$filename"
+	else
+		log1 "Migrating all supported files"
+		for listing_file in "$QA_DIR"/sql/listings_*.sql; do
+			migrate_listing_file "$listing_file"
+		done
+		for auth_file in "$QA_DIR"/sql/auth_*.sql; do
+			migrate_auth_file "$auth_file"
+		done
+		migrate_cleanup_file hive "$QA_DIR/sql/$cleanup_file_hive"
+		migrate_cleanup_file hive_auth "$QA_DIR/sql/$cleanup_file_auth"
+	fi
+
+	log1 "Preparing new startpoint files"
+	prepare_startpoint_files
+fi
+
+if $rewrite; then
+	log1 "Rewriting original files"
+	for to_file in "${files[@]}"; do
+		from_file="${to_file}${migrated_suffix}"
+		log1 "  `basename "$from_file"` -> `basename "$to_file"`"
+		mv -f "$from_file" "$to_file"
+	done
+fi
+
+RESULT_MESSAGE="$PROG: finished successfully"

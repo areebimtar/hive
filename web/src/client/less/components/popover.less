@@ -1,0 +1,79 @@
+.popover-widget {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  .popover {
+    z-index: 100;
+    padding: 60px;
+    text-align: center;
+    position: absolute;
+    display: none;
+    background: @c-white;
+    border: 1px @c-light-grey-2 solid;
+    border-radius:5px;
+    text-align: center;
+    box-shadow: 0 1px 2px @c-light-grey-2;
+    color: @c-dark-gray-text;
+
+    img {
+      width: 156px;
+      margin: 0 auto;
+    }
+
+    .popover-title {
+      font-size: 14px;
+      margin-top: 30px;
+    }
+
+    .popover-paragraph {
+      margin-top: 15px;
+      font-size: 12px;
+      min-width: 200px;
+      line-height: 18px;
+    }
+
+    // positioning for popover and the arrow based on top or bottom, left or right
+    &.top {
+      top: 38px;
+
+      &::after {
+        .triangle(up, 10px, 7px, @c-white);
+        top: -7px;
+      }
+
+      &::before {
+        .triangle(up, 11px, 8px, @c-light-grey-2);
+        top: -8px;
+      }
+    }
+
+
+
+    &.left {
+      left: -20px;
+      &::after {
+        left: 15px;
+      }
+
+      &::before {
+        left: 14px;
+      }
+    }
+
+    &.right {
+      right: -18px;
+      &::after {
+        right: 15px;
+      }
+
+      &::before {
+        right: 14px;
+      }
+    }
+  }
+
+  &:hover .popover {
+    display: block;
+  }
+}

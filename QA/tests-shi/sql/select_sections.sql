@@ -1,0 +1,1 @@
+select id, shop_id, section_id, value from shop_sections order by id;

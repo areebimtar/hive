@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+[[ "$1" != "-h" && "$1" != "--help" ]] || { echo "Run SQL client. Usage: `basename $0` [<sql_file>] [AUTH]"; exit 1; }
+set -e; script_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")")
+
+Die() { printf "Error: %s\n" "$*"; exit 1; }
+
+#--------------------------------------------------------------------------------
+# Run psql file
+run_sql() {
+	local host=$1 port=$2 user=$3 pass=$4 db_name=$5 sql_file=$6
+
+	if [ -n "$sql_file" ]; then
+		PGPASSWORD=$pass psql -v ON_ERROR_STOP=1 -h "$host" -p "$port" -U "$user" "$db_name" < "$sql_file"
+	else
+		LESS=-SqgimnqR PGPASSWORD=$pass psql -v ON_ERROR_STOP=1 -h "$host" -p "$port" -U "$user" "$db_name"
+	fi
+}
+
+#--------------------------------------------------------------------------------
+# Main
+
+	# read config
+for cfg_file in qa.cfg virt0.cfg; do
+. "$script_dir/../etc/$cfg_file" &>/dev/null || { log "WARNING: config file '$script_dir/../etc/$cfg_file' not found"; }
+done
+	# parse params
+db_instance='HIVE'; sql_file=''
+for param in "$@"; do
+	if [ "$param" = 'AUTH' ]; then
+		db_instance='AUTH'
+	else
+		sql_file=$param
+	fi
+done
+	# check variables
+QA_PGDATABASE="QA_PGDATABASE_$db_instance"; QA_PGDATABASE=${!QA_PGDATABASE}
+for param in QA_PGHOST QA_PGPORT QA_PGUSER QA_PGPASSWORD QA_PGDATABASE; do
+	[ -n "${!param}" ] || Die "Env variable '$param' is not defined"
+done
+	# run sql
+run_sql "$QA_PGHOST" "$QA_PGPORT" "$QA_PGUSER" "$QA_PGPASSWORD" "$QA_PGDATABASE" "$sql_file"

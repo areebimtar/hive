@@ -1,0 +1,29 @@
+{
+  "db": {
+    "name": "db1",
+    "host": "localhost",
+    "port": 5432,
+    "database": "hive",
+    "user": "hive",
+    "logQueries": true,
+    "slowQueriesMinDuration": 2500
+  },
+  "logging": {
+    "consoleLevel": "debug",
+    "loggly": {
+      "logLevel": "info",
+      "token": false,
+      "serverType": "manager",
+      "velaEnvironment": "unspecified"
+    }
+  },
+  "manager": {
+    "dailyQuotaReserve": 20,
+    "rateLimitPerSecond": 30,
+    "APIPort": 1235
+  },
+  "rabbitmq": {
+    "uri": "amqp://user1:pass1@localhost/vela"
+  }
+}
+

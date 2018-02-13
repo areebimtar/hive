@@ -1,0 +1,52 @@
+{"_doc": "In this scenario Etsy returns listings with can_write_innventory=true and false for two different listings, to simulate Retail&Wholesale feature",
+
+	"include_jsons": [
+		"template_gv2_shop.json",
+		"template_gv2_active_generated.json",
+		"template_gv2_no_draft.json",
+		"template_gv2_no_inactive.json",
+		"template_gv2_delete_attributes.json"
+	],
+
+	"GET": {
+		"/v2/shops/14458117/listings/active": {
+			"data": {
+				"results_data": [
+					{ "can_write_inventory": true },
+					{ "can_write_inventory": false }
+				]
+			}
+		},
+
+		"/v2/listings/([0-9]+)": {
+			"function": "external_json_list",
+			"data": {
+				"file": "listings_15_active.json"
+			}
+		}
+	},
+
+	"PUT": {
+		"/v2/listings/([0-9]+)/inventory": {
+			"function": "fixed_json",
+			"data": {
+				"body": {
+					"count": 1,
+					"results": { },
+					"type": "ListingInventory"
+				}
+			}
+		},
+
+		"/v2/listings/([0-9]+)/attributes/.*": {
+			"function": "fixed_json",
+			"data": {
+				"body": {
+					"count": 1,
+					"results": [ { } ],
+					"type": "PropertyValue"
+				}
+			}
+		}
+	}
+}

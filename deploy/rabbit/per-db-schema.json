@@ -1,0 +1,21 @@
+{
+  "exchanges": [],
+  "queues": [
+    { "name": "apply-operations", "options": { "durable": true, "arguments": { "x-dead-letter-exchange": "", "x-dead-letter-routing-key": "apply-operations-wait" } } },
+    { "name": "apply-operations-wait", "options": { "durable": true, "arguments": { "x-dead-letter-exchange": "", "x-dead-letter-routing-key": "apply-operations", "x-message-ttl": 1000 } } },
+    { "name": "check-shop-sync", "options": { "durable": true, "arguments": { "x-dead-letter-exchange": "", "x-dead-letter-routing-key": "check-shop-sync.delay" } } },
+    { "name": "check-shop-sync.delay", "options": { "durable": true, "arguments": { "x-dead-letter-exchange": "", "x-dead-letter-routing-key": "check-shop-sync", "x-message-ttl": 300000 } } },
+    { "name": "manager-tasks" },
+
+    { "name": "schedule-shop-sync", "options": { "durable": true, "arguments": { "x-dead-letter-exchange": "", "x-dead-letter-routing-key": "schedule-shop-sync-wait" } } },
+    { "name": "schedule-shop-sync-wait", "options": { "durable": true, "arguments": { "x-dead-letter-exchange": "", "x-dead-letter-routing-key": "schedule-shop-sync", "x-message-ttl": 300000 } } }
+
+  ],
+  "queueBindings": [],
+  "exchangeBindings": [],
+  "messages": [
+    { "queue": "check-shop-sync", "content": {}, "options": { "persistent": true } },
+
+    { "queue": "schedule-shop-sync", "content": {}, "options": { "persistent": true } }
+  ]
+}

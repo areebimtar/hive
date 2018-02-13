@@ -1,0 +1,17 @@
+.enableAccessMixin(@feature-name) {
+  .enable-@{feature-name} .restrict-access.@{feature-name} {
+    display: block;
+  }
+
+  .enable-@{feature-name} .suppress-access.@{feature-name} {
+    display: none;
+  }
+}
+
+.restrict-access {
+  display: none;
+}
+
+// HOW TO USE: if we have a feature flag for occasionUI, then we'd have the following line uncommented
+// .enableAccessMixin(occasion-ui);
+

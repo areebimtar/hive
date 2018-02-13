@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# product specific test configuration
+# - generate emulator data
+
+[[ "$1" != "-h" && "$1" != "--help" ]] || { echo "`basename $0` prepare hive tests - generate data"; exit 1; }
+[ "$1" = '--virtual' ] && exit 0;	# no need to configure virtual instances
+set -e; s_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")"); . "$s_dir/../../lib/functions.sh" "$s_dir"
+
+read_configs
+
+	# generate test data
+express_test_dir="$INSTANCES_DIR/$QA_INSTANCE/builds/current/QA/etsy-emulator/tests"
+for i in `seq 2 100`; do
+	num=`printf "%02d" $i`
+	if [ -e "$express_test_dir/gen_listings_${num}.py" ]; then
+		echo "$express_test_dir/gen_listings_${num}.py > $express_test_dir/listings_${num}_active.json"
+		"$express_test_dir/gen_listings_${num}.py" > "$express_test_dir/listings_${num}_active.json"
+	fi
+done
+
+RESULT_MESSAGE="$PROG: finished successfully"
+

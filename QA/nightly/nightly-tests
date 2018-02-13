@@ -1,0 +1,400 @@
+#!/bin/bash
+#
+# Script to run nightly tests of hive application
+# Usage: 
+#	nightly-tests [ -f ]
+#                       -f               - does not check versions, runs test against $QA_PRODUCT_DIR (same as QA_FAST_TEST=y var.)
+#
+# Components:
+# +-------------------+           +-------------------+
+# |  Control script   |       +-->|  Selenium server  |
+# +----------+--------+      /    +----+--------------+
+#            |              /          |
+#            v             /           v
+#       +-----------+     /        +--------+           +-----------------+
+#       | Shishito  |----+         |  Hive  +---------->|  Etsy-emulator  |
+#       +-----------+              +--------+           +-----------------+
+#                                  /       \
+#                                 v         v
+#                         +----------+      +----------+
+#                         | Hive DB1 |      | Hive DB2 |
+#                         +----------+      +----------+
+#
+#
+#
+# Control script nightly-tests (this) 
+#	- updates test git repo area to the newest test version
+#	- checks version of the product repository
+#	- if tests and hive have not been updated since the last testing,  exit - nothing to do
+#	- (re)starts selenium server (docker)
+#	- (re)starts Etsy simulator  (docker)
+#	- starts node/Hive (if needed) (node)
+#	- starts DB (if needed)  (postgres)
+#	- runs Shishito test harness (python-selenium), which:
+#		- For each test case:
+#			- resets the DBs
+#			- sets appropriate test case for Etsy simulator
+#			- binds to the Selenium server and activates a Web browser
+#			- the Shishito->Selenium controlled web browser connects to Hive, performs a test scenario
+#			- Shishito verifies the results (web page, database data, ....)
+#		- uploads test results to TestRail
+#		- //Sends Slack notifications TBD
+#
+
+
+
+
+set -e
+
+#--------------------------------------------------------------------------------
+# return 0 if the current test/prod versions have been tested already, 1 otherwise
+# $1 prod_version git commit Id
+# $2 test_version git commit Id
+already_tested() {
+	local prod_version=$1 test_version=$2 last_prod_version last_test_version
+
+	[ -f "$PROD_VERSION_FILE" ] || return 1
+	[ -f "$TEST_VERSION_FILE" ] || return 1
+
+	last_prod_version=`cat "$PROD_VERSION_FILE"`
+	[ "$last_prod_version" = "$prod_version" ] || return 1
+	last_test_version=`cat "$TEST_VERSION_FILE"`
+	[ "$last_test_version" = "$test_version" ] || return 1
+	
+	return 0
+}
+
+#--------------------------------------------------------------------------------
+update_test_repo() {
+	(cd "$TEST_REPO_DIR" && git pull)
+}
+
+#--------------------------------------------------------------------------------
+get_sum() {
+	local product_dir=$1 result_var=$2 result
+	result=$(cd "$product_dir" && find . -type f -print0 | xargs -0 md5sum  | sort | md5sum)
+	eval "$result_var=\$result"
+}
+
+#--------------------------------------------------------------------------------
+get_commit() {
+	local repo=$1 result_var=$2 result
+	result=$(cd "$1" && git log -1 --format=%H)
+	eval "$result_var=\$result"
+}
+
+#--------------------------------------------------------------------------------
+save_last_run() {
+	local prod_version=$1 test_version=$2
+	[ -d "$CONTROL_DATA_DIR" ] || mkdir -p "$CONTROL_DATA_DIR"
+	
+	echo "$prod_version" > "$PROD_VERSION_FILE"
+	echo "$test_version" > "$TEST_VERSION_FILE"
+}
+
+
+#--------------------------------------------------------------------------------
+# (re)starts docker container, returns IP address
+# $1 image name
+# $2 container name
+# $3 result_var - name of the variable to set IP address to
+# $4 port binding (optional) "<host>:<virtual>"
+# $5 volume (optional) "<host>:<virtual>"
+restart_docker() {
+	local image=$1 inst_name=$2 result_var=$3 ports=$4 volumes=$5 vol_param=() port_param=() inst_id inst_ip_addr=''
+
+	if [ "$QA_FAST_TEST" = 'y' ]; then
+		if docker ps | grep " $inst_name\$"  > /dev/null; then
+			inst_ip_addr=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$inst_name")
+		fi
+	fi
+
+	if [ -z "$inst_ip_addr" ]; then
+		docker stop "$inst_name" &>/dev/null || true
+		docker rm "$inst_name" &>/dev/null || true
+
+		[ -z "$ports" ]   || port_param=("-p" "$ports")
+		[ -z "$volumes" ] || vol_param=("-v" "$volumes")
+		inst_id=$(docker run --name "$inst_name" --hostname "$inst_name" "${port_param[@]}" "${vol_param[@]}" -d "$image")
+		inst_ip_addr=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$inst_id")
+		sleep 8
+	fi
+	eval "$result_var=\$inst_ip_addr"
+}
+
+
+#--------------------------------------------------------------------------------
+# source config file - namely DB credentials
+source_cfg() {
+	local script_dir prog
+	script_dir=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd -P)
+	prog=`basename "$0"`
+
+	. "$script_dir/$prog.cfg"
+}
+
+
+#--------------------------------------------------------------------------------
+# Create test hive-auth config file
+configure_auth() {
+cat > "$QA_PRODUCT_DIR_AUTH/dist/auth/config.json" <<-EOF
+	{
+	    "cookiesDomain": "$QA_COOKIES_DOMAIN",
+	    "cookieExpiresIn": $QA_COOKIE_EXPIRES_IN,
+	    "webUrl": "https://$QA_PRODUCT_HOST_00:$QA_PRODUCT_PORT_00",
+	    "httpPort": $QA_PRODUCT_PORT_AUTH,
+	    "auth": {
+	        "scheme": "https",
+	        "host": "$QA_PRODUCT_HOST_AUTH",
+	        "port": $QA_PRODUCT_PORT_HTTPS_AUTH
+	    },
+	    "db": {
+	      "host": "$QA_PGHOST_AUTH",
+	      "port": $QA_PGPORT_AUTH,
+	      "database": "$QA_PGDATABASE_AUTH",
+	      "user": "$QA_PGUSER_AUTH",
+	      "password": "$QA_PGPASSWORD_AUTH",
+	      "logQueries": true
+	    },
+	    "crypto": {
+	        "privateKey": "$QA_PRIVATE_KEY",
+	        "publicKey": "$QA_PUBLIC_KEY",
+	        "certificate": "$QA_CERTIFICATE"
+	    },
+	    "jwt": {
+	        "alg": "RS256",
+	        "iss": "HiveAuthServer",
+	        "expiresIn": $QA_JWT_EXPIRES_IN
+	    },
+	    "mandrill": {
+	        "apikey": "$QA_MANDRIL_API_KEY"
+	    }
+
+	}
+EOF
+}
+
+
+#--------------------------------------------------------------------------------
+# Create test hive config file
+# $1 - instance-number ("00", "01" ...)
+configure_hive() {
+	local instance=$1
+	local database="QA_PGDATABASE_$instance"
+	local db_host="QA_PGHOST_$instance"
+	local db_port="QA_PGPORT_$instance"
+	local db_user="QA_PGUSER_$instance"
+	local db_pass="QA_PGPASSWORD_$instance"
+	local dir="QA_PRODUCT_DIR_$instance"
+	local sync_mng_url="QA_HIVE_SYNC_MANAGER_URL_$instance"
+	local product_host="QA_PRODUCT_HOST_$instance"
+	local product_port="QA_PRODUCT_PORT_$instance"
+	local product_http_port="QA_PRODUCT_HTTP_PORT_$instance"
+cat > "${!dir}/dist/web/config.json" <<-EOF
+	{
+
+	  "cookiesDomain": "$QA_COOKIES_DOMAIN",
+	  "cookieExpiresIn": $QA_COOKIE_EXPIRES_IN,
+	  "crypto": {
+	    "privateKey": "$QA_PRIVATE_KEY",
+	    "publicKey": "$QA_PUBLIC_KEY",
+	    "certificate": "$QA_CERTIFICATE"
+	  },
+	  "loginPage": "https://$QA_PRODUCT_HOST_AUTH:$QA_PRODUCT_PORT_HTTPS_AUTH/",
+	  "httpPort": ${!product_http_port},
+
+	  "db": {
+	    "host": "${!db_host}",
+	    "port": ${!db_port},
+	    "database": "${!database}",
+	    "user": "${!db_user}",
+	    "password": "${!db_pass}",
+	    "logQueries": true
+	  },
+  
+	  "auth": {
+	    "prefix": "/auth"
+	  },
+	  "etsy": {
+	    "apiUrl": "http://$QA_ETSY_HOST:$QA_ETSY_PORT/v2",
+	    "auth": {
+	      "requestTokenURL": "http://$QA_ETSY_HOST:$QA_ETSY_PORT/v2/oauth/request_token",
+	      "accessTokenURL": "http://$QA_ETSY_HOST:$QA_ETSY_PORT/v2/oauth/access_token",
+	      "userAuthorizationURL": "http://$QA_ETSY_HOST:$QA_ETSY_PORT/authorize/just_return_redirect",
+	      "consumerKey": "$QA_ETSY_KEY",
+	      "consumerSecret": "$QA_ETSY_SECRET"
+	    }
+	  },
+	  "logging": {
+	    "level": "debug"
+	  },
+	  "serverScheme": "https",
+	  "intercom": {
+	    "secureModeSecretKey": "$QA_INTERCOM_KEY"
+	  },
+
+	  "logoutPage": "https://$QA_PRODUCT_HOST_AUTH:$QA_PRODUCT_PORT_HTTPS_AUTH/logout",
+	  "serverDomain": "${!product_host}",
+	  "serverPort": ${!product_port},
+	  "syncManager": {
+	    "url": "${!sync_mng_url}"
+	  }
+	}
+EOF
+}
+
+#--------------------------------------------------------------------------------
+# Create test hive-manager config file
+# $1 - instance-number ("00", "01" ...)
+configure_sync_manager() {
+	local instance=$1
+	local database="QA_PGDATABASE_$instance"
+	local db_host="QA_PGHOST_$instance"
+	local db_port="QA_PGPORT_$instance"
+	local db_user="QA_PGUSER_$instance"
+	local db_pass="QA_PGPASSWORD_$instance"
+	local dir="QA_PRODUCT_DIR_$instance"
+	local manager_port="QA_MANAGER_PORT_$instance"
+cat > "${!dir}/dist/manager/config.json" <<-EOF
+	{
+	  "db": {
+	    "host": "${!db_host}",
+	    "port": ${!db_port},
+	    "database": "${!database}",
+	    "user": "${!db_user}",
+	    "password": "${!db_pass}",
+	    "logQueries": true
+	  },
+	  "logging": {
+	    "level": "debug"
+	  },
+	  "manager": {
+	    "dailyQuotaReserve": 20,
+	    "rateLimitPerSecond": 30,
+	    "APIPort": $QA_MANAGER_API_PORT_00
+	  },
+	  "serverPort": ${!manager_port}
+	}
+EOF
+}
+
+
+#--------------------------------------------------------------------------------
+# Create test hive-worker config file
+# $1 - instance-number ("00", "01" ...)
+configure_sync_worker() {
+	local instance=$1
+	local manager_instance=$2
+	local database="QA_PGDATABASE_$manager_instance"
+	local db_host="QA_PGHOST_$manager_instance"
+	local db_port="QA_PGPORT_$manager_instance"
+	local db_user="QA_PGUSER_$manager_instance"
+	local db_pass="QA_PGPASSWORD_AUTH_$manager_instance"
+	local dir="QA_PRODUCT_DIR_$instance"
+	local sync_mng_url="QA_HIVE_SYNC_MANAGER_URL_$manager_instance"
+cat > "${!dir}/dist/worker/config.json" <<-EOF
+	{
+	        "db": {
+	        "host": "${!db_host}",
+	        "port": ${!db_port},
+	        "database": "${!database}",
+	        "user": "${!db_user}",
+	        "logQueries": false,
+	        "password": "${!db_pass}"
+	    },
+	    "etsy": {
+	        "apiUrl": "http://$QA_ETSY_HOST:$QA_ETSY_PORT/v2",
+	            "auth": {
+	                "requestTokenURL": "http://$QA_ETSY_HOST:$QA_ETSY_PORT/v2/oauth/request_token",
+	                "accessTokenURL": "http://$QA_ETSY_HOST:$QA_ETSY_PORT/v2/oauth/access_token",
+	                "userAuthorizationURL": "http://$QA_ETSY_HOST:$QA_ETSY_PORT/authorize/just_return_redirect",
+	                "consumerKey": "$QA_ETSY_KEY",
+	                "consumerSecret": "$QA_ETSY_SECRET"
+	            }
+	    },
+	    "logging": {
+	        "level": "debug"
+	    },
+	    "auth": {
+	        "prefix": ""
+	    },
+	    "serverScheme": "",
+	    "serverDomain": "",
+	    "serverPort": "",
+	    "terminateOnDisconnect": true,
+	    "syncManager": {
+	        "url": "${!sync_mng_url}"
+	    }
+	}
+EOF
+}
+
+
+#--------------------------------------------------------------------------------
+#	Main
+#--------------------------------------------------------------------------------
+
+	# get env vars from cfg
+source_cfg
+
+should_exec_itself=y
+if [ "$1" = "--do-not-exec" ]; then
+	shift
+	should_exec_itself=n
+fi
+[ "$1" != '-f' ] || { QA_FAST_TEST=y; shift; }
+
+	# check product / tests versions
+if [ "$QA_FAST_TEST" != 'y' ]; then
+	if [ "$should_exec_itself" = 'y' ]; then
+		exec "$0" --do-not-exec "$@"
+	else
+		update_test_repo
+	fi
+fi
+
+	# restart selenium, etsy
+#restart_docker "$SELENIUM_IMAGE" "$SELENIUM_CONTAINER" selenium_ip_addr 4444:4444
+
+restart_docker "$ETSY_IMAGE" "$ETSY_CONTAINER" etsy_ip_addr "$QA_ETSY_PORT:3000" "$TEST_REPO_DIR/QA/express-test-scenarios:/srv/servce-test/tests"
+
+#export QA_ETSY_HOST=$etsy_ip_addr
+
+	# copy product to a temp dir
+if [ "$QA_FAST_TEST" != 'y' ]; then
+	rm -rf "$QA_PRODUCT_DIR_00" "$QA_PRODUCT_DIR_01"
+	mkdir -p "$QA_PRODUCT_DIR_00"
+	tar cf - -C "$PRODUCT_REPO_DIR" . | tar xf - -C "$QA_PRODUCT_DIR_00"
+	for subdir in web manager auth worker; do
+		rm "$QA_PRODUCT_DIR_00/dist/$subdir/config.json"
+	done
+	#cp -Rl "$QA_PRODUCT_DIR_00" "$QA_PRODUCT_DIR_01"
+fi
+	# create our config.json
+configure_auth
+configure_hive 00
+configure_sync_manager 00
+configure_sync_worker 00 00
+#configure_hive 01
+#configure_sync_manager 01
+#configure_sync_worker 01 00
+
+	# get local IP
+dev=`ip route | awk '/default via/ { print $5 }'`
+export QA_PRODUCT_HOST=`ip addr show "$dev" | awk '/^  *inet / {gsub("/.*", "", $2); print $2}' | head -n 1`
+export QA_SERVER_DOMAIN=$QA_PRODUCT_HOST
+
+	# print env
+variables="`env | grep ^QA_ | sed -e "s/=/='/" -e "s/\$/'/" -e 's/^/export /'`"
+printf "\n------------------\n%s\n---------------------\n" "$variables"
+printf "%s\n" "$variables" > /tmp/hive-env.sh || true
+
+	# run shishito
+cd "$TEST_REPO_DIR/QA/tests-shi"
+
+echo "$SHISHITO_BIN --test_directory tests $*"
+"$SHISHITO_BIN" --test_directory tests "$@" || true
+
+if [ "$QA_FAST_TEST" != 'y' ]; then
+	save_last_run "$prod_version" "$test_version"
+fi

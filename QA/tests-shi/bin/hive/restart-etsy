@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Migrate existing (empty) database to the level of the current build
+
+[[ "$1" != "-h" && "$1" != "--help" ]] || { echo "`basename $0` [--kill] - (re)start etsy simulator docker image ."; exit 1; }
+set -e; s_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")"); . "$s_dir/../../lib/functions.sh" "$s_dir"
+
+
+	# read config, check vars
+export QA_INSTANCE_VIRT=${QA_INSTANCE_VIRT:-0}
+read_configs virt
+check_variables QA_ETSY_HOST QA_ETSY_PORT QA_NODE_BINARY
+
+emu_dir="$INSTANCES_DIR/$QA_INSTANCE/builds/current/QA/virt/etsy-emulator-$QA_INSTANCE_VIRT"
+script="$emu_dir/run-emulator"
+param="QA_INSTANCE=$QA_INSTANCE,QA_INSTANCE_VIRT=$QA_INSTANCE_VIRT"
+
+kill_process "$QA_NODE_BINARY" "app.js" "$param"
+if [ "$1" != "--kill" ]; then
+	export ETEST_HOST=$QA_ETSY_HOST
+	export ETEST_PORT=$QA_ETSY_PORT
+	export ETEST_NODE_BINARY=$QA_NODE_BINARY
+	if [ -n "$QA_LOG_DIR" ]; then
+		mkdir -p "$QA_LOG_DIR"
+		log_file="$QA_LOG_DIR/etsy.log"
+	else
+		log_file=''
+	fi
+	restart_process "$script" "$INSTANCES_DIR/$QA_INSTANCE" "$log_file" "$param"
+fi
+sleep 1
+
+RESULT_MESSAGE="$PROG: finished successfully"

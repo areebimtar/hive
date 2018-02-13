@@ -1,0 +1,9 @@
+{
+  "message": "Some message",
+  "status": 456,
+  "text": "some problem from etsy",
+  "method": "GET",
+  "path": "some path",
+  "url": "some url",
+  "params": ""
+}

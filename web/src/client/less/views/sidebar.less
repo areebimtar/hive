@@ -1,0 +1,297 @@
+//- SIDEBAR -//
+
+app-sidebar {
+  background: #7a7d80;
+  width: @sidebar-width;
+  height: 100%;
+  position: fixed;
+  left: 60px;
+  border-left: 1px solid #252525;
+  border-right: 1px solid #4d5259;
+}
+
+//- Shop selector -//
+
+app-sidebar--menu {
+  width: 100%;
+  button {
+    background: #9c9ea1;
+    border: none;
+    padding: 0 @padding;
+    width: 100%;
+    color: @c-white-text;
+    height: @header-height;
+    text-align: left;
+    font-size: @fs-1;
+    line-height: 100%;
+    border-radius: 0;
+    cursor: pointer;
+    border-bottom: 1px solid #7e8083;
+    &:hover {
+      background: #9c9ea1;
+      border: none;
+      border-bottom: 1px solid #7e8083;
+    }
+    &::after {
+      .vela-font;
+      content: @vela-font-var-large-down-chevron;
+      position: absolute;
+      right:23px;
+      top: 23px;
+    }
+    span {
+      display: inline-block;
+      vertical-align: middle;
+      &.menu-channel {
+        width: 100%;
+        text-transform: uppercase;
+        font-weight: @font-weight-bold;
+        font-size: @fs--2;
+        margin-bottom: 3px;
+      }
+      &.menu-shop {
+        color: rgba(255, 255, 255, 0.4);
+        font-size: @fs-0;
+      }
+    }
+  }
+  .shops-menu {
+    .dropdown(#555555);
+    width: @sidebar-width - 20; // making the sidebar list smaller and centered than the sidebar container
+    left: 10px;
+    top: 59px;
+
+    /* Drop down top arrow */
+    &::after {
+      .triangle(up, 10px, 7px, @c-white);
+      top: -7px;
+      right: 10px;
+    }
+    &::before {
+      .triangle(up, 11px, 8px, #555555);
+      top: -8px;
+      right: 9px;
+    }
+
+    .channel-shops {
+      padding: 5px 0 0;
+    }
+
+    .channel-name {
+      padding: 5px 10px;
+      color: @c-header;
+      text-transform: uppercase;
+      font-size: @fs--1;
+      font-weight: bold;
+    }
+    .add-shop {
+      a {
+        display: block;
+        color: @c-dark-grey;
+        padding: 9px;
+        text-align: center;
+        border-top: 1px solid #999999;
+        text-transform: uppercase;
+        margin-top: 10px;
+      }
+    }
+
+    ul {
+      .channel-shops {
+        margin-bottom: 20px
+      }
+      li {
+        .dropdown-li();
+        line-height: 30px;
+        &.selected {
+          &::after {
+            .vela-font;
+            content: @vela-font-var-check;
+            float: right;
+            font-size: @fs--2;
+            line-height: @baseline*1.5;
+          }
+        }
+        &:first-of-type {
+          border-radius: 4px 4px 0 0;
+        }
+        &:last-of-type {
+          border-radius: 0 0 4px 4px;
+        }
+      }
+    }
+  }
+}
+
+//- Sidebar filters -//
+
+app-sidebar--filter-container {
+
+  display:table;
+  height: 100%;
+  width: 100%;
+
+  .main-filter-group {
+    padding: 25px 32px 32px;
+    background-color: #8c8f93;
+    border-bottom: 1px solid #6c6f71;
+
+    h6 {
+      margin: 0 0 10px 0;
+      line-height: 100%;
+    }
+
+    ul {
+      li {
+        position: relative;
+        &.active {
+          a {
+            font-weight: @font-weight-bold;
+            &::after {
+              .triangle(right, 10px, 7px, #5b5b5b);
+              top: 50%;
+              margin-top: -10px;
+              left: -33px;
+            }
+            &::before {
+              .triangle(right, 11px, 8px, #252525);
+              top: 50%;
+              margin-top: -11px;
+              left: -33px;
+            }
+          }
+        }
+        a {
+          color: @c-white;
+        }
+      }
+    }
+  }
+
+  // scrollable area in the sidebar
+
+  .filter-group-wrapper {
+
+    display:table-row;
+    height:100%;
+
+    .filter-group-scroll {
+      position: relative;
+      height: calc(~'100% - 60px');
+
+      ::-webkit-scrollbar-thumb {
+        background-color: @c-darker-scrollbars;
+      }
+    }
+    .filter-group-content {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      overflow: auto;
+    }
+  }
+  .filter-group {
+    padding: 0 32px 15px 32px;
+    &:last-of-type {
+      border-bottom:none;
+      margin-bottom: 20px;
+    }
+    .show-all,
+    .show-less {
+      margin-top: 10px;
+      padding-left: 20px;
+      text-transform: uppercase;
+      position: relative;
+      &::before {
+        .vela-font;
+        text-transform: none;
+        position: absolute;
+        left: 0;
+        line-height: 28px;
+        content: @vela-font-var-small-down-chevron;
+        font-size: @fs--2;
+        transition: all 0.3s;
+        margin-right: 10px;
+      }
+    }
+    .show-less {
+      &::before {
+        transform: rotate(180deg);
+      }
+    }
+
+    // hide the count for magic options
+    &.magic {
+      .filter-items {
+        display: none;
+      }
+    }
+  }
+  h6 {
+    font-size: @fs--1;
+    margin: 25px 0 10px;
+    padding: 0;
+    text-transform: uppercase;
+    font-weight: @font-weight-thin;
+    color: rgba(255,255,255, .4);
+    letter-spacing: .06em;
+  }
+  ul {
+    padding: 0;
+    li {
+      vertical-align: middle;
+      padding: 0;
+      line-height: 28px;
+      display: flex;
+      justify-content: space-between;
+      cursor: pointer;
+      font-size: @fs-1;
+
+      // Custom checkboxes in sidebar
+      .checkbox {
+        background: none;
+        height: 13px;
+        width: 16px;
+        display:inline-block;
+        position: relative;
+        padding: 0;
+        margin: 7px 0;
+        border-radius: 2px;
+        border: 1px solid #8d8f92;
+        &.checked {
+          background: @c-white;
+          border-color: @c-white;
+          &::after {
+            .vela-font;
+            content: @vela-font-var-check;
+            color: #2f2f2f;
+            font-size: 7px;
+            position: absolute;
+            left: 2px;
+            top: 2px;
+          }
+        }
+      }
+      div {
+        .text-ellipsis;
+        width: 120px;
+        margin-left: 10px;
+        color: rgba(255,255,255, .7);
+      }
+      &.hidden {
+        display: none;
+      }
+      .filter-items {
+        font-size: @fs--2;
+        color: #babbbe;
+        width: 23px;
+        text-align: right;
+      }
+      a {
+        color: #a1a3a4;
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+   "quantity" : "2",
+   "title" : "Listing 0002",
+   "description" : "Description: Listing 0002",
+   "price" : "5.00",
+   "who_made" : "i_did",
+   "is_supply" : "false",
+   "when_made" : "2010_2016",
+   "shipping_template_id" : "29299607527",
+   "state" : "draft",
+   "category_id" : "68887460",
+   "category_path" : [
+      "Music"
+   ],
+   "category_path_ids" : [
+      "68887460"
+   ],
+   "currency_code" : "CZK",
+   "taxonomy_id" : "829",
+   "taxonomy_path" : [
+      "Electronics & Accessories",
+      "Audio",
+      "Microphones"
+   ],
+   "image_ids" : [ "1048684008", "1048684064", "1048684110" ]
+}

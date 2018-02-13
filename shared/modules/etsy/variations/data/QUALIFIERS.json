@@ -1,0 +1,90 @@
+{
+  "266817057": {
+    "property_id": 266817057,
+    "name": "Recipient",
+    "input_name": "property[recipient]",
+    "label": "Who is it for?",
+    "param": "recipient_id",
+    "default_option": "Select a recipient...",
+    "description": "Recipient",
+    "is_custom": false,
+    "title": "Recipient:"
+  },
+  "300": {
+    "property_id": 300,
+    "name": "Sizing Scale",
+    "input_name": "property[sizing_scale]",
+    "label": "What scale are your sizes in?",
+    "param": "sizing_scale",
+    "default_option": "Select a scale...",
+    "description": "Sizing Scale",
+    "is_custom": false,
+    "title": "Sizing Scale:"
+  },
+  "301": {
+    "property_id": 301,
+    "name": "Weight Scale",
+    "input_name": "property[weight_scale]",
+    "label": "What scale are your weights in?",
+    "param": "weight_scale",
+    "default_option": "Select a weight scale...",
+    "description": "Weight Scale",
+    "is_custom": false,
+    "title": "Weight Scale:"
+  },
+  "302": {
+    "property_id": 302,
+    "name": "Sizing Scale",
+    "input_name": "property[diameter_scale]",
+    "label": "What scale are your sizes in?",
+    "param": "diameter_scale",
+    "default_option": "Select a scale...",
+    "description": "Sizing Scale",
+    "is_custom": false,
+    "title": "Sizing Scale:"
+  },
+  "303": {
+    "property_id": 303,
+    "name": "Sizing Scale",
+    "input_name": "property[dimensions_scale]",
+    "label": "What scale are your sizes in?",
+    "param": "dimensions_scale",
+    "default_option": "Select a scale...",
+    "description": "Sizing Scale",
+    "is_custom": false,
+    "title": "Sizing Scale:"
+  },
+  "304": {
+    "property_id": 304,
+    "name": "Sizing Scale",
+    "input_name": "property[height_scale]",
+    "label": "What scale are your sizes in?",
+    "param": "height_scale",
+    "default_option": "Select a scale...",
+    "description": "Sizing Scale",
+    "is_custom": false,
+    "title": "Sizing Scale:"
+  },
+  "305": {
+    "property_id": 305,
+    "name": "Sizing Scale",
+    "input_name": "property[length_scale]",
+    "label": "What scale are your sizes in?",
+    "param": "length_scale",
+    "default_option": "Select a scale...",
+    "description": "Sizing Scale",
+    "is_custom": false,
+    "title": "Sizing Scale:"
+  },
+  "306": {
+    "property_id": 306,
+    "name": "Sizing Scale",
+    "input_name": "property[width_scale]",
+    "label": "What scale are your sizes in?",
+    "param": "width_scale",
+    "default_option": "Select a scale...",
+    "description": "Sizing Scale",
+    "is_custom": false,
+    "title": "Sizing Scale:"
+  }
+}

@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Create a FDW extension on the postgres databse, grant usage to the user
+
+[[ "$1" != "-h" && "$1" != "--help" ]] || { echo "`basename $0` crates postgres FDW extension and grants usage on \$QA_INSTANCE ($QA_INSTANCE)"; exit 1; }
+set -e; s_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")"); . "$s_dir/../../lib/functions.sh" "$s_dir"
+
+export QA_INSTANCE_VIRT=${QA_INSTANCE_VIRT:-0}
+
+read_configs virt
+check_variables QA_PGHOST QA_PGPORT QA_PGUSER_ROOT QA_PGPASSWORD_ROOT QA_PGUSER QA_DB_NAMES
+
+
+# Create foreign-data wrapper extension in given database, grant usage to the user
+create_postgres_fdw_extension() {
+	[ $# -eq 6 ] || die "Error: create_db_postgres: 6 params expected, got ($@)"
+	db_host=$1 db_port=$2 db_root=$3 db_root_pass=$4 db_name=$5 db_user=$6
+
+	log1 "Creating extension postgres_fdw for user $db_user on $db_name"
+	PGPASSWORD=$db_root_pass psql --no-psqlrc -v ON_ERROR_STOP=1 -h "$db_host" -p "$db_port" -U "$db_root" -d "$db_name" <<-EOF
+		CREATE EXTENSION IF NOT EXISTS postgres_fdw;
+		GRANT USAGE ON FOREIGN DATA WRAPPER postgres_fdw to $db_user;
+	EOF
+}
+
+
+for db in $QA_DB_NAMES; do
+	db_name="${QA_INSTANCE}_${QA_INSTANCE_VIRT}_$db"
+	create_postgres_fdw_extension "$QA_PGHOST" "$QA_PGPORT" "$QA_PGUSER_ROOT" "$QA_PGPASSWORD_ROOT" "$db_name" "$QA_PGUSER"
+done
+
+
+RESULT_MESSAGE="$PROG: finished successfully"

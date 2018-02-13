@@ -1,0 +1,11 @@
+{
+   "quantity" : "2",
+   "title" : "Listing 0001",
+   "description" : "Description: Listing 0001",
+   "price" : "5.00",
+   "who_made" : "i_did",
+   "is_supply" : "false",
+   "when_made" : "2010_2016",
+   "shipping_template_id" : "29299607527",
+   "state" : "draft"
+}

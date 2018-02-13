@@ -1,0 +1,45 @@
+{"_doc": "In this scenario Etsy returns six active listings and six sections - five of six listings have invalid state",
+
+	"include_jsons": [
+		"template_gv2_shop.json",
+		"template_gv2_six_sections.json",
+		"template_gv2_no_draft.json"
+	],
+
+	"GET": {
+		"/v2/shops/14458117/listings/active": {
+			"function": "external_json",
+			"data": {
+				"file": "listings_invalid_states_active_list.json"
+			}
+		},
+
+		"/v2/shops/14458117/listings/inactive": {
+			"function": "external_json",
+			"data": {
+				"file": "listings_invalid_states_inactive_list.json"
+			}
+		},
+
+		"/v2/listings/([0-9]+)": {
+			"function": "external_json_list",
+			"data": {
+				"file": "listings_invalid_states_data.json"
+			}
+		}
+	},
+
+	"PUT": {
+		"/v2/listings/([0-9]+)": {
+			"function": "fixed_json",
+			"data": {
+				"body": {
+					"count": 1,
+					"results": [ { } ],
+					"type": "Listing"
+				}
+			}
+		}
+	}
+
+}

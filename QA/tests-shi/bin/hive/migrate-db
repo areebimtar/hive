@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Migrate existing (empty) database to the level of the current build
+
+[[ "$1" != "-h" && "$1" != "--help" ]] || { echo "`basename $0` runs postgres database migration script from the current build."; exit 1; }
+set -e; s_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")"); . "$s_dir/../../lib/functions.sh" "$s_dir"
+
+	# read config, check vars
+export QA_INSTANCE_VIRT=${QA_INSTANCE_VIRT:-0}
+read_configs virt
+check_variables QA_PGHOST QA_PGPORT QA_PGUSER QA_PGPASSWORD QA_DB_NAMES QA_MIGRATION_SCRIPTS QA_RABBIT_VHOST QA_NODE_BINARY
+
+	# run migrations
+cd "$INSTANCES_DIR/$QA_INSTANCE/builds/current/product"
+
+scripts=($QA_MIGRATION_SCRIPTS)
+i=0
+for db in $QA_DB_NAMES; do
+	db_name="${QA_INSTANCE}_${QA_INSTANCE_VIRT}_$db"
+	log "Migrating DB $db_name"
+	export DATABASE_URL="postgresql://$QA_PGUSER:$QA_PGPASSWORD@$QA_PGHOST:$QA_PGPORT/$db_name"
+	export RABBIT_VHOST=$QA_RABBIT_VHOST
+	PATH=`dirname "$QA_NODE_BINARY"`:$PATH
+	mig_script="${scripts[$i]}"
+	log1 "Migrating $db_name: ./node_modules/node-pg-migrate/bin/pg-migrate --m $mig_script -v up"
+	./node_modules/node-pg-migrate/bin/pg-migrate --m "$mig_script" -v up
+	i=$((i+1))
+done
+
+
+RESULT_MESSAGE="$PROG: finished successfully"

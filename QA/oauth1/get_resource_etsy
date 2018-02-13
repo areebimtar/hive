@@ -1,0 +1,16 @@
+#!/bin/bash
+if [ -n "$1" ]; then
+	res=("--resource" "$1")
+else
+	echo "$0 /shops/EtsyTestAppShop/listings/draft"
+	echo "$0 '/listings/260850358?includes=User,Shop,Section,Images,MainImage,Translations,Manufacturers,Variations&language=en'"
+	exit
+fi
+script_dir=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd -P)
+python3 "$script_dir/get_oauth_etsy.py" \
+	--client-token "$TESTAPP_CLIENT_TOKEN" \
+	--client-secret "$TESTAPP_CLIENT_SECRET" \
+	--user-token "$USER_TOKEN_JIRKAT" \
+	--user-secret "$USER_SECRET_JIRKAT" \
+	--method get	\
+	"${res[@]}"

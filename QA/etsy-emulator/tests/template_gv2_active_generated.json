@@ -1,0 +1,40 @@
+{"_doc": "Template privides list of listings - active listings are generated using results_data array",
+	"GET": {
+		"/v2/shops/14458117/listings/active": {
+			"__doc__": "Generate active listings using results_template and results_data[]",
+			"function": "generate_listings_from_data",
+			"data": {
+				"body": {
+					"count": "@see Lenght of results_data",
+					"pagination": {
+						"effective_limit": 100000,
+						"effective_offset": 0,
+						"effective_page": 1,
+						"next_offset": null,
+						"next_page": null
+					},
+					"params": {
+						"limit": "100",
+						"offset": 0,
+						"page": null,
+						"shop_id": "14458117"
+					},
+					"results": [],
+					"type": "Listing"
+				},
+				"results_template": {
+					"listing_id" : "@generated 100001 + i",
+					"last_modified_tsz" : 1450269283,
+					"original_creation_tsz" : 1426453409,
+					"state" : "active",
+					"can_write_inventory": true
+				},
+				"results_data": [
+					{ "state" : "active" },
+					{ "state" : "active" }
+				]
+			}
+		}
+
+	},
+" vim: set foldmethod=indent foldlevel=2 foldnestmax=3 : ": 1 }

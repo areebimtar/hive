@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Restart manager server
+
+[[ "$1" != "-h" && "$1" != "--help" ]] || { echo "Usage: `basename $0` <cci_build_no>"; exit 1; }
+set -e; s_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")"); . "$s_dir/../../lib/functions.sh" "$s_dir"
+
+export QA_INSTANCE_VIRT=${QA_INSTANCE_VIRT:-0}
+read_configs virt
+check_variables  QA_PGUSER QA_PGPASSWORD QA_PGDATABASE_HIVE QA_MANAGER_PORT QA_MANAGER_PORT_API QA_NODE_BINARY QA_RABBIT_URI
+
+product_dir="$INSTANCES_DIR/$QA_INSTANCE/virt/$QA_INSTANCE_VIRT/builds/current/product"
+param="$product_dir/dist/manager/server.js"
+
+if [ "$1" = "--kill" ]; then
+	kill_process "$QA_NODE_BINARY" "$param"
+else
+	[ -n "$QA_LOG_DIR" ] && log_file="$QA_LOG_DIR/manager-$QA_INSTANCE_VIRT.log" || log_file=''
+
+	export DB_USER=$QA_PGUSER
+	export DB_PASSWORD=$QA_PGPASSWORD
+	export DB_NAME=$QA_PGDATABASE_HIVE
+	export HIVE_MANAGER_PORT=$QA_MANAGER_PORT
+	export HIVE_MANAGER_API_PORT=$QA_MANAGER_PORT_API
+	export RABBIT_URI=$QA_RABBIT_URI
+
+	restart_process "$QA_NODE_BINARY" "$product_dir" "$log_file" "$param"
+fi
+
+RESULT_MESSAGE="$PROG: finished successfully"

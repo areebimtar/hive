@@ -1,0 +1,9 @@
+{"_doc": "In this scenario etsy returns shop with no listings",
+
+	"include_jsons": [
+		"template_gv2_shop.json",
+		"template_gv2_no_draft.json",
+		"template_gv2_no_active.json",
+		"template_gv2_no_inactive.json"
+	],
+" vim: set foldmethod=indent foldlevel=2 foldnestmax=3 : ": 1 }

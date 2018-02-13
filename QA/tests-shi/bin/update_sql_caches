@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+[ "$1" != "" ] || { echo "etsy scenario expected: \$1 (e.g. listings_09)"; exit 1; }
+SCENARIO=$1
+
+set -e
+
+script_dir=$(dirname $(readlink -e "${BASH_SOURCE[0]}"))
+sql_dir=$(cd "$script_dir/../sql" && pwd -P)
+PATH=$script_dir:$PATH
+
+export QA_INSTANCE_VIRT=0
+
+set -x
+	# stop nodes
+restart-product --kill
+	# set etsy emulator scenario
+#$script_dir/hive/restart-etsy
+curl "http://localhost:30007/set_test_id?test_id=$SCENARIO"
+sleep 2
+
+	# clean db, insert data
+setup-db-postgres
+$script_dir/hive/migrate-db
+sleep 5
+sql "$sql_dir/auth_01.sql" AUTH
+#sql "$sql_dir/upload_listings.sql"
+
+	# run node
+export QA_LOG_DIR=/tmp/hive-log
+rm -rf "$QA_LOG_DIR"; mkdir -p "$QA_LOG_DIR"
+restart-product
+
+echo "
+****************
+log in as user1 pass1
+
+sqldump  --data-only > listings_XX.sql
+****************"
+
+firefox https://hive_test_00.salsitasoft.com:30004/

@@ -1,0 +1,62 @@
+{"_doc": "Template with six sections",
+
+	"GET": {
+		"/v2/shops/14458117/sections": {
+			"function": "fixed_json",
+			"data": {
+				"body": {
+					"count":6,
+					"results":[
+						{
+							"shop_section_id":15183328,
+							"title":"On Sale",
+							"rank":1,
+							"user_id":106321453,
+							"active_listing_count":2
+						},
+						{
+							"shop_section_id":15180189,
+							"title":"Holiday Gifts",
+							"rank":2,
+							"user_id":106321453,
+							"active_listing_count":0
+						},
+						{
+							"shop_section_id":17365192,
+							"title":"Summer Sale",
+							"rank":3,
+							"user_id":106321453,
+							"active_listing_count":3
+						},
+						{
+							"shop_section_id":18790753,
+							"title":"de",
+							"rank":4,
+							"user_id":106321453,
+							"active_listing_count":0
+						},
+						{
+							"shop_section_id":18787742,
+							"title":"bbbaa",
+							"rank":5,
+							"user_id":106321453,
+							"active_listing_count":0
+						},
+						{
+							"shop_section_id":18790755,
+							"title":"eeee",
+							"rank":6,
+							"user_id":106321453,
+							"active_listing_count":0
+						}
+					],
+					"params":{
+						"shop_id":"14458117"
+					},
+					"type":"ShopSection",
+					"pagination":{}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,230 @@
+#!/usr/bin/env bash
+# Run test in parallel unless specific test is required
+
+[[ "$1" != "-h" && "$1" != "--help" ]] || { echo "`basename $0` [shishito-params]   - runs tests on the current build"; exit 1; }
+set -e; script_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")"); . "$script_dir/../lib/functions.sh"
+
+
+#--------------------------------------------------------------------------------
+# get current Process Group
+get_pgrp() {
+	local result=$1 pid=$$ pgrp
+	pgrp=`ps -p $pid -o pgid | tail -n +2 | sed 's/ //g'`
+	eval "$result='$pgrp'"
+}
+
+
+#--------------------------------------------------------------------------------
+proc_running() {
+	pid=$1
+
+	if [ "`uname`" = 'Linux' ]; then
+		if [ -d "/proc/$pid" ]; then
+			return 0
+		fi
+	else
+		if ps -ef  | grep "^ *[0-9][0-9]*  *$pid " >/dev/null 2>&1; then
+			return 0
+		fi
+	fi
+	return 1
+}
+
+
+#--------------------------------------------------------------------------------
+# run tests for each instance virtual in parallel
+run_virt_tests() {
+	local jobs_to_run=() pids_running=() virt i result final_result=y job pid pr=()
+
+	i=0	# list of jobs to run: [ "test_file.py:0", ... ]
+	for virt in "$@"; do
+		jobs_to_run+=("$virt:$i")
+		i=$((i+1))
+	done
+
+		# run jobs in parallel, up to MAX_PARALLEL_JOBS
+	while [ ${#jobs_to_run[@]} -gt 0 ]; do
+			# start jobs up to MAX_PARALLEL_JOBS limit
+		while [ ${#pids_running[@]} -lt "$MAX_PARALLEL_JOBS" -a ${#jobs_to_run[@]} -gt 0 ]; do
+			job=${jobs_to_run[0]}
+			virt=${job%:*}		# test file  - test_bulk_tags.py
+			i=${job##*:}		# virtual Id - 4
+
+			log1 "Starting test on $QA_INSTANCE run-test -test '$virt' [$i]"
+			(export QA_INSTANCE_VIRT=$i; setup-test && run-tests --test $virt && printf "\n%s\n" 'SUCCESS';
+			if [ "$i" != 0 ]; then cleanup-test > "$QA_LOG_DIR/cleanup-test-$virt.log" 2>&1; fi) &> "$QA_LOG_DIR/$virt.log" &
+			pid=$!
+			log2 "started run-test $virt[$i] ($pid)"
+			pids_running+=($pid)
+			jobs_to_run=("${jobs_to_run[@]:1}")	# shift
+		done
+
+			# wait for any job to finish, update $pids_running
+		while [ ${#pids_running[@]} -gt 0 ]; do
+			wait -n -- -1 &>/dev/null || true
+			pr=()
+			for pid in "${pids_running[@]}"; do
+				if proc_running "$pid"; then
+				       pr+=($pid)
+				else
+				       log2 "$pid terminated"
+				fi
+			done
+			pids_running=("${pr[@]}")
+			log2 "pids_running=" "${pids_running[@]}"
+			log2 "jobs_to_run=" "${jobs_to_run[@]}"
+			if [ ${#jobs_to_run[@]} -gt 0 -a ${#pids_running[@]} -lt "$MAX_PARALLEL_JOBS" ]; then
+				break	# start a more jobs
+			fi
+		done
+	done
+
+
+		# Check the results of the completed jobs
+	for virt in "${virts[@]}"; do
+                result=`tail -n 1 "$QA_LOG_DIR/$virt.log"` || true
+                if [ "$result" = "SUCCESS" ]; then
+			log1 "Test $virt: SUCCESS"
+		else
+			log1 "Test $virt: ERROR"
+			final_result=n
+		fi
+        done
+	[ "$final_result" = 'y' ] || die "run_virt_tests failed"
+}
+
+
+
+#--------------------------------------------------------------------------------
+# Archive logs, generate html results
+archive_logs() {
+	[ $# -eq 2 ] || die "Error: archive_logs: 2 params expected, got ($@)"
+	local build_no=$1 elapsed_time=$2 result_dir_list=() results_dir use_qastats
+
+	if [ "$RUN_PARALLEL_VIRTS" = 'y' ]; then
+		result_dir_list=()
+		virts=(`get_virt_params "$build_no"`)
+		echo "virts=$virts"
+		for ((i = 0; i < ${#virts[@]}; i++)); do
+			result_dir_list[${#result_dir_list[@]}]="$INSTANCES_DIR/$QA_INSTANCE/builds/$build_no/QA/virt/tests-shi-$i/results/current"
+		done
+
+		for results_dir in "${result_dir_list[@]}"; do
+			if [ -d "$results_dir" ]; then
+				mkdir -p "$QA_LOG_DIR"
+				tar c -C "$results_dir" -f - . | tar x -C "$QA_LOG_DIR" -f -
+			fi
+		done
+		if [ -d "$QA_LOG_DIR" ]; then
+			rm -f "$QA_DIR/results/$QA_INSTANCE/current"
+			ln -s "$QA_LOG_DIR" "$QA_DIR/results/$QA_INSTANCE/current"
+		fi
+
+		use_qastats=''
+		if [ -n "$QASTATS_AUTH" ]; then
+			export QASTATS_USER=${QASTATS_AUTH%%:*}
+			export QASTATS_PASSWORD=${QASTATS_AUTH#*:}
+			export QA_BUILD_ID=$build_no
+			use_qastats='--qastats'
+		fi
+		echo "result_dir_list=${result_dir_list[@]}"
+		merge-shi-reports --elapsed-time "$elapsed_time" --source-dirs "${result_dir_list[@]}" --target-dir "$QA_LOG_DIR" $use_qastats
+	else
+		results_dir="$INSTANCES_DIR/$QA_INSTANCE/builds/$build_no/QA/virt/tests-shi-0/results/current"
+		if [ -d "$results_dir" ]; then
+			mkdir -p "$QA_LOG_DIR"
+			tar c -C "$results_dir" -f - . | tar x -C "$QA_LOG_DIR" -f -
+			rm -f "$QA_DIR/results/$QA_INSTANCE/current"
+			ln -s "$QA_LOG_DIR" "$QA_DIR/results/$QA_INSTANCE/current"
+		fi
+	fi
+
+		# link Current results
+	rm -f "$QA_DIR/results/$QA_INSTANCE/current"
+	mkdir -p "$QA_DIR/results/$QA_INSTANCE"
+	[ -d "$QA_DIR/results/$QA_INSTANCE/current" ] && ln -s "$QA_LOG_DIR" "$QA_DIR/results/$QA_INSTANCE/current"
+}
+
+#--------------------------------------------------------------------------------
+# SIGINT handler
+int_handler() {
+	echo "$0 ($$): Received SIGINT, killing $CURRENT_PGRP"
+	setsid kill-session "$CURRENT_PGRP" &>/dev/null &
+	exit
+}
+
+
+#--------------------------------------------------------------------------------
+#	Main
+#--------------------------------------------------------------------------------
+	# check parameters
+run_test_params=("$@")
+start_time=`date +%s`
+
+        # read configs
+read_configs
+check_variables HIVE_TEST_DIR TEST_DIR_NAMES QA_WEBDRIVER_URL
+
+	# copy current tests to the qa dir, configure, virtualize
+build_no=0
+test_dir="$INSTANCES_DIR/$QA_INSTANCE/builds/$build_no/QA"
+rm -rf "$test_dir"; mkdir -p "$test_dir"
+for sub_dir in $TEST_DIR_NAMES; do
+	tar c -C "$HIVE_TEST_DIR" "$sub_dir" -f - | tar x -C "$test_dir" -f -
+done
+	# remove old results, caches
+find "$test_dir" \( -name __pycache__  -o -name .cache -o -name results -o -name results_archive \) -print0 | xargs -0  rm -rf
+configure-test "$build_no" "$QA_WEBDRIVER_URL"
+
+	# register ^C handler
+get_pgrp CURRENT_PGRP; export CURRENT_PGRP
+trap int_handler SIGINT
+
+build_no=0
+
+	# create log dir
+[ -n "$QA_LOG_DIR" ] || export QA_LOG_DIR="$QA_DIR/results/$QA_INSTANCE/`date +%Y%m%d_%H%M%S`_$build_no"
+rm -rf "$QA_LOG_DIR"
+mkdir -p "$QA_LOG_DIR"
+
+	# when using qa backend and no params, run tests in parallel
+export RUN_PARALLEL_VIRTS=n
+[ "$SHISHITO_ENVIRONMENT" = 'remote' -a "${#run_test_params[@]}" = 0 ] && RUN_PARALLEL_VIRTS=y
+
+	# check if we are already running
+prog=$(basename "$0")
+regex="^ *[0-9][0-9]*  *$(echo "/bin/bash" | sed 's/\//\\\//g')[ ]$(echo ".*/$prog" | sed 's/\//\\\//g')(\s|\$)"
+tmp_file=`mktemp`; ps -eopid,command | awk  "/$regex/ {if (\$1 != $$) print \$1}" > "$tmp_file"; pids=$(<"$tmp_file"); rm -f "$tmp_file"
+for pid in $pids; do
+	get_process_env_var "$pid" "QA_INSTANCE" pid_instance
+	get_process_env_var "$pid" "GITHUB_PR_NUMBER" pid_pr_no
+	if [ "$pid_instance" = "$QA_INSTANCE" ]; then
+		log "INFO: $prog (instance: $QA_INSTANCE, PR#: $pid_pr_no, pid: $pid) already running"
+		exit 2
+	fi
+done
+
+
+set +e
+(
+	trap int_handler SIGINT
+	set -e
+	virts=(`get_virt_params "$build_no"`)
+	if [ "$RUN_PARALLEL_VIRTS" = 'y' ]; then
+		export QA_NO_REPORTING=y
+		num_virts=${#virts[@]}
+		run_virt_tests "${virts[@]}"			# run tests in parallel
+	else
+		[ -n "$QA_INSTANCE_VIRT" ] || export QA_INSTANCE_VIRT=0
+		log "Logging to '$QA_LOG_DIR/test.log'"
+		setup-test > "$QA_LOG_DIR/test.log" 2>&1
+		QA_NO_REPORTING='' run-tests "${run_test_params[@]}" >> "$QA_LOG_DIR/test.log" 2>&1
+	fi
+)
+RESULT=$?
+end_time=`date +%s`
+elapsed_time=$(($end_time - $start_time))
+
+archive_logs "$build_no" "$elapsed_time"
+
+[ "$RESULT" = 0 ] && RESULT_MESSAGE="$PROG: finished successfully"

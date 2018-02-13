@@ -1,0 +1,12 @@
+#!/bin/bash
+
+search=${1:-ERROR}
+LOGS='
+/var/log/hive-manager.log
+/var/log/hive-manager2.log
+/var/log/hive-workers/*.log
+/var/log/hive-handlers/*.log
+/var/log/hive-web.log
+/var/log/hive-auth.log
+'
+grep -n -- "$search" $LOGS

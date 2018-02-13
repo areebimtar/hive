@@ -1,0 +1,76 @@
+{"_doc": "In this scenario etsy returns invalid data for a new section - title is null",
+
+	"include_jsons": [
+		"template_gv2_shop.json",
+		"template_gv2_single_draft.json",
+		"template_gv2_no_active.json",
+		"template_gv2_no_inactive.json"
+	],
+
+	"GET": {
+		"/v2/shops/14458117/sections": {
+			"function": "fixed_json",
+			"data": {
+				"body": {
+					"count":7,
+					"results":[
+						{
+							"shop_section_id":15183328,
+							"title":"On Sale",
+							"rank":1,
+							"user_id":106321453,
+							"active_listing_count":2
+						},
+						{
+							"shop_section_id":15180189,
+							"title":"Holiday Gifts",
+							"rank":2,
+							"user_id":106321453,
+							"active_listing_count":0
+						},
+						{
+							"shop_section_id":17365192,
+							"title":"Summer Sale",
+							"rank":3,
+							"user_id":106321453,
+							"active_listing_count":3
+						},
+						{
+							"shop_section_id":18790753,
+							"title":"de",
+							"rank":4,
+							"user_id":106321453,
+							"active_listing_count":0
+						},
+						{
+							"shop_section_id":18787742,
+							"title":"bbbaa",
+							"rank":5,
+							"user_id":106321453,
+							"active_listing_count":0
+						},
+						{
+							"shop_section_id":18790755,
+							"title":"eeee",
+							"rank":6,
+							"user_id":106321453,
+							"active_listing_count":0
+						},
+						{
+							"active_listing_count": 0,
+							"rank": 7,
+							"shop_section_id": 99999999,
+							"title": null,
+							"user_id": 106321453
+						}
+					],
+					"params":{
+						"shop_id":"14458117"
+					},
+					"type":"ShopSection",
+					"pagination":{}
+				}
+			}
+		}
+	},
+" vim: set foldmethod=indent foldlevel=2 foldnestmax=3 : ": 1 }

@@ -1,0 +1,20 @@
+#!/bin/bash
+if [ -z "$4" ]; then
+	printf "%s\n%s\n" "Usage: $0 <toke> <secret> <url> <data>" "$0 /v2/listings/288945115 '{\"description\": \"Cau\", \"last_modified_tsz\": \"`date +%s`\", \"state\": \"draft\"}'"
+	exit 1
+fi
+token=$1
+secret=$2
+resource=$3
+data=$4
+script_dir=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd -P)
+python3 "$script_dir/get_oauth_etsy.py" \
+	--client-token "$ETSY_CLIENT_TOKEN"	\
+	--client-secret "$ETSY_CLIENT_SECRET"	\
+	--user-token "$token"	\
+	--user-secret "$secret"	\
+	--resource "$resource" \
+	--method put	\
+	--data "$data"
+
+#--authorize

@@ -1,0 +1,94 @@
+// Mixin for triangles
+
+// Usage
+// .triangle(@direction, @width, @height, @color)
+
+.triangle-base() {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  position: absolute;
+  z-index: 1050;
+  -moz-transform: scale(.9999);
+}
+.triangle(@direction, @width, @height, @color) when (@direction = up) {
+  .triangle-base();
+  border-left: @width solid transparent;
+  border-right: @width solid transparent;
+  border-bottom: @height solid @color;
+}
+.triangle(@direction, @width, @height, @color) when (@direction = down) {
+  .triangle-base();
+  border-left: @width solid transparent;
+  border-right: @width solid transparent;
+  border-top: @height solid @color;
+}
+.triangle(@direction, @width, @height, @color) when (@direction = left) {
+  .triangle-base();
+  border-top: @width solid transparent;
+  border-bottom: @width solid transparent;
+  border-right: @height solid @color;
+}
+.triangle(@direction, @width, @height, @color) when (@direction = right) {
+  .triangle-base();
+  border-top: @width solid transparent;
+  border-bottom: @width solid transparent;
+  border-left: @height solid @color;
+}
+
+// Dropdown
+
+.dropdown(@border-color) {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  background: @c-white;
+  border: 1px solid @border-color;
+  border-radius: 4px;
+  z-index: 2;
+  .dropdown-li() {
+    line-height: @baseline*2;
+    cursor: pointer;
+    font-size: @fs--1;
+    color: #424242 !important;
+    border: none !important;
+    background: none !important;
+    padding: 0 @padding/2;
+    &:hover {
+      border: none !important;
+      background: #f4f4f4 !important;
+    }
+    a {
+      color: @c-black;
+    }
+  }
+}
+
+// Text ellipsis
+
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// replace the default blue hover/focus for react widgets
+.input-focus {
+  box-shadow: none;
+  border: 1px solid rgba(124,124,124,0.46);
+  &:hover {
+    border: 1px solid #7C7C7C;
+    box-shadow: none;
+  }
+  &:focus {
+    border: 1px solid #ABABAB;
+    box-shadow: none;
+  }
+}
+
+.inline-edit-input {
+  line-height: 20px;
+  height: 22px; /* IE */
+  padding-top: 1px;
+}

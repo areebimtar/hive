@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# Configure shishito test framework
+
+[[ "$1" != "-h" && "$1" != "--help" ]] || { echo "Usage: `basename $0` <cci_build_no>"; exit 1; }
+set -e; script_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")"); . "$script_dir/../lib/functions.sh"
+
+
+#--------------------------------------------------------------------------------
+# Configure shishito test framework
+configure_test_harness() {
+	[ $# -eq 4 ] || die "Error: configure_shishito: 4 params expected, got ($@)"
+	local build_no=$1 instance_id=$2 shi_environment=$3 remote_driver_url=$4
+	local qa_dir re
+	log1 "Configuring shishito"
+
+	qa_dir="$INSTANCES_DIR/$instance_id/builds/$build_no/QA"
+
+		# if specified, change shishito test_environment to "$shi_environment" (test_environment=remote // browserstack)
+	cfg_file="$qa_dir/tests-shi/config/server_config.properties"
+	if [ -n "$shi_environment" ]; then
+		re=`echo "$shi_environment" | sed 's/\([^a-zA-Z0-9_:@#]\)/\\\\\1/g'`
+		sed -i "s/^test_environment=.*/test_environment=$re/" "$cfg_file"
+	fi
+		# set remote driver url
+	if [ -n "$remote_driver_url" ]; then
+		re=`echo "$remote_driver_url" | sed 's/\([^a-zA-Z0-9_:@#]\)/\\\\\1/g'`
+		sed -i "s/^remote_driver_url=.*/remote_driver_url=$re/" "$cfg_file"
+	fi
+
+		# browser properties
+	if [ -e "$ETC_DIR/web/remote.properties" ]; then
+		cp "$ETC_DIR/web/remote.properties" "$qa_dir/tests-shi/config/web/"
+	fi
+
+}
+
+
+#--------------------------------------------------------------------------------
+#	Main
+#--------------------------------------------------------------------------------
+	# check parameters
+build_no=$1
+[[ "$build_no" =~ ^[0-9][0-9]*$ ]] || die "$PROG: build_number parameter expected"
+webdriver_url=$2
+
+read_configs
+check_variables SHISHITO_ENVIRONMENT TEST_DIR_NAMES QA_PROD_DIR ETC_DIR
+configure_test_harness "$build_no" "$QA_INSTANCE" "$SHISHITO_ENVIRONMENT" "$webdriver_url"
+
+[ -x "$script_dir/$QA_PROD_DIR/configure-test-prod" ] && "$script_dir/$QA_PROD_DIR/configure-test-prod"
+virtualize_tests "$build_no" "$QA_INSTANCE" $TEST_DIR_NAMES
+[ -x "$script_dir/$QA_PROD_DIR/configure-test-prod" ] && "$script_dir/$QA_PROD_DIR/configure-test-prod" --virtual
+
+RESULT_MESSAGE="$PROG: finished successfully"

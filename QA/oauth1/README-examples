@@ -1,0 +1,1 @@
+./get_resource_etsy '/v2/listings/260850358?includes=User%2CShop%2CSection%2CImages%2CMainImage%2CTranslations%2CManufacturers%2CVariations&language=en'

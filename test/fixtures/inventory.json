@@ -1,0 +1,42 @@
+{
+  "count": 1,
+  "results": {
+    "products": [{
+      "product_id": 1210073865,
+      "sku": "15e",
+      "property_values": [{
+        "property_id": 200,
+        "property_name": "Primary color",
+        "scale_id": null,
+        "scale_name": null,
+        "value_ids": [1213],
+        "values": ["Beige"]
+      }, {
+        "property_id": 504,
+        "property_name": "Diameter",
+        "scale_id": 342,
+        "scale_name": " cm",
+        "value_ids": [2634236387],
+        "values": ["1"]
+      }],
+      "offerings": [{
+        "offering_id": 1392600130,
+        "price": {
+          "amount": 230,
+          "divisor": 100,
+          "currency_code": "CZK",
+          "currency_formatted_short": "CZK2.30",
+          "currency_formatted_long": "CZK2.30 CZK",
+          "currency_formatted_raw": "2.30"
+        },
+        "quantity": 15,
+        "is_enabled": 1,
+        "is_deleted": 0
+      }],
+      "is_deleted": 0
+    }],
+    "price_on_property": [200, 504],
+    "quantity_on_property": [],
+    "sku_on_property": []
+  }
+}

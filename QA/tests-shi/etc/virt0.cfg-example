@@ -1,0 +1,16 @@
+
+# default virt-instance 0
+export QA_INSTANCE_VIRT=0
+export QA_WEB_HTTP_PORT=30001
+export QA_WEB_HTTPS_PORT=30002
+export QA_AUTH_HTTP_PORT=30003
+export QA_AUTH_HTTPS_PORT=30004
+export QA_MANAGER_PORT=30005
+export QA_MANAGER_PORT_API=30006
+export QA_ETSY_PORT=30007
+export QA_PGDATABASE_AUTH="hive_qa_0_hive_auth"
+export QA_PGDATABASE_HIVE="hive_qa_0_hive"
+export QA_RABBIT_VHOST="hive_qa_0_hive"
+export QA_RABBIT_URI="amqp://$QA_RABBIT_USER:$QA_RABBIT_PASSWORD@$QA_RABBIT_HOST/$QA_RABBIT_VHOST"
+
+# vim:ft=sh

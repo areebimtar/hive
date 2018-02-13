@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Notes:
+#  - corect passwords have to be set in this config
+#  - for the second Etsy DB setup:
+#    - different VELA account
+#    - different shop has to be used (ie GetvelaTest2)
+
+host=janj.getvela.com
+export QA_PRODUCT_HOST=$host
+export QA_AUTH_HTTP_PORT=80
+export QA_AUTH_HTTPS_PORT=443
+export QA_WEB_HTTP_PORT=8080
+export QA_WEB_HTTPS_PORT=30443
+export QA_PRODUCT_HOST_AUTH=login.$host
+export DATABASE_URL=postgres://hive:xxx@$host:5432/hive
+export SHOP_NAME=GetvelaTest1
+export QA_VELA_USER=janj@salsitasoft.com
+export QA_VELA_PASSWORD=xxx
+export QA_RABBIT_HOST=$host
+export QA_RABBIT_USER=user1
+export QA_RABBIT_PASSWORD=xxx
+export QA_RABBIT_VHOST=vela
+export QA_ETSY_HOST=openapi.etsy.com
+export QA_ETSY_PORT=443
+export LOG_CLEAN_SCRIPT="ssh root@$host './rm-logs'"
+export LOG_GREP_SCRIPT="ssh root@$host './grep-logs'"
+export VELA_CLIENT_TOKEN='xxx' # getvela1
+export VELA_CLIENT_SECRET='xxx'

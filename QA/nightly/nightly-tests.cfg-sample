@@ -1,0 +1,75 @@
+#!/bin/sh
+
+TEST_HOME='/home/jirkat/QA'
+
+CONTROL_DATA_DIR="$TEST_HOME/hive/nightly-tests-data"
+PROD_VERSION_FILE="$CONTROL_DATA_DIR/prod_version"
+TEST_VERSION_FILE="$CONTROL_DATA_DIR/test_version"
+PRODUCT_REPO_DIR='/srv/hive/current'
+TEST_REPO_DIR="$TEST_HOME/hive"
+ETSY_IMAGE='docker.salsitasoft.com/service-test'
+ETSY_CONTAINER='etsy'
+SELENIUM_IMAGE='docker.salsitasoft.com/selenium'
+SELENIUM_CONTAINER='selenium'
+SHISHITO_BIN="$TEST_HOME/shishito/shi"
+#TEST_RAIL_CRED='my@email:kj342DsUvWdE8O6ou4-kYK1lZraOOz'
+
+export QA_ETSY_KEY='TestClientApp1'
+export QA_ETSY_SECRET='TestClientApp1-Secret'
+
+export QA_NODE_BINARY="/usr/local/bin/node"
+
+export QA_PRODUCT_DIR_00="$TEST_HOME/hive/tmp_product_00"
+export QA_PRODUCT_HOST_00="hive_test_00.salsitasoft.com"
+export QA_PRODUCT_PORT_00='4080'
+export QA_PRODUCT_HTTP_PORT_00='4090'
+export QA_PGHOST_00='hive_db00'
+export QA_PGPORT_00='5432'
+export QA_PGDATABASE_00='test_hive_00'
+export QA_PGUSER_00='hive'
+export QA_PGPASSWORD_00='H1ve2015'
+export QA_MANAGER_PORT_00='5080'
+export QA_MANAGER_API_PORT_00='5235'
+export QA_HIVE_SYNC_MANAGER_URL_00="http://localhost:$QA_MANAGER_PORT_00"
+
+export QA_PRODUCT_DIR_01="$TEST_HOME/hive/tmp_product_01"
+export QA_PRODUCT_HOST_01="hive_test_01.salsitasoft.com"
+export QA_PRODUCT_PORT_01='4081'
+export QA_PRODUCT_HTTP_PORT_01='4091'
+export QA_PGHOST_01='hive_db00'
+export QA_PGPORT_01='5432'
+export QA_PGDATABASE_01='test_hive_01'
+export QA_PGUSER_01='hive'
+export QA_PGPASSWORD_01='H1ve2015'
+export QA_MANAGER_PORT_01='5081'
+export QA_HIVE_SYNC_MANAGER_URL_01="http://localhost:$QA_MANAGER_PORT_01/app-servers"
+
+export QA_COOKIES_DOMAIN=".salsitasoft.com"
+export QA_COOKIE_EXPIRES_IN=3600
+export QA_PRODUCT_DIR_AUTH="$TEST_HOME/hive/tmp_product_00"
+export QA_PRODUCT_HOST_AUTH="hive_test_00.salsitasoft.com"
+export QA_PRODUCT_PORT_AUTH='4082'
+export QA_PRODUCT_PORT_HTTPS_AUTH='4083'
+export QA_PGHOST_AUTH='hive_db00'
+export QA_PGPORT_AUTH='5432'
+export QA_PGDATABASE_AUTH='test_hive_auth'
+export QA_PGUSER_AUTH='hive'
+export QA_PGPASSWORD_AUTH='H1ve2015'
+
+export QA_PRIVATE_KEY="/srv/hive/cert/salsitasoft_com_2017.key"
+export QA_PUBLIC_KEY="/srv/hive/cert/salsitasoft_com_2017.public.key"
+export QA_CERTIFICATE="/srv/hive/cert/salsitasoft_com_bundle_2017.crt"
+
+export QA_ETSY_HOST=etsy_emulator
+export QA_ETSY_PORT=23000
+
+export TZ=Europe/Prague
+
+export PATH="/opt/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
+#export QA_GETVELA_MAIL_PASSWORD='1234'
+#export QA_MANDRIL_API_KEY='xxx'
+export QA_JWT_EXPIRES_IN=86400
+export QA_INTERCOM_KEY='xxx'
+
+#QA_FAST_TEST=y

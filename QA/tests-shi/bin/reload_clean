@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -e
+
+scriptdir=$(readlink -f "$(dirname "${BASH_SOURCE[0]}")")
+basedir=$(cd "$scriptdir/.." && pwd -P)
+
+if [ "$1" = "-h" -o "$1" = "--help" ]; then
+	echo "$0: [ set etsy scenario], kill all, clean db, start again
+	Usage: $0 [ scenario ]   # listing_02"
+	exit 1
+fi
+
+if [ -n "$1" ]; then
+	"$basedir/oauth1/set_test" "$1"
+fi
+
+
+PATH=$scriptdir:$PATH
+restart_all --kill
+sql "$basedir/sql/mrproper.sql"
+rm -f /var/tmp/hive_*
+restart_all 
