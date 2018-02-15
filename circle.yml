@@ -42,7 +42,7 @@ dependencies:
      - sudo apt-get update -qq
      - sudo apt-get install -y -qq yarn
   cache_directories:
-     - ~/.cache/yarn
+     #- ~/.cache/yarn
   override:
     - sudo yarn install && sudo yarn add node-sass --force && sudo yarn run build_all && sudo yarn run build_artifacts && sudo mv *.tgz $CIRCLE_ARTIFACTS
 
