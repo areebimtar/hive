@@ -44,7 +44,8 @@ dependencies:
   cache_directories:
      #- ~/.cache/yarn
   override:
-    - sudo yarn install && sudo yarn add node-sass --force && sudo yarn run build_all && sudo yarn run build_artifacts && sudo mv *.tgz $CIRCLE_ARTIFACTS
+    - chown 775 /bin/gen_ver_json.sh
+	- yarn install && yarn add node-sass --force && yarn run build_all && yarn run build_artifacts && mv *.tgz $CIRCLE_ARTIFACTS
 
 ## Customize test commands
 test:
