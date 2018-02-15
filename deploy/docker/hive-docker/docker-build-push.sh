@@ -3,7 +3,7 @@
 set -eo pipefail
 
 TAG="hive:${CIRCLE_BUILD_NUM}"
-AWS_DOCKER_URL="862392389649.dkr.ecr.eu-central-1.amazonaws.com/veladev-test"
+AWS_DOCKER_URL="862392389649.dkr.ecr.eu-central-1.amazonaws.com/veladev-test/"
 
 # THE aws RETURNS DOCKER COMMAND FOR LOGIN TO AWS DOCKER REPOSITORY
 LOGIN=$(aws ecr get-login --region eu-central-1)
